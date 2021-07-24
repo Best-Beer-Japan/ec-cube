@@ -9,6 +9,8 @@ admin.product.product_csv.alcohol_percentage: アルコール度数
 admin.product.product_csv.alcohol_percentage_description: 0〜999.99の範囲で値を設定してください
 admin.product.csv_invalid_alcohol_percentage: '%line%行目の%name%は0〜999.99の範囲で小数点以下2桁までの値を設定してください。'
 
+admin.product.beer_container: 容器
+
 admin.product.beer_type: ビール種別
 admin.product.product_csv.beer_type_col: ビール種別
 admin.product.product_csv.beer_type_description: ''

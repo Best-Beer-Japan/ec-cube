@@ -10,6 +10,8 @@ admin.product.product_csv.alcohol_percentage: Alcohol degree
 admin.product.product_csv.alcohol_percentage_description: Set a value in the range of 0 to 999.99
 admin.product.csv_invalid_alcohol_percentage: 'For %name% on the %line% line, set a value in the range of 0 to 999.99 and up to two decimal places.'
 
+admin.product.beer_container: container
+
 admin.product.beer_type: Beer type
 admin.product.product_csv.beer_type_col: Beer type
 admin.product.product_csv.beer_type_description: ''
