@@ -376,6 +376,7 @@ showClose: true
 									<thead>
 										<tr>
 											<th class="border-top-0 pt-2 pb-3 pl-3 text-nowrap">{{ 'admin.customer.customer_id'|trans }}</th>
+                                            <th class="border-top-0 pt-2 pb-3">{{ 'common.company_name'|trans }}</th>
 											<th class="border-top-0 pt-2 pb-3">{{ 'admin.common.name'|trans }}</th>
 											<th class="border-top-0 pt-2 pb-3">{{ 'admin.common.phone_number'|trans }}</th>
 											<th class="border-top-0 pt-2 pb-3">{{ 'admin.common.mail_address'|trans }}</th>
@@ -387,6 +388,9 @@ showClose: true
 										{% for Customer in pagination %}
 											<tr id="ex-customer-{{ Customer.id }}">
 												<td class="align-middle pl-3">{{ Customer.id }}</td>
+                                                <td class="align-middle">
+													<a href="{{ url('admin_customer_edit', { 'id': Customer.id}) }}">{{ Customer.company_name }}</a>
+												</td>
 												<td class="align-middle">
 													<a href="{{ url('admin_customer_edit', { 'id': Customer.id}) }}">{{ Customer.name01 }}&nbsp;{{ Customer.name02 }}</a>
 												</td>

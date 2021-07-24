@@ -2,6 +2,7 @@
 
 namespace Customize\Entity;
 
+use Customize\Entity\Master\BeerStyle;
 use Customize\Entity\Master\BeerType;
 use Customize\Entity\ProductBeerContainer;
 use Doctrine\ORM\Mapping as ORM;
@@ -33,6 +34,16 @@ trait ProductTrait
      * @ORM\OneToMany(targetEntity="Customize\Entity\ProductBeerContainer", mappedBy="Product", cascade={"persist","remove"})
      */
     private $ProductBeerContainers;
+
+    /**
+     * @var BeerStyle
+     *
+     * @ORM\ManyToOne(targetEntity="Customize\Entity\Master\BeerStyle")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="beer_style_id", referencedColumnName="id")
+     * })
+     */
+    private $BeerStyle;
 
     /**
      * @var string|null
@@ -116,6 +127,20 @@ trait ProductTrait
     }
 
     /**
+     * Set BeerStyle.
+     *
+     * @param BeerStyle|null $BeerStyle
+     *
+     * @return self
+     */
+    public function setBeerStyle(?BeerStyle $BeerStyle): self
+    {
+        $this->BeerStyle = $BeerStyle;
+
+        return $this;
+    }
+
+    /**
      * Remove ProductBeerContainer.
      *
      * @param ProductBeerContainer $ProductBeerContainer
@@ -135,5 +160,15 @@ trait ProductTrait
     public function getProductBeerContainers()
     {
         return $this->ProductBeerContainers;
+    }
+
+    /**
+     * Get BeerType.
+     *
+     * @return BeerStyle|null
+     */
+    public function getBeerStyle(): ?BeerStyle
+    {
+        return $this->BeerStyle;
     }
 }

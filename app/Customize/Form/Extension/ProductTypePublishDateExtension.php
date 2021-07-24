@@ -4,6 +4,7 @@ namespace Customize\Form\Extension;
 
 use Customize\Entity\BeerContainer;
 use Customize\Entity\ProductBeerContainer;
+use Customize\Form\Type\Master\BeerStyleType;
 use Customize\Form\Type\Master\BeerTypeType;
 use Customize\Repository\BeerContainerRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -71,6 +72,10 @@ class ProductTypePublishDateExtension extends AbstractTypeExtension
                 'choice_value' => function (?BeerContainer $BeerContainer) {
                     return $BeerContainer ? $BeerContainer->getId() : null;
                 },
+            ->add('beer_style', BeerStyleType::class, [
+                'constraints' => [
+                    // new Assert\NotBlank(),
+                ],
             ])
             ->add('alcohol_percentage', NumberType::class, [
                 'attr' => [

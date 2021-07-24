@@ -365,6 +365,18 @@ file that was distributed with this source code.
                                 <div class="row">
                                     <div class="col-3">
                                         <div class="d-inline-block">
+                                            <span>{{ 'admin.product.beer_style'|trans }}</span>
+                                            {# <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span> #}
+                                        </div>
+                                    </div>
+                                    <div class="col mb-2">
+                                        {{ form_widget(form.beer_style) }}
+                                        {{ form_errors(form.beer_style) }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-3">
+                                        <div class="d-inline-block">
                                             <span>{{ 'admin.product.alcohol_percentage'|trans }}</span>
                                         </div>
                                     </div>
