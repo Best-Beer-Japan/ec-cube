@@ -2,6 +2,7 @@
 
 namespace Customize\Entity;
 
+use Customize\Entity\Master\BeerStyle;
 use Customize\Entity\Master\BeerType;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Annotation\EntityExtension;
@@ -25,6 +26,16 @@ trait ProductTrait
      * })
      */
     private $BeerType;
+
+    /**
+     * @var BeerStyle
+     *
+     * @ORM\ManyToOne(targetEntity="Customize\Entity\Master\BeerStyle")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="beer_style_id", referencedColumnName="id")
+     * })
+     */
+    private $BeerStyle;
 
     /**
      * @var string|null
@@ -91,5 +102,29 @@ trait ProductTrait
     public function getBeerType(): ?BeerType
     {
         return $this->BeerType;
+    }
+
+    /**
+     * Set BeerStyle.
+     *
+     * @param BeerStyle|null $BeerStyle
+     *
+     * @return self
+     */
+    public function setBeerStyle(?BeerStyle $BeerStyle): self
+    {
+        $this->BeerStyle = $BeerStyle;
+
+        return $this;
+    }
+
+    /**
+     * Get BeerType.
+     *
+     * @return BeerStyle|null
+     */
+    public function getBeerStyle(): ?BeerStyle
+    {
+        return $this->BeerStyle;
     }
 }

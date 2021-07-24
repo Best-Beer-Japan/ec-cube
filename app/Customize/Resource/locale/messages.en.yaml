@@ -14,4 +14,9 @@ admin.product.beer_type: Beer type
 admin.product.product_csv.beer_type_col: Beer type
 admin.product.product_csv.beer_type_description: ''
 
+admin.product.beer_style: Beer Style
+admin.product.product_csv.beer_style_col: Beer Style
+admin.product.product_csv.beer_style_description: ''
+
+front.product.beer_style: Beer Style
 front.product.alcohol_percentage: Alcohol degree

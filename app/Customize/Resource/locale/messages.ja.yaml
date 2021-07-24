@@ -13,4 +13,9 @@ admin.product.beer_type: ビール種別
 admin.product.product_csv.beer_type_col: ビール種別
 admin.product.product_csv.beer_type_description: ''
 
+admin.product.beer_style: ビアスタイル
+admin.product.product_csv.beer_style_col: ビアスタイル
+admin.product.product_csv.beer_style_description: ''
+
+front.product.beer_style: ビアスタイル
 front.product.alcohol_percentage: アルコール度数

@@ -306,6 +306,11 @@ file that was distributed with this source code.
                             {% endfor %}
                         </div>
                     {% endif %}
+                    {% if Product.BeerStyle is not null %}
+                        <div class="ec-productRole__beer_style">
+                            {{ 'front.product.beer_style'|trans}}： <span class="product-beer_style">{{ Product.BeerStyle }} %</span>
+                        </div>
+                    {% endif %}
                     {% if Product.alcohol_percentage is not empty %}
                     <div class="ec-productRole__alcohol_percentage">
                         {{ 'front.product.alcohol_percentage'|trans}}： <span class="product-alcohol_percentage">{{ Product.alcohol_percentage }} %</span>

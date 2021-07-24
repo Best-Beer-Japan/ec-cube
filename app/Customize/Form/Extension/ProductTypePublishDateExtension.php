@@ -2,6 +2,7 @@
 
 namespace Customize\Form\Extension;
 
+use Customize\Form\Type\Master\BeerStyleType;
 use Customize\Form\Type\Master\BeerTypeType;
 use Eccube\Form\Type\Admin\ProductType;
 use Symfony\Component\Form\AbstractTypeExtension;
@@ -32,6 +33,11 @@ class ProductTypePublishDateExtension extends AbstractTypeExtension
             ])
             // 右ブロック
             ->add('beer_type', BeerTypeType::class, [
+                'constraints' => [
+                    // new Assert\NotBlank(),
+                ],
+            ])
+            ->add('beer_style', BeerStyleType::class, [
                 'constraints' => [
                     // new Assert\NotBlank(),
                 ],
