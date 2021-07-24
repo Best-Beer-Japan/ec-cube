@@ -72,6 +72,7 @@ class ProductTypePublishDateExtension extends AbstractTypeExtension
                 'choice_value' => function (?BeerContainer $BeerContainer) {
                     return $BeerContainer ? $BeerContainer->getId() : null;
                 },
+            ])
             ->add('beer_style', BeerStyleType::class, [
                 'constraints' => [
                     // new Assert\NotBlank(),
