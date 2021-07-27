@@ -289,9 +289,9 @@ file that was distributed with this source code.
                 </div>
                 <div class="row">
                     <div class="col">
-                        <label class="col-form-label">{{ 'admin.common.mail_address'|trans }}</label>
-                        {{ form_widget(searchForm.email) }}
-                        {{ form_errors(searchForm.email) }}
+                        <label class="col-form-label">{{ 'admin.order.orderer_customize_store_name'|trans }}</label>
+                        {{ form_widget(searchForm.customize_store_name) }}
+                        {{ form_errors(searchForm.customize_store_name) }}
                     </div>
                     <div class="col">
                         <label class="col-form-label">{{ 'admin.common.update_date'|trans }}</label>
@@ -310,9 +310,9 @@ file that was distributed with this source code.
                 </div>
                 <div class="row">
                     <div class="col">
-                        <label class="col-form-label">{{ 'admin.common.phone_number'|trans }}</label>
-                        {{ form_widget(searchForm.phone_number) }}
-                        {{ form_errors(searchForm.phone_number) }}
+                        <label class="col-form-label">{{ 'admin.common.mail_address'|trans }}</label>
+                        {{ form_widget(searchForm.email) }}
+                        {{ form_errors(searchForm.email) }}
                     </div>
                     <div class="col">
                         <label class="col-form-label">{{ 'admin.order.delivery_date'|trans }}</label>
@@ -335,9 +335,9 @@ file that was distributed with this source code.
                 </div>
                 <div class="row">
                     <div class="col">
-                        <label class="col-form-label">{{ 'admin.order.order_no'|trans }}</label>
-                        {{ form_widget(searchForm.order_no) }}
-                        {{ form_errors(searchForm.order_no) }}
+                        <label class="col-form-label">{{ 'admin.common.phone_number'|trans }}</label>
+                        {{ form_widget(searchForm.phone_number) }}
+                        {{ form_errors(searchForm.phone_number) }}
                     </div>
                     <div class="col">
                         <label class="col-form-label">{{ 'admin.order.purchase_price'|trans }}</label>
@@ -360,13 +360,9 @@ file that was distributed with this source code.
                 </div>
                 <div class="row">
                     <div class="col">
-                        <div class="form-row">
-                            <div class="col-12">
-                                <p class="col-form-label">{{ 'admin.order.tracking_number'|trans }}</p>
-                                {{ form_widget(searchForm.tracking_number) }}
-                                {{ form_errors(searchForm.tracking_number) }}
-                            </div>
-                        </div>
+                        <label class="col-form-label">{{ 'admin.order.order_no'|trans }}</label>
+                        {{ form_widget(searchForm.order_no) }}
+                        {{ form_errors(searchForm.order_no) }}
                     </div>
                     <div class="col">
                         <label class="col-form-label">{{ 'admin.order.purchase_product'|trans }}</label>
@@ -375,6 +371,18 @@ file that was distributed with this source code.
                     </div>
                 </div>
 
+                <div class="row mb-2">
+                    <div class="col">
+                        <div class="form-row">
+                            <div class="col-12">
+                                <p class="col-form-label">{{ 'admin.order.tracking_number'|trans }}</p>
+                                {{ form_widget(searchForm.tracking_number) }}
+                                {{ form_errors(searchForm.tracking_number) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col"></div>
+                </div>
                 <div class="row mb-2">
                     <div class="col">
                         <div class="form-row">
@@ -513,6 +521,7 @@ file that was distributed with this source code.
                                             <input type="checkbox" id="toggle_check_all" name="filter" value="open">
                                         </th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.common.company_name'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.common.customize_store_name'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.orderer'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center text-nowrap">{{ 'admin.common.payment_method'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.order_status'|trans }}</th>
@@ -536,7 +545,10 @@ file that was distributed with this source code.
                                                     />
                                                 </td>
                                                 <td class="align-middle text-left">
-                                                    <a class="action-edit" href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Shipping.company_name }}</a>
+                                                    <a class="action-edit" href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.company_name }}</a>
+                                                </td>
+                                                <td class="align-middle text-left">
+                                                    <a class="action-edit" href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.customize_store_name }}</a>
                                                 </td>
                                                 <td class="align-middle text-left">
                                                     <a class="action-edit" href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.order_no }}<br>{{ Order.name01 ~ Order.name02 }}<br>{{ Order.order_date|date_min }}</a>
