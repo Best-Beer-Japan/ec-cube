@@ -12,6 +12,37 @@ file that was distributed with this source code.
 
 {% set body_class = 'product_page' %}
 
+{% block stylesheet %}
+    <style>
+
+        .ec-topicpath__item-tag {
+            margin-left: 5px;
+            display: inline-block;
+            padding: 2px 5px;
+            list-style: none;
+            color: #525263;
+            border: solid 1px #D7DADD;
+            border-radius: 3px 0 0 3px;
+            background-color: #F5F7F8;
+            letter-spacing: normal;
+        }
+
+        .ec-topicpath__item-remove {
+            display: inline-block;
+            padding: 2px 5px;
+            list-style: none;
+            color: #525263;
+            border-top: solid 1px #D7DADD;
+            border-right: solid 1px #D7DADD;
+            border-bottom: solid 1px #D7DADD;
+            border-radius: 0 3px 3px 0;
+            background-color: #F5F7F8;
+            letter-spacing: normal;
+        }
+
+    </style>
+{% endblock %}
+
 {% block javascript %}
     <script>
         eccube.productsClassCategories = {
@@ -102,9 +133,11 @@ file that was distributed with this source code.
         <div class="ec-searchnavRole">
             <form name="form1" id="form1" method="get" action="?">
                 {% for item in search_form %}
+                    {% if 'tag_ids' != item.vars.full_name %}
                     <input type="hidden" id="{{ item.vars.id }}"
                            name="{{ item.vars.full_name }}"
                            {% if item.vars.value is not empty %}value="{{ item.vars.value }}" {% endif %}/>
+                    {% endif %}
                 {% endfor %}
             </form>
             <div class="ec-searchnavRole__topicpath">
@@ -125,6 +158,30 @@ file that was distributed with this source code.
                     {% endif %}
                 </ol>
             </div>
+
+            {% if Tags is not null %}
+            <div class="ec-searchnavRole__topicpath">
+                <ol class="ec-topicpath" style="padding-top:0;">
+                    <li class="ec-topicpath__item">
+                        <a href="{{ url('customize_tag_search_item', {'operation': 'clear'}) }}" {{ csrf_token_for_anchor() }} class="load-overlay" data-method="put" data-confirm="false">
+                            タグクリア
+                        </a>
+                    </li>
+                    <li class="ec-topicpath__divider">|</li>
+                    {% for Tag in Tags %}
+                        <li class="ec-topicpath__item-tag tag_{{ Tag.id }}">
+                            {{ Tag }}
+                        </li>
+                        <li class="ec-topicpath__item-remove">
+                            <a href="{{ url('customize_tag_search_item', {'operation': 'remove', 'tag_id': Tag.id}) }}" {{ csrf_token_for_anchor() }} class="load-overlay" style="text-decoration:none;color:#525263;" data-method="put" data-confirm="false">
+                                ×
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ol>
+            </div>
+            {% endif %}
+
             <div class="ec-searchnavRole__infos">
                 <div class="ec-searchnavRole__counter">
                     {% if pagination.totalItemCount > 0 %}

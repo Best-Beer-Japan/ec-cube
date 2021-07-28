@@ -241,7 +241,11 @@ file that was distributed with this source code.
                     {# タグ #}
                     <ul class="ec-productRole__tags">
                         {% for Tag in Product.Tags %}
-                            <li class="ec-productRole__tag tag_{{ Tag.id }}">{{ Tag }}</li>
+                            <li class="ec-productRole__tag tag_{{ Tag.id }}">
+                                <a href="{{ url('customize_tag_search_item', {'operation': 'add', 'tag_id': Tag.id}) }}" {{ csrf_token_for_anchor() }} class="load-overlay" style="text-decoration:none;color:#525263;" data-method="put" data-confirm="false">
+                                    {{ Tag }}
+                                </a>
+                            </li>
                         {% endfor %}
                     </ul>
                     {% if is_granted('ROLE_USER') %}
