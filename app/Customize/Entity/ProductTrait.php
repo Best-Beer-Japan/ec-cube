@@ -4,7 +4,6 @@ namespace Customize\Entity;
 
 use Customize\Entity\Master\BeerStyle;
 use Customize\Entity\Master\BeerType;
-use Customize\Entity\ProductBeerContainer;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Annotation\EntityExtension;
