@@ -54,6 +54,30 @@ trait ProductTrait
     private $ProductBeerContainers;
 
     /**
+     * Set alcohol_percentage.
+     *
+     * @param string|null $alcohol_percentage
+     *
+     * @return self
+     */
+    public function setAlcoholPercentage(?string $alcohol_percentage): self
+    {
+        $this->alcohol_percentage = $alcohol_percentage;
+
+        return $this;
+    }
+
+    /**
+     * Get alcohol_percentage.
+     *
+     * @return string|null
+     */
+    public function getAlcoholPercentage(): ?string
+    {
+        return $this->alcohol_percentage;
+    }
+
+    /**
      * Get publish_date.
      *
      * @return \DateTimeInterface|null
@@ -78,27 +102,27 @@ trait ProductTrait
     }
 
     /**
-     * Set alcohol_percentage.
+     * Set BeerStyle.
      *
-     * @param string|null $alcohol_percentage
+     * @param BeerStyle|null $BeerStyle
      *
      * @return self
      */
-    public function setAlcoholPercentage(?string $alcohol_percentage): self
+    public function setBeerStyle(?BeerStyle $BeerStyle): self
     {
-        $this->alcohol_percentage = $alcohol_percentage;
+        $this->BeerStyle = $BeerStyle;
 
         return $this;
     }
 
     /**
-     * Get alcohol_percentage.
+     * Get BeerType.
      *
-     * @return string|null
+     * @return BeerStyle|null
      */
-    public function getAlcoholPercentage(): ?string
+    public function getBeerStyle(): ?BeerStyle
     {
-        return $this->alcohol_percentage;
+        return $this->BeerStyle;
     }
 
     /**
@@ -144,20 +168,6 @@ trait ProductTrait
     }
 
     /**
-     * Set BeerStyle.
-     *
-     * @param BeerStyle|null $BeerStyle
-     *
-     * @return self
-     */
-    public function setBeerStyle(?BeerStyle $BeerStyle): self
-    {
-        $this->BeerStyle = $BeerStyle;
-
-        return $this;
-    }
-
-    /**
      * Remove ProductBeerContainer.
      *
      * @param ProductBeerContainer $ProductBeerContainer
@@ -185,15 +195,5 @@ trait ProductTrait
         }
 
         return $this->ProductBeerContainers;
-    }
-
-    /**
-     * Get BeerType.
-     *
-     * @return BeerStyle|null
-     */
-    public function getBeerStyle(): ?BeerStyle
-    {
-        return $this->BeerStyle;
     }
 }
