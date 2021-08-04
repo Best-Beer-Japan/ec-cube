@@ -15,9 +15,26 @@ use Eccube\Annotation\EntityExtension;
 trait ProductTrait
 {
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="alcohol_percentage ", type="decimal", precision=5, scale=2, nullable=true)
+     */
+    private $alcohol_percentage;
+
+    /**
      * @ORM\Column(type="datetimetz", nullable=true)
      */
     private $publish_date;
+
+    /**
+     * @var BeerStyle
+     *
+     * @ORM\ManyToOne(targetEntity="Customize\Entity\Master\BeerStyle")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="beer_style_id", referencedColumnName="id")
+     * })
+     */
+    private $BeerStyle;
 
     /**
      * @var BeerType
@@ -35,23 +52,6 @@ trait ProductTrait
      * @ORM\OneToMany(targetEntity="Customize\Entity\ProductBeerContainer", mappedBy="Product", cascade={"persist","remove"})
      */
     private $ProductBeerContainers;
-
-    /**
-     * @var BeerStyle
-     *
-     * @ORM\ManyToOne(targetEntity="Customize\Entity\Master\BeerStyle")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="beer_style_id", referencedColumnName="id")
-     * })
-     */
-    private $BeerStyle;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="alcohol_percentage ", type="decimal", precision=5, scale=2, nullable=true)
-     */
-    private $alcohol_percentage;
 
     /**
      * Get publish_date.
