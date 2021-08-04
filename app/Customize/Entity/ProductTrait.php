@@ -4,7 +4,7 @@ namespace Customize\Entity;
 
 use Customize\Entity\Master\BeerStyle;
 use Customize\Entity\Master\BeerType;
-use Customize\Entity\ProductBeerContainer;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Annotation\EntityExtension;
 
@@ -14,9 +14,26 @@ use Eccube\Annotation\EntityExtension;
 trait ProductTrait
 {
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="alcohol_percentage ", type="decimal", precision=5, scale=2, nullable=true)
+     */
+    private $alcohol_percentage;
+
+    /**
      * @ORM\Column(type="datetimetz", nullable=true)
      */
     private $publish_date;
+
+    /**
+     * @var BeerStyle
+     *
+     * @ORM\ManyToOne(targetEntity="Customize\Entity\Master\BeerStyle")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="beer_style_id", referencedColumnName="id")
+     * })
+     */
+    private $BeerStyle;
 
     /**
      * @var BeerType
@@ -34,35 +51,6 @@ trait ProductTrait
      * @ORM\OneToMany(targetEntity="Customize\Entity\ProductBeerContainer", mappedBy="Product", cascade={"persist","remove"})
      */
     private $ProductBeerContainers;
-
-    /**
-     * @var BeerStyle
-     *
-     * @ORM\ManyToOne(targetEntity="Customize\Entity\Master\BeerStyle")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="beer_style_id", referencedColumnName="id")
-     * })
-     */
-    private $BeerStyle;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="alcohol_percentage ", type="decimal", precision=5, scale=2, nullable=true)
-     */
-    private $alcohol_percentage;
-
-    public function getPublishDate(): ?\DateTimeInterface
-    {
-        return $this->publish_date;
-    }
-
-    public function setPublishDate(?\DateTimeInterface $publish_date): self
-    {
-        $this->publish_date = $publish_date;
-
-        return $this;
-    }
 
     /**
      * Set alcohol_percentage.
@@ -86,6 +74,54 @@ trait ProductTrait
     public function getAlcoholPercentage(): ?string
     {
         return $this->alcohol_percentage;
+    }
+
+    /**
+     * Get publish_date.
+     *
+     * @return \DateTimeInterface|null
+     */
+    public function getPublishDate(): ?\DateTimeInterface
+    {
+        return $this->publish_date;
+    }
+
+    /**
+     * Set publish_date.
+     *
+     * @param \DateTimeInterface|null $publish_date
+     *
+     * @return self
+     */
+    public function setPublishDate(?\DateTimeInterface $publish_date): self
+    {
+        $this->publish_date = $publish_date;
+
+        return $this;
+    }
+
+    /**
+     * Set BeerStyle.
+     *
+     * @param BeerStyle|null $BeerStyle
+     *
+     * @return self
+     */
+    public function setBeerStyle(?BeerStyle $BeerStyle): self
+    {
+        $this->BeerStyle = $BeerStyle;
+
+        return $this;
+    }
+
+    /**
+     * Get BeerType.
+     *
+     * @return BeerStyle|null
+     */
+    public function getBeerStyle(): ?BeerStyle
+    {
+        return $this->BeerStyle;
     }
 
     /**
@@ -119,23 +155,13 @@ trait ProductTrait
      *
      * @return self
      */
-    public function addProductBeerContainer(ProductBeerContainer $ProductBeerContainer)
+    public function addProductBeerContainer(ProductBeerContainer $ProductBeerContainer): self
     {
+        if (is_null($this->ProductBeerContainers)) {
+            $this->ProductBeerContainers = new \Doctrine\Common\Collections\ArrayCollection();
+        }
+
         $this->ProductBeerContainers[] = $ProductBeerContainer;
-
-        return $this;
-    }
-
-    /**
-     * Set BeerStyle.
-     *
-     * @param BeerStyle|null $BeerStyle
-     *
-     * @return self
-     */
-    public function setBeerStyle(?BeerStyle $BeerStyle): self
-    {
-        $this->BeerStyle = $BeerStyle;
 
         return $this;
     }
@@ -147,8 +173,12 @@ trait ProductTrait
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeProductBeerContainer(ProductBeerContainer $ProductBeerContainer)
+    public function removeProductBeerContainer(ProductBeerContainer $ProductBeerContainer): bool
     {
+        if (is_null($this->ProductBeerContainers)) {
+            $this->ProductBeerContainers = new \Doctrine\Common\Collections\ArrayCollection();
+        }
+
         return $this->ProductBeerContainers->removeElement($ProductBeerContainer);
     }
 
@@ -157,18 +187,12 @@ trait ProductTrait
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getProductBeerContainers()
+    public function getProductBeerContainers(): Collection
     {
-        return $this->ProductBeerContainers;
-    }
+        if (is_null($this->ProductBeerContainers)) {
+            $this->ProductBeerContainers = new \Doctrine\Common\Collections\ArrayCollection();
+        }
 
-    /**
-     * Get BeerType.
-     *
-     * @return BeerStyle|null
-     */
-    public function getBeerStyle(): ?BeerStyle
-    {
-        return $this->BeerStyle;
+        return $this->ProductBeerContainers;
     }
 }
