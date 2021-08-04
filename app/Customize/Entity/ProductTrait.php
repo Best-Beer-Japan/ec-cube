@@ -53,11 +53,23 @@ trait ProductTrait
      */
     private $alcohol_percentage;
 
+    /**
+     * Get publish_date.
+     *
+     * @return \DateTimeInterface|null
+     */
     public function getPublishDate(): ?\DateTimeInterface
     {
         return $this->publish_date;
     }
 
+    /**
+     * Set publish_date.
+     *
+     * @param \DateTimeInterface|null $publish_date
+     *
+     * @return self
+     */
     public function setPublishDate(?\DateTimeInterface $publish_date): self
     {
         $this->publish_date = $publish_date;
