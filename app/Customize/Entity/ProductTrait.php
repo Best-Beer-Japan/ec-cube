@@ -5,6 +5,7 @@ namespace Customize\Entity;
 use Customize\Entity\Master\BeerStyle;
 use Customize\Entity\Master\BeerType;
 use Customize\Entity\ProductBeerContainer;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Annotation\EntityExtension;
 
@@ -119,8 +120,12 @@ trait ProductTrait
      *
      * @return self
      */
-    public function addProductBeerContainer(ProductBeerContainer $ProductBeerContainer)
+    public function addProductBeerContainer(ProductBeerContainer $ProductBeerContainer): self
     {
+        if (is_null($this->ProductBeerContainers)) {
+            $this->ProductBeerContainers = new \Doctrine\Common\Collections\ArrayCollection();
+        }
+
         $this->ProductBeerContainers[] = $ProductBeerContainer;
 
         return $this;
@@ -147,8 +152,12 @@ trait ProductTrait
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeProductBeerContainer(ProductBeerContainer $ProductBeerContainer)
+    public function removeProductBeerContainer(ProductBeerContainer $ProductBeerContainer): bool
     {
+        if (is_null($this->ProductBeerContainers)) {
+            $this->ProductBeerContainers = new \Doctrine\Common\Collections\ArrayCollection();
+        }
+
         return $this->ProductBeerContainers->removeElement($ProductBeerContainer);
     }
 
@@ -157,8 +166,12 @@ trait ProductTrait
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getProductBeerContainers()
+    public function getProductBeerContainers(): Collection
     {
+        if (is_null($this->ProductBeerContainers)) {
+            $this->ProductBeerContainers = new \Doctrine\Common\Collections\ArrayCollection();
+        }
+
         return $this->ProductBeerContainers;
     }
 
