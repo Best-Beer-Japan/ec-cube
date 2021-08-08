@@ -44,8 +44,6 @@ if (!class_exists('\Customize\Entity\Brewery')) {
          * @var int
          *
          * @ORM\Column(name="bbj_payment_id", type="integer", options={"unsigned":true})
-         * @ORM\Id
-         * @ORM\GeneratedValue(strategy="NONE")
          */
         private $bbj_payment_id;
 
@@ -53,8 +51,6 @@ if (!class_exists('\Customize\Entity\Brewery')) {
          * @var int
          *
          * @ORM\Column(name="bbj_customer_id", type="integer", options={"unsigned":true})
-         * @ORM\Id
-         * @ORM\GeneratedValue(strategy="NONE")
          */
         private $bbj_customer_id;
 
@@ -62,8 +58,6 @@ if (!class_exists('\Customize\Entity\Brewery')) {
          * @var int
          *
          * @ORM\Column(name="bbj_delivery_id", type="integer", options={"unsigned":true})
-         * @ORM\Id
-         * @ORM\GeneratedValue(strategy="NONE")
          */
         private $bbj_delivery_id;
 
