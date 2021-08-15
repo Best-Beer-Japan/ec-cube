@@ -1,0 +1,18 @@
+<div class="ec-corpse-tagBreweryRole">
+    <div class="ec-role">
+        <div class="ec-secHeading">
+            <span class="ec-secHeading__en">BREWERY</span>
+            <span class="ec-secHeading__line"></span>
+            <span class="ec-secHeading__ja">醸造所</span>
+        </div>
+        <div class="ec-corpse-tagBreweryRole__list">
+            {% for Tag in Tags %}
+                <a href="{{ url('product_list') }}?tag_ids[]={{ Tag.id }}">
+                    <div class="ec-corpse-tagBreweryRole__listItem">
+                        <i class="ec-corpse-tagBreweryRole__itemIcon fas fa-beer fa-fw"></i>{{ Tag.name }}
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
