@@ -7375,6 +7375,11 @@ Styleguide 12.7.1
 .ec-corpse-tagStyleRole {
   padding: 40px 0;
   color: black; }
+.ec-corpse-tagStyleRole .ec-corpse-tagStyleRole__Heading {
+    font-size: 2em;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 30px; }
 .ec-corpse-tagStyleRole .ec-corpse-tagStyleRole__list {
     display: flex;
     flex-wrap: wrap; }
@@ -7417,6 +7422,11 @@ Styleguide 12.7.1
 .ec-corpse-tagBreweryRole {
   padding: 40px 0;
   color: black; }
+.ec-corpse-tagBreweryRole .ec-corpse-tagBreweryRole__Heading {
+    font-size: 2em;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 30px; }
 .ec-corpse-tagBreweryRole .ec-corpse-tagBreweryRole__list {
     display: flex;
     flex-wrap: wrap; }
@@ -8095,9 +8105,8 @@ Styleguide 12.7.1
       .ec-corpse-tagStyleRole .ec-corpse-tagStyleRole__list {
         flex-wrap: nowrap; }
     .ec-corpse-tagStyleRole a {
-      width: calc(100% / 3); }
-      .ec-corpse-tagStyleRole a:not(:last-of-type) {
-        margin-right: 30px; }
+      width: calc(100% / 3);
+      padding-right: 30px; }
       .ec-corpse-tagStyleRole .ec-corpse-tagStyleRole__itemIcon {
         margin-right: 0;
         font-size: 20px; }
@@ -8106,9 +8115,8 @@ Styleguide 12.7.1
       .ec-corpse-tagBreweryRole .ec-corpse-tagBreweryRole__list {
         flex-wrap: nowrap; }
     .ec-corpse-tagBreweryRole a {
-      width: calc(100% / 3); }
-      .ec-corpse-tagBreweryRole a:not(:last-of-type) {
-        margin-right: 30px; }
+      width: calc(100% / 3);
+      padding-right: 30px; }
       .ec-corpse-tagBreweryRole .ec-corpse-tagBreweryRole__itemIcon {
         margin-right: 0;
         font-size: 20px; } }

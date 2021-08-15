@@ -1,18 +1,23 @@
 <div class="ec-corpse-tagStyleRole">
     <div class="ec-role">
-        <div class="ec-secHeading">
-            <span class="ec-secHeading__en">BEER STYLE</span>
-            <span class="ec-secHeading__line"></span>
-            <span class="ec-secHeading__ja">ビアスタイル</span>
+        <div class="ec-corpse-tagStyleRole__Heading">
+            ビアスタイル一覧
         </div>
-        <div class="ec-corpse-tagStyleRole__list">
-            {% for Tag in Tags %}
-                <a href="{{ url('product_list') }}?tag_ids[]={{ Tag.id }}">
-                    <div class="ec-corpse-tagStyleRole__listItem">
-                        <i class="ec-corpse-tagStyleRole__itemIcon fas fa-beer fa-fw"></i>{{ Tag.name }}
-                    </div>
-                </a>
-            {% endfor %}
-        </div>
+        {% for Tag in Tags %}
+            {% if loop.first %}
+                <div class="ec-corpse-tagStyleRole__list">
+            {% endif %}
+            <a href="{{ url('product_list') }}?tag_ids[]={{ Tag.id }}">
+                <div class="ec-corpse-tagStyleRole__listItem">
+                    <i class="ec-corpse-tagStyleRole__itemIcon fas fa-beer fa-fw"></i>{{ Tag.name }}
+                </div>
+            </a>
+            {% if loop.last != true and loop.index % 3 == 0%}
+                </div>
+                <div class="ec-corpse-tagStyleRole__list">
+            {% elseif loop.last %}
+                </div>
+            {% endif %}
+        {% endfor %}
     </div>
 </div>

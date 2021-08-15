@@ -24,7 +24,12 @@ Styleguide 12.7.1
   @include media_desktop {
     padding: 60px 0;
   }
-
+  & &__Heading {
+    font-size: 2em;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 30px;
+  }
   & &__list {
     display: flex;
     flex-wrap: wrap;
@@ -50,9 +55,7 @@ Styleguide 12.7.1
     @include media_desktop {
       width: calc(100% / 3);
 
-      &:not(:last-of-type){
-        margin-right: 30px;
-      }
+      padding-right: 30px;
     }
   }
   & &__itemIcon {
