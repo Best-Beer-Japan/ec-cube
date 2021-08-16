@@ -22,7 +22,7 @@ final class Version20210816053719 extends AbstractMigration
             ) VALUES ('1', '樽', '1', 'beercontainer'),
                     ('2', '瓶', '2', 'beercontainer'),
                     ('3', '缶', '3', 'beercontainer'),
-                    ('4', 'その他', '4', 'beercontainer')"
+                    ('4', 'その他の容器', '4', 'beercontainer')"
             );
         }
     }
