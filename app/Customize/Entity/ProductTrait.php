@@ -14,6 +14,20 @@ use Eccube\Annotation\EntityExtension;
 trait ProductTrait
 {
     /**
+     * @var int
+     *
+     * @ORM\Column(name="brewery_id", type="integer", nullable=true, options={"unsigned":true})
+     */
+    private $brewery_id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="original_product_id", type="integer", nullable=true, options={"unsigned":true})
+     */
+    private $original_product_id;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(name="alcohol_percentage ", type="decimal", precision=5, scale=2, nullable=true)
@@ -51,6 +65,54 @@ trait ProductTrait
      * @ORM\OneToMany(targetEntity="Customize\Entity\ProductBeerContainer", mappedBy="Product", cascade={"persist","remove"})
      */
     private $ProductBeerContainers;
+
+    /**
+     * Set brewery_id.
+     *
+     * @param int|null $brewery_id
+     *
+     * @return self
+     */
+    public function setBreweryId(?int $brewery_id): self
+    {
+        $this->brewery_id = $brewery_id;
+
+        return $this;
+    }
+
+    /**
+     * Get bbj_payment_id.
+     *
+     * @return int|null
+     */
+    public function getBreweryId(): ?int
+    {
+        return $this->brewery_id;
+    }
+
+    /**
+     * Set original_product_id.
+     *
+     * @param int|null $original_product_id
+     *
+     * @return self
+     */
+    public function setOriginalProductId(?int $original_product_id): self
+    {
+        $this->original_product_id = $original_product_id;
+
+        return $this;
+    }
+
+    /**
+     * Get original_product_id.
+     *
+     * @return int|null
+     */
+    public function getOriginalProductId(): ?int
+    {
+        return $this->original_product_id;
+    }
 
     /**
      * Set alcohol_percentage.
