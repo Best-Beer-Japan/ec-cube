@@ -63,15 +63,15 @@ final class Version20210807140417 extends AbstractMigration
         if ($beerTypeExists == 0) {
             $this->addSql("INSERT INTO customize_mtb_beer_style (
                 id, name, sort_no, discriminator_type
-            ) VALUES ('1', 'Lager / Pilsner', '1', 'beerstyle'),
-                    ('2', 'White Ale/Weizen', '2', 'beerstyle'),
-                    ('3', 'Ale Beer', '3', 'beerstyle'),
+            ) VALUES ('1', 'ラガー / ピルスナー', '1', 'beerstyle'),
+                    ('2', 'ホワイトエール / ヴァイツェン', '2', 'beerstyle'),
+                    ('3', 'エール系', '3', 'beerstyle'),
                     ('4', 'IPA', '4', 'beerstyle'),
-                    ('5', 'Black Beer', '5', 'beerstyle'),
-                    ('6', 'Fruit & Herb/Flavor Beer', '6', 'beerstyle'),
-                    ('7', 'Sour / Gose', '7', 'beerstyle'),
-                    ('8', 'Special Beer', '8', 'beerstyle'),
-                    ('9', 'その他', '9', 'beerstyle')"
+                    ('5', '黒ビール系', '5', 'beerstyle'),
+                    ('6', 'フルーツビール', '6', 'beerstyle'),
+                    ('7', 'サワー / ゴーゼ', '7', 'beerstyle'),
+                    ('8', 'その他スタイル', '8', 'beerstyle'),
+                    ('9', 'ビール以外', '9', 'beerstyle')"
             );
         }
 
