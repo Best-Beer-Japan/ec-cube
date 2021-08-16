@@ -13,7 +13,6 @@
 
 namespace Eccube\Controller\Admin\Product;
 
-use Customize\Entity\BeerContainer;
 use Customize\Repository\BeerContainerRepository;
 use Customize\Repository\Master\BeerTypeRepository;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
@@ -107,7 +106,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * @var BeerTypeRepository
      */
-    protected $BeerTypeRepository;
+    protected $beerTypeRepository;
 
     /**
      * @var BeerContainerRepository
@@ -129,7 +128,7 @@ class CsvImportController extends AbstractCsvImportController
      * @param TaxRuleRepository $taxRuleRepository
      * @param BaseInfoRepository $baseInfoRepository
      * @param ValidatorInterface $validator
-     * @param BeerTypeRepository $BeerTypeRepository
+     * @param BeerTypeRepository $beerTypeRepository
      * @param BeerContainerRepository $beerContainerRepository
      * @throws \Exception
      */
@@ -144,7 +143,7 @@ class CsvImportController extends AbstractCsvImportController
         TaxRuleRepository $taxRuleRepository,
         BaseInfoRepository $baseInfoRepository,
         ValidatorInterface $validator,
-        BeerTypeRepository $BeerTypeRepository,
+        BeerTypeRepository $beerTypeRepository,
         BeerContainerRepository $beerContainerRepository
     ) {
         $this->deliveryDurationRepository = $deliveryDurationRepository;
@@ -157,7 +156,7 @@ class CsvImportController extends AbstractCsvImportController
         $this->taxRuleRepository = $taxRuleRepository;
         $this->BaseInfo = $baseInfoRepository->get();
         $this->validator = $validator;
-        $this->beerTypeRepository = $BeerTypeRepository;
+        $this->beerTypeRepository = $beerTypeRepository;
         $this->beerContainerRepository = $beerContainerRepository;
     }
 
@@ -348,17 +347,17 @@ class CsvImportController extends AbstractCsvImportController
                             if (preg_match('/^\d+$/', $row[$headerByKey['beer_type']])) {
                                 $BeerType = $this->beerTypeRepository->find($row[$headerByKey['beer_type']]);
                                 if (!$BeerType) {
-                                    $message = trans('admin.common.csv_invalid_not_found', ['%line%' => $line, '%name%' => $headerByKey['sale_type']]);
+                                    $message = trans('admin.common.csv_invalid_not_found', ['%line%' => $line, '%name%' => $headerByKey['beer_type']]);
                                     $this->addErrors($message);
                                 } else {
                                     $Product->setBeerType($BeerType);
                                 }
                             } else {
-                                $message = trans('admin.common.csv_invalid_not_found', ['%line%' => $line, '%name%' => $headerByKey['sale_type']]);
+                                $message = trans('admin.common.csv_invalid_not_found', ['%line%' => $line, '%name%' => $headerByKey['beer_type']]);
                                 $this->addErrors($message);
                             }
                         } else {
-                            $message = trans('admin.common.csv_invalid_required', ['%line%' => $line, '%name%' => $headerByKey['sale_type']]);
+                            $message = trans('admin.common.csv_invalid_required', ['%line%' => $line, '%name%' => $headerByKey['beer_type']]);
                             $this->addErrors($message);
                         }
 
