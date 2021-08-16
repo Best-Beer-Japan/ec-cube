@@ -62,6 +62,13 @@ if (!class_exists('\Customize\Entity\Brewery')) {
         private $bbj_delivery_id;
 
         /**
+         * @var int
+         *
+         * @ORM\Column(name="bbj_tag_id", type="integer", options={"unsigned":true})
+         */
+        private $bbj_tag_id;
+
+        /**
          * @var DateTime
          *
          * @ORM\Column(name="create_date", type="datetimetz")
@@ -203,6 +210,30 @@ if (!class_exists('\Customize\Entity\Brewery')) {
         public function getBbjDeliveryId(): int
         {
             return $this->bbj_delivery_id;
+        }
+
+        /**
+         * Set bbj_tag_id.
+         *
+         * @param int $bbj_tag_id
+         *
+         * @return Brewery
+         */
+        public function setBbjTagId(int $bbj_tag_id): Brewery
+        {
+            $this->bbj_tag_id = $bbj_tag_id;
+
+            return $this;
+        }
+
+        /**
+         * Get bbj_tag_id.
+         *
+         * @return int
+         */
+        public function getBbjTagId(): int
+        {
+            return $this->bbj_tag_id;
         }
 
         /**
