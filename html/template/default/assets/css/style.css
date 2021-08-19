@@ -7352,6 +7352,100 @@ Styleguide 22.1
 .ec-userEditCompleteRole .ec-userEditCompleteRole__description {
     margin-bottom: 32px;
     font-size: 16px; }
+/**
+メディアクエリ
+SP フォーストで記述する。
+Twitter Bootstrap デフォルト準拠
+ */
+/*
+カテゴリ（アイテム3列）
+
+トップページで使用されているカテゴリのスタイルです。
+
+ex [トップページ](http://demo3.ec-cube.net/)
+
+Markup:
+sg-wrapper:
+<div class="ec-role">
+  <sg-wrapper-content/>
+</div>
+
+Styleguide 12.7.1
+*/
+.ec-corpse-tagStyleRole {
+  padding: 40px 0;
+  color: black; }
+.ec-corpse-tagStyleRole .ec-corpse-tagStyleRole__Heading {
+    font-size: 2em;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 30px; }
+.ec-corpse-tagStyleRole .ec-corpse-tagStyleRole__list {
+    display: flex;
+    flex-wrap: wrap; }
+.ec-corpse-tagStyleRole .ec-corpse-tagStyleRole__list a {
+      color: #000000;
+      text-decoration: none; }
+.ec-corpse-tagStyleRole a .ec-corpse-tagStyleRole__listItem {
+    padding: 15px 0;
+    margin-bottom: 20px;
+    width: 100%;
+    height: auto;
+    border: solid #cccccc;
+    border-radius: 5px; }
+.ec-corpse-tagStyleRole .ec-corpse-tagStyleRole__itemIcon {
+    display: inline-block;
+    margin-right: 10px;
+    margin-left: 10px;
+    font-size: 18px;
+    color: black; }
+/**
+メディアクエリ
+SP フォーストで記述する。
+Twitter Bootstrap デフォルト準拠
+ */
+/*
+カテゴリ（アイテム3列）
+
+トップページで使用されているカテゴリのスタイルです。
+
+ex [トップページ](http://demo3.ec-cube.net/)
+
+Markup:
+sg-wrapper:
+<div class="ec-role">
+  <sg-wrapper-content/>
+</div>
+
+Styleguide 12.7.1
+*/
+.ec-corpse-tagBreweryRole {
+  padding: 40px 0;
+  color: black; }
+.ec-corpse-tagBreweryRole .ec-corpse-tagBreweryRole__Heading {
+    font-size: 2em;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 30px; }
+.ec-corpse-tagBreweryRole .ec-corpse-tagBreweryRole__list {
+    display: flex;
+    flex-wrap: wrap; }
+.ec-corpse-tagBreweryRole .ec-corpse-tagBreweryRole__list a {
+      color: #000000;
+      text-decoration: none; }
+.ec-corpse-tagBreweryRole a .ec-corpse-tagBreweryRole__listItem {
+    padding: 15px 0;
+    margin-bottom: 20px;
+    width: 100%;
+    height: auto;
+    border: solid #cccccc;
+    border-radius: 5px; }
+.ec-corpse-tagBreweryRole .ec-corpse-tagBreweryRole__itemIcon {
+    display: inline-block;
+    margin-right: 10px;
+    margin-left: 10px;
+    font-size: 18px;
+    color: black; }
 @media (min-width: 768px) {
       .ec-grid2 .ec-grid2__cell {
         width: 50%; }
@@ -8005,7 +8099,27 @@ Styleguide 22.1
       .ec-customerRole .ec-blockBtn--action {
         margin-bottom: 16px; }
       .ec-userEditCompleteRole .ec-userEditCompleteRole__title {
-        font-size: 32px; } }
+        font-size: 32px; }
+    .ec-corpse-tagStyleRole {
+      padding: 60px 0; }
+      .ec-corpse-tagStyleRole .ec-corpse-tagStyleRole__list {
+        flex-wrap: nowrap; }
+    .ec-corpse-tagStyleRole a {
+      width: calc(100% / 3);
+      padding-right: 30px; }
+      .ec-corpse-tagStyleRole .ec-corpse-tagStyleRole__itemIcon {
+        margin-right: 0;
+        font-size: 20px; }
+    .ec-corpse-tagBreweryRole {
+      padding: 60px 0; }
+      .ec-corpse-tagBreweryRole .ec-corpse-tagBreweryRole__list {
+        flex-wrap: nowrap; }
+    .ec-corpse-tagBreweryRole a {
+      width: calc(100% / 3);
+      padding-right: 30px; }
+      .ec-corpse-tagBreweryRole .ec-corpse-tagBreweryRole__itemIcon {
+        margin-right: 0;
+        font-size: 20px; } }
 @media only screen and (min-width: 768px) and (min-width: 768px) {
     .ec-off1Grid {
       display: flex; }
