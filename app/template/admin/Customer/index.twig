@@ -389,7 +389,8 @@ showClose: true
 											<tr id="ex-customer-{{ Customer.id }}">
 												<td class="align-middle pl-3">{{ Customer.id }}</td>
                                                 <td class="align-middle">
-													<a href="{{ url('admin_customer_edit', { 'id': Customer.id}) }}">{{ Customer.company_name }}</a>
+													<a href="{{ url('admin_customer_edit', { 'id': Customer.id}) }}">{{ Customer.company_name }}</a><br>
+                                                    {{ Customer.customize_store_name }}
 												</td>
 												<td class="align-middle">
 													<a href="{{ url('admin_customer_edit', { 'id': Customer.id}) }}">{{ Customer.name01 }}&nbsp;{{ Customer.name02 }}</a>
