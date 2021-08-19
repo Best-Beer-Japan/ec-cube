@@ -13,6 +13,7 @@
 
 namespace Eccube\Controller\Admin\Product;
 
+use Customize\Repository\BeerContainerRepository;
 use Customize\Repository\Master\BeerTypeRepository;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Common\Constant;
@@ -105,7 +106,12 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * @var BeerTypeRepository
      */
-    protected $BeerTypeRepository;
+    protected $beerTypeRepository;
+
+    /**
+     * @var BeerContainerRepository
+     */
+    protected $beerContainerRepository;
 
     private $errors = [];
 
@@ -122,7 +128,8 @@ class CsvImportController extends AbstractCsvImportController
      * @param TaxRuleRepository $taxRuleRepository
      * @param BaseInfoRepository $baseInfoRepository
      * @param ValidatorInterface $validator
-     * @param BeerTypeRepository $BeerTypeRepository
+     * @param BeerTypeRepository $beerTypeRepository
+     * @param BeerContainerRepository $beerContainerRepository
      * @throws \Exception
      */
     public function __construct(
@@ -136,7 +143,8 @@ class CsvImportController extends AbstractCsvImportController
         TaxRuleRepository $taxRuleRepository,
         BaseInfoRepository $baseInfoRepository,
         ValidatorInterface $validator,
-        BeerTypeRepository $BeerTypeRepository
+        BeerTypeRepository $beerTypeRepository,
+        BeerContainerRepository $beerContainerRepository
     ) {
         $this->deliveryDurationRepository = $deliveryDurationRepository;
         $this->saleTypeRepository = $saleTypeRepository;
@@ -148,7 +156,8 @@ class CsvImportController extends AbstractCsvImportController
         $this->taxRuleRepository = $taxRuleRepository;
         $this->BaseInfo = $baseInfoRepository->get();
         $this->validator = $validator;
-        $this->beerTypeRepository = $BeerTypeRepository;
+        $this->beerTypeRepository = $beerTypeRepository;
+        $this->beerContainerRepository = $beerContainerRepository;
     }
 
     /**
@@ -338,17 +347,17 @@ class CsvImportController extends AbstractCsvImportController
                             if (preg_match('/^\d+$/', $row[$headerByKey['beer_type']])) {
                                 $BeerType = $this->beerTypeRepository->find($row[$headerByKey['beer_type']]);
                                 if (!$BeerType) {
-                                    $message = trans('admin.common.csv_invalid_not_found', ['%line%' => $line, '%name%' => $headerByKey['sale_type']]);
+                                    $message = trans('admin.common.csv_invalid_not_found', ['%line%' => $line, '%name%' => $headerByKey['beer_type']]);
                                     $this->addErrors($message);
                                 } else {
                                     $Product->setBeerType($BeerType);
                                 }
                             } else {
-                                $message = trans('admin.common.csv_invalid_not_found', ['%line%' => $line, '%name%' => $headerByKey['sale_type']]);
+                                $message = trans('admin.common.csv_invalid_not_found', ['%line%' => $line, '%name%' => $headerByKey['beer_type']]);
                                 $this->addErrors($message);
                             }
                         } else {
-                            $message = trans('admin.common.csv_invalid_required', ['%line%' => $line, '%name%' => $headerByKey['sale_type']]);
+                            $message = trans('admin.common.csv_invalid_required', ['%line%' => $line, '%name%' => $headerByKey['beer_type']]);
                             $this->addErrors($message);
                         }
 
@@ -388,6 +397,9 @@ class CsvImportController extends AbstractCsvImportController
 
                         //タグ登録
                         $this->createProductTag($row, $Product, $data, $headerByKey);
+
+                        //容器登録
+                        $this->createProductBeerContainer($row, $Product, $data, $headerByKey);
 
                         // 商品規格が存在しなければ新規登録
                         /** @var ProductClass[] $ProductClasses */
@@ -1401,6 +1413,45 @@ class CsvImportController extends AbstractCsvImportController
     }
 
     /**
+     * 容器の登録
+     *
+     * @param array $row
+     * @param Product $Product
+     * @param CsvImportService $data
+     */
+    protected function createProductBeerContainer($row, Product $Product, $data, $headerByKey)
+    {
+        if (!isset($row[$headerByKey['beer_container']])) {
+            return;
+        }
+        // 容器の削除
+        $ProductBeerContainers = $Product->getProductBeerContainers();
+        foreach ($ProductBeerContainers as $ProductBeerContainer) {
+            $Product->removeProductTag($ProductBeerContainer);
+            $this->entityManager->remove();
+        }
+
+        if (StringUtil::isNotBlank($row[$headerByKey['beer_container']])) {
+            // 容器の登録
+            $containers = explode(',', $row[$headerByKey['beer_container']]);
+            foreach ($containers as $container_id) {
+                $Container = null;
+                if (preg_match('/^\d+$/', $container_id)) {
+                    $Container = $this->beerContainerRepository->find($container_id);
+                }
+                if (!$Container) {
+                    $message = trans('admin.common.csv_invalid_not_found_target', [
+                        '%line%' => $data->key() + 1,
+                        '%name%' => $headerByKey['beer_container'],
+                        '%target_name%' => $container_id,
+                    ]);
+                    $this->addErrors($message);
+                }
+            }
+        }
+    }
+
+    /**
      * 登録、更新時のエラー画面表示
      */
     protected function addErrors($message)
@@ -1560,6 +1611,11 @@ class CsvImportController extends AbstractCsvImportController
             trans('admin.product.product_csv.beer_type_col') => [
                 'id' => 'beer_type',
                 'description' => 'admin.product.product_csv.beer_type_description',
+                'required' => false,
+            ],
+            trans('admin.product.product_csv.beer_container_col') => [
+                'id' => 'beer_container',
+                'description' => 'admin.product.product_csv.beer_container_description',
                 'required' => false,
             ],
         ];
