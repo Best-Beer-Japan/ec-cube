@@ -30,6 +30,7 @@ services:
       - 80:80
       - 443:443
     volumes:
+      - "./dockerconfig/nginx/default_location:/etc/nginx/vhost.d/default_location"
       - proxy:/etc/nginx/vhost.d
       - proxy:/usr/share/nginx/html
       - /var/run/docker.sock:/tmp/docker.sock:ro
@@ -72,6 +73,14 @@ services:
       LETSENCRYPT_HOST: abcbrewery.bestbeerjapan.com
       LETSENCRYPT_EMAIL: sysadmin@bestbeerjapan.com
     restart: always
+
+  # <rails project will be here.>
+  api:
+    image: httpd:latest
+    networks:
+      - backend
+    environment:
+      VIRTUAL_HOST: abcbrewery.bestbeerjapan.com
 
   ### MySQL ##################################
   mysql:
