@@ -24,7 +24,7 @@ trait TagTrait
      *
      * @return self
      */
-    public function setSortNo(?int $group_no): self
+    public function setGroupNo(?int $group_no): self
     {
         $this->group_no = $group_no;
 
@@ -36,7 +36,7 @@ trait TagTrait
      *
      * @return int|null
      */
-    public function getSortNo(): ?int
+    public function getGroupNo(): ?int
     {
         return $this->group_no;
     }

@@ -1,0 +1,62 @@
+@import "../mixins/media";
+@import "../mixins/clearfix";
+
+/*
+カテゴリ（アイテム3列）
+
+トップページで使用されているカテゴリのスタイルです。
+
+ex [トップページ](http://demo3.ec-cube.net/)
+
+Markup:
+sg-wrapper:
+<div class="ec-role">
+  <sg-wrapper-content/>
+</div>
+
+Styleguide 12.7.1
+*/
+
+.ec-corpse-newReleaseRole {
+  padding: 40px 0;
+  color: black;
+
+  @include media_desktop {
+    padding: 60px 0;
+  }
+  & &__Heading {
+    font-size: 2em;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 30px;
+  }
+  & &__breweryName {
+    font-size: 1.6em;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 10px;
+  }
+  & &__list {
+    font-size: 13px;
+    display: flex;
+    flex-wrap: wrap;
+
+    @include media_desktop {
+      flex-wrap: nowrap;
+    }
+
+    a {
+      color: #000000;
+      text-decoration: none;
+      width: calc(100% / 2);
+    }
+  }
+  & a &__listItem {
+    padding: 15px 5px;
+    margin: 10px 5px;
+    text-align: center;
+    height: auto;
+    border-radius: 5px;
+    background-color: #0066FF;
+  }
+}
