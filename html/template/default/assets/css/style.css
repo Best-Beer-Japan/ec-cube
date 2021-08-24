@@ -7446,6 +7446,54 @@ Styleguide 12.7.1
     margin-left: 10px;
     font-size: 18px;
     color: black; }
+/**
+メディアクエリ
+SP フォーストで記述する。
+Twitter Bootstrap デフォルト準拠
+ */
+/*
+カテゴリ（アイテム3列）
+
+トップページで使用されているカテゴリのスタイルです。
+
+ex [トップページ](http://demo3.ec-cube.net/)
+
+Markup:
+sg-wrapper:
+<div class="ec-role">
+  <sg-wrapper-content/>
+</div>
+
+Styleguide 12.7.1
+*/
+.ec-corpse-newReleaseRole {
+  padding: 40px 0;
+  color: black; }
+.ec-corpse-newReleaseRole .ec-corpse-newReleaseRole__Heading {
+    font-size: 2em;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 30px; }
+.ec-corpse-newReleaseRole .ec-corpse-newReleaseRole__breweryName {
+    font-size: 1.6em;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 10px; }
+.ec-corpse-newReleaseRole .ec-corpse-newReleaseRole__list {
+    font-size: 13px;
+    display: flex;
+    flex-wrap: wrap; }
+.ec-corpse-newReleaseRole .ec-corpse-newReleaseRole__list a {
+      color: #000000;
+      text-decoration: none;
+      width: calc(100% / 2); }
+.ec-corpse-newReleaseRole a .ec-corpse-newReleaseRole__listItem {
+    padding: 15px 5px;
+    margin: 10px 5px;
+    text-align: center;
+    height: auto;
+    border-radius: 5px;
+    background-color: #0066FF; }
 @media (min-width: 768px) {
       .ec-grid2 .ec-grid2__cell {
         width: 50%; }
@@ -8119,7 +8167,11 @@ Styleguide 12.7.1
       padding-right: 30px; }
       .ec-corpse-tagBreweryRole .ec-corpse-tagBreweryRole__itemIcon {
         margin-right: 0;
-        font-size: 20px; } }
+        font-size: 20px; }
+    .ec-corpse-newReleaseRole {
+      padding: 60px 0; }
+      .ec-corpse-newReleaseRole .ec-corpse-newReleaseRole__list {
+        flex-wrap: nowrap; } }
 @media only screen and (min-width: 768px) and (min-width: 768px) {
     .ec-off1Grid {
       display: flex; }

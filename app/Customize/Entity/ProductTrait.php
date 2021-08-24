@@ -7,12 +7,37 @@ use Customize\Entity\Master\BeerType;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Annotation\EntityExtension;
+use Eccube\Entity\Tag;
 
 /**
  * @EntityExtension("Eccube\Entity\Product")
  */
 trait ProductTrait
 {
+    /**
+     * Get Tag
+     * フロント側タグsort_no順の配列を作成する
+     *
+     * @return []Tag
+     */
+    public function getCorpseTags()
+    {
+        $tags = [];
+
+        foreach ($this->getProductTag() as $productTag) {
+            $Tag = $productTag->getTag();
+            $tags[$Tag->getGroupNo()][] = $Tag;
+        }
+
+        foreach ($tags as $tagGroup) {
+            usort($tagGroup, function (Tag $tag1, Tag $tag2) {
+                return $tag1->getSortNo() < $tag2->getSortNo();
+            });
+        }
+
+        return $tags;
+    }
+
     /**
      * @var int
      *
