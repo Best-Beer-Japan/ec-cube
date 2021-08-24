@@ -1,7 +1,5 @@
 parameters:
-  corpse_tag_brewery_group_no: 1      #醸造所
-  corpse_tag_style_group_no: 2        #ビアスタイル
-  corpse_tag_container_group_no: 3    #容器
-  corpse_tag_mixpack_group_no: 4      #ミックスパック
-
-
+  corpse_tag_mixpack_group_no: 1      #ミックスパック
+  corpse_tag_container_group_no: 2    #容器
+  corpse_tag_style_group_no: 3        #ビアスタイル
+  corpse_tag_brewery_group_no: 4      #醸造所
