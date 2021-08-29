@@ -2,7 +2,7 @@
 
 namespace Customize\Event;
 
-use Customize\Service\CorpseRequestApi;
+use Customize\Service\CorpseRequestApiService;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -12,9 +12,9 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class AdminEvent implements EventSubscriberInterface
 {
     /**
-     * @var CorpseRequestApi
+     * @var CorpseRequestApiService
      */
-    protected $corpseRequestApi;
+    protected $corpseRequestApiService;
 
     /**
      * FrontEvent constructor.
@@ -22,9 +22,9 @@ class AdminEvent implements EventSubscriberInterface
      * @param CorpseRequestApi $corpseRequestApi
      */
     public function __construct(
-        CorpseRequestApi $corpseRequestApi
+        CorpseRequestApiService $corpseRequestApiService
     ) {
-        $this->corpseRequestApi = $corpseRequestApi;
+        $this->corpseRequestApiService = $corpseRequestApiService;
     }
 
     public static function getSubscribedEvents(): array
@@ -40,6 +40,6 @@ class AdminEvent implements EventSubscriberInterface
 
         $url = $event->getRequest()->getUriForPath('/api/post_products/'.$Product->getId());
 
-        $this->corpseRequestApi->requestApi($url);
+        $this->corpseRequestApiService->requestApi($url);
     }
 }
