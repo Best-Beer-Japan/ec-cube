@@ -32,3 +32,5 @@ admin.product.product_csv.beer_style_description: ''
 front.product.beer_style: ビアスタイル
 front.product.alcohol_percentage: アルコール度数
 
+tooltip.product.bbj_price: BBJ卸価格です。
+admin.product.bbj_price: BBJ価格
