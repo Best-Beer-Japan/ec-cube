@@ -11,6 +11,7 @@ admin.common.company_and_customize_store_name: 会社・店舗名
 admin.customer.multi_search_label: 会員ID・メールアドレス・お名前・会社名・店舗名
 admin.customer.customer_info_warning_message: 会社名、住所、電話番号は<span class="text-danger">「ご請求先」</span>のデータを入力ください。
 
+admin.order.multi_search_label: 注文番号・お名前・会社名・店舗名・メールアドレス・電話番号
 admin.order.orderer_customize_store_name: 注文者店舗名
 
 admin.product.alcohol_percentage: アルコール度数
