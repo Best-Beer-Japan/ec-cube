@@ -42,7 +42,8 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
 
         public function getShippingMultipleDefaultName()
         {
-            return $this->getName01().' '.$this->getPref()->getName().' '.$this->getAddr01().' '.$this->getAddr02();
+            // return $this->getName01().' '.$this->getPref()->getName().' '.$this->getAddr01().' '.$this->getAddr02();
+            return $this->getCompanyName().' '.$this->getCustomizeStoreName();
         }
 
         /**
@@ -283,6 +284,7 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
             ->setKana01($CustomerAddress->getKana01())
             ->setKana02($CustomerAddress->getKana02())
             ->setCompanyName($CustomerAddress->getCompanyName())
+            ->setCustomizeStoreName($CustomerAddress->getCustomizeStoreName())
             ->setPhoneNumber($CustomerAddress->getPhonenumber())
             ->setPostalCode($CustomerAddress->getPostalCode())
             ->setPref($CustomerAddress->getPref())
@@ -305,6 +307,7 @@ if (!class_exists('\Eccube\Entity\Shipping')) {
             ->setKana01(null)
             ->setKana02(null)
             ->setCompanyName(null)
+            ->setCustomizeStoreName(null)
             ->setPhoneNumber(null)
             ->setPostalCode(null)
             ->setPref(null)
