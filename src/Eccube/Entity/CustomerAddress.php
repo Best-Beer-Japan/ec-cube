@@ -34,8 +34,7 @@ if (!class_exists('\Eccube\Entity\CustomerAddress')) {
          */
         public function getShippingMultipleDefaultName()
         {
-            // return $this->getName01().' '.$this->getPref()->getName().' '.$this->getAddr01().' '.$this->getAddr02();
-            return $this->getCompanyName().' '.$this->getCustomizeStoreName();
+            return $this->getName01().' '.$this->getPref()->getName().' '.$this->getAddr01().' '.$this->getAddr02();
         }
 
         /**
