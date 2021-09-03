@@ -378,6 +378,7 @@ class OrderHelper
             ->setKana01($Customer->getKana01())
             ->setKana02($Customer->getKana02())
             ->setCompanyName($Customer->getCompanyName())
+            ->setCustomizeStoreName($Customer->getCustomizeStoreName())
             ->setPhoneNumber($Customer->getPhoneNumber())
             ->setPostalCode($Customer->getPostalCode())
             ->setPref($Customer->getPref())
