@@ -7507,10 +7507,11 @@ Styleguide 12.7.1
 .ec-corpse-newReleaseRole .ec-corpse-newReleaseRole__list a {
       color: #000000;
       text-decoration: none;
-      width: calc(100% / 2); }
+      width: calc(100% / 2);
+      margin: 10px 0; }
 .ec-corpse-newReleaseRole a .ec-corpse-newReleaseRole__listItem {
     padding: 15px 5px;
-    margin: 10px 5px;
+    margin: 0 5px;
     text-align: center;
     height: auto;
     border-radius: 5px;
