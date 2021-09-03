@@ -49,11 +49,12 @@ Styleguide 12.7.1
       color: #000000;
       text-decoration: none;
       width: calc(100% / 2);
+      margin: 10px 0;
     }
   }
   & a &__listItem {
     padding: 15px 5px;
-    margin: 10px 5px;
+    margin: 0 5px;
     text-align: center;
     height: auto;
     border-radius: 5px;

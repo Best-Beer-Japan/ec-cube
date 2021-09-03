@@ -38,7 +38,7 @@
                                     {% if loop.first %}
                                         <div class="ec-corpse-newReleaseRole__list">
                                     {% endif %}
-                                    <a href="{{ url('product_list') }}?tag_ids[]={{ CorpseTag.id }}">
+                                    <a href="{{ url('customize_tag_search_item', {'operation': 'add', 'tag_id': CorpseTag.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">
                                         <div class="ec-corpse-newReleaseRole__listItem">
                                             {{ CorpseTag.name }}
                                         </div>
