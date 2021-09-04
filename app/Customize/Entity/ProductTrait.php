@@ -41,13 +41,6 @@ trait ProductTrait
     /**
      * @var int
      *
-     * @ORM\Column(name="brewery_id", type="integer", nullable=true, options={"unsigned":true})
-     */
-    private $brewery_id;
-
-    /**
-     * @var int
-     *
      * @ORM\Column(name="original_product_id", type="integer", nullable=true, options={"unsigned":true})
      */
     private $original_product_id;
@@ -85,35 +78,21 @@ trait ProductTrait
     private $BeerType;
 
     /**
+     * @var BeerType
+     *
+     * @ORM\ManyToOne(targetEntity="Customize\Entity\Brewery")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="brewery_id", referencedColumnName="id")
+     * })
+     */
+    private $Brewery;
+
+    /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Customize\Entity\ProductBeerContainer", mappedBy="Product", cascade={"persist","remove"})
      */
     private $ProductBeerContainers;
-
-    /**
-     * Set brewery_id.
-     *
-     * @param int|null $brewery_id
-     *
-     * @return self
-     */
-    public function setBreweryId(?int $brewery_id): self
-    {
-        $this->brewery_id = $brewery_id;
-
-        return $this;
-    }
-
-    /**
-     * Get bbj_payment_id.
-     *
-     * @return int|null
-     */
-    public function getBreweryId(): ?int
-    {
-        return $this->brewery_id;
-    }
 
     /**
      * Set original_product_id.
@@ -233,6 +212,30 @@ trait ProductTrait
     public function getBeerType(): ?BeerType
     {
         return $this->BeerType;
+    }
+
+    /**
+     * Set Brewery.
+     *
+     * @param Brewery|null $Brewery
+     *
+     * @return self
+     */
+    public function setBrewery(?Brewery $Brewery): self
+    {
+        $this->Brewery = $Brewery;
+
+        return $this;
+    }
+
+    /**
+     * Get Brewery.
+     *
+     * @return Brewery|null
+     */
+    public function getBrewery(): ?Brewery
+    {
+        return $this->Brewery;
     }
 
     /**
