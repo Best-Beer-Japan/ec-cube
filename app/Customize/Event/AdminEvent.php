@@ -6,8 +6,6 @@ use Customize\Service\CorpseRequestApiService;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class AdminEvent implements EventSubscriberInterface
 {
@@ -19,7 +17,7 @@ class AdminEvent implements EventSubscriberInterface
     /**
      * FrontEvent constructor.
      *
-     * @param CorpseRequestApi $corpseRequestApi
+     * @param CorpseRequestApiService $corpseRequestApiService
      */
     public function __construct(
         CorpseRequestApiService $corpseRequestApiService
