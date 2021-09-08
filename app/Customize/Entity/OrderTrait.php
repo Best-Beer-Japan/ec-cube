@@ -18,6 +18,13 @@ trait OrderTrait
     private $customize_store_name;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="original_id", type="integer", options={"unsigned":true})
+     */
+    private $original_id;
+
+    /**
      * Set customize_store_name.
      *
      * @param string|null $customize_store_name
@@ -39,5 +46,29 @@ trait OrderTrait
     public function getCustomizeStoreName(): ?string
     {
         return $this->customize_store_name;
+    }
+
+    /**
+     * Set original_id.
+     *
+     * @param int $original_id
+     *
+     * @return self
+     */
+    public function setOriginalId(int $original_id): self
+    {
+        $this->original_id = $original_id;
+
+        return $this;
+    }
+
+    /**
+     * Get original_id.
+     *
+     * @return int
+     */
+    public function getOriginalId(): int
+    {
+        return $this->original_id;
     }
 }
