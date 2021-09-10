@@ -142,7 +142,7 @@ class OrderCustomPdfService extends TcpdfFpdi
         // 動的に入れ替えることはない
         $this->labelCell[] = '商品名 / 商品コード';
         $this->labelCell[] = '数量';
-        $this->labelCell[] = '単価';
+        $this->labelCell[] = '単価(税込)';
         $this->labelCell[] = '金額(税込)';
         $this->widthCell = [110.3, 12, 21.7, 24.5];
 
@@ -200,7 +200,7 @@ class OrderCustomPdfService extends TcpdfFpdi
         if ($formData['note1'] == "[お届け日]") {
             $this->magicNote = true;
         }
-        
+
         foreach ($ids as $id) {
             $this->lastOrderId = $id;
 
@@ -523,7 +523,7 @@ class OrderCustomPdfService extends TcpdfFpdi
             // 購入数量
             $arrOrder[$i][1] = number_format($OrderItem->getQuantity());
             // 税込金額（単価）
-            $arrOrder[$i][2] = $this->eccubeExtension->getPriceFilter($OrderItem->getPrice());
+            $arrOrder[$i][2] = $this->eccubeExtension->getPriceFilter($OrderItem->getPriceIncTax());
             // 小計（商品毎）
             $arrOrder[$i][3] = $this->eccubeExtension->getPriceFilter($OrderItem->getTotalPrice());
 
