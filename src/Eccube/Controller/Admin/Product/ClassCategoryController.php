@@ -13,6 +13,7 @@
 
 namespace Eccube\Controller\Admin\Product;
 
+use Customize\Service\CorpseRequestApiService;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -29,6 +30,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ClassCategoryController extends AbstractController
 {
+    /**
+     * @var CorpseRequestApiService
+     */
+    protected $corpseRequestApiService;
+
     /**
      * @var ProductClassRepository
      */
@@ -47,15 +53,18 @@ class ClassCategoryController extends AbstractController
     /**
      * ClassCategoryController constructor.
      *
+     * @param CorpseRequestApiService $corpseRequestApiService
      * @param ProductClassRepository $productClassRepository
      * @param ClassCategoryRepository $classCategoryRepository
      * @param ClassNameRepository $classNameRepository
      */
     public function __construct(
+        CorpseRequestApiService $corpseRequestApiService,
         ProductClassRepository $productClassRepository,
         ClassCategoryRepository $classCategoryRepository,
         ClassNameRepository $classNameRepository
     ) {
+        $this->corpseRequestApiService = $corpseRequestApiService;
         $this->productClassRepository = $productClassRepository;
         $this->classCategoryRepository = $classCategoryRepository;
         $this->classNameRepository = $classNameRepository;
@@ -124,6 +133,10 @@ class ClassCategoryController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_INDEX_COMPLETE, $event);
 
+                // API
+                $url = $event->getRequest()->getUriForPath('/api/post_classes/'.$TargetClassCategory->getClassName()->getId());
+                $this->corpseRequestApiService->requestApi($url);
+
                 $this->addSuccess('admin.common.save_complete', 'admin');
 
                 return $this->redirectToRoute('admin_product_class_category', ['class_name_id' => $ClassName->getId()]);
@@ -134,6 +147,10 @@ class ClassCategoryController extends AbstractController
                 if ($editForm->isSubmitted() && $editForm->isValid()) {
                     $this->classCategoryRepository->save($editForm->getData());
                     $this->addSuccess('admin.common.save_complete', 'admin');
+
+                    // API
+                    $url = $event->getRequest()->getUriForPath('/api/post_classes/'.$editForm->getData()->getClassName()->getId());
+                    $this->corpseRequestApiService->requestApi($url);
 
                     return $this->redirectToRoute('admin_product_class_category', ['class_name_id' => $ClassName->getId()]);
                 }
