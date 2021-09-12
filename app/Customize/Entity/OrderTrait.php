@@ -20,7 +20,7 @@ trait OrderTrait
     /**
      * @var int
      *
-     * @ORM\Column(name="original_id", type="integer", options={"unsigned":true})
+     * @ORM\Column(name="original_id", type="integer", nullable=true, options={"unsigned":true})
      */
     private $original_id;
 
