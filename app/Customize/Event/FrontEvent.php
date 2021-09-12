@@ -2,6 +2,9 @@
 
 namespace Customize\Event;
 
+use Customize\Service\BreweryRequestApiService;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Eccube\Event\TemplateEvent;
 use Eccube\Repository\TagRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -9,6 +12,11 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class FrontEvent implements EventSubscriberInterface
 {
+    /**
+     * @var BreweryRequestApiService
+     */
+    protected $breweryRequestApiService;
+
     /**
      * @var SessionInterface
      */
@@ -22,13 +30,16 @@ class FrontEvent implements EventSubscriberInterface
     /**
      * FrontEvent constructor.
      *
+     * @param BreweryRequestApiService $breweryRequestApiService
      * @param SessionInterface $session
      * @param TagRepository $tagRepository
      */
     public function __construct(
+        BreweryRequestApiService $breweryRequestApiService,
         SessionInterface $session,
         TagRepository $tagRepository
     ) {
+        $this->breweryRequestApiService = $breweryRequestApiService;
         $this->session = $session;
         $this->tagRepository = $tagRepository;
     }
@@ -36,8 +47,33 @@ class FrontEvent implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
+            EccubeEvents::FRONT_SHOPPING_COMPLETE_INITIALIZE => ['onFrontShoppingCompleteInitialize', 999999],
             'Product/list.twig' => ['onTemplateFrontProductList', 999999],
         ];
+    }
+
+    public function onFrontShoppingCompleteInitialize(EventArgs $event)
+    {
+        $Order = $event->getArgument('Order');
+
+        foreach ($Order->getShippings() as $Shipping) {
+            foreach ($Shipping->getOrderItems() as $item) {
+                if ($item->isProduct()) {
+                    $Brewery = $item->getProduct()->getBrewery();
+
+                    if (null === $Brewery) {
+                        continue;
+                    }
+
+                    // $breweryDomain 例：https://corpse-matome.bestbeerjapan.com
+                    $breweryDomain = $Brewery->getDomain();
+
+                    $url = $event->getRequest()->getUriForPath($breweryDomain.'/api/post_products/'.$item->getProduct()->getOriginalProductId());
+
+                    $this->corpseRequestApiService->requestApi($url);
+                }
+            }
+        }
     }
 
     public function onTemplateFrontProductList(TemplateEvent $event)
