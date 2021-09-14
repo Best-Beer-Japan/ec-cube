@@ -2,6 +2,7 @@
 
 namespace Customize\Event;
 
+use Customize\Service\CorpseRequestApiService;
 use Customize\Service\BreweryRequestApiService;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -12,6 +13,11 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class FrontEvent implements EventSubscriberInterface
 {
+    /**
+     * @var CorpseRequestApiService
+     */
+    protected $corpseRequestApiService;
+
     /**
      * @var BreweryRequestApiService
      */
@@ -30,15 +36,18 @@ class FrontEvent implements EventSubscriberInterface
     /**
      * FrontEvent constructor.
      *
+     * @param CorpseRequestApiService $corpseRequestApiService
      * @param BreweryRequestApiService $breweryRequestApiService
      * @param SessionInterface $session
      * @param TagRepository $tagRepository
      */
     public function __construct(
+        CorpseRequestApiService $corpseRequestApiService,
         BreweryRequestApiService $breweryRequestApiService,
         SessionInterface $session,
         TagRepository $tagRepository
     ) {
+        $this->corpseRequestApiService = $corpseRequestApiService;
         $this->breweryRequestApiService = $breweryRequestApiService;
         $this->session = $session;
         $this->tagRepository = $tagRepository;

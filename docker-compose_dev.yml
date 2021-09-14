@@ -5,8 +5,8 @@ networks:
     driver: bridge
 
 volumes:
-  # proxy:
-  #   driver: local
+  proxy:
+    driver: local
 
   mysql-database:
     driver: local
@@ -18,6 +18,27 @@ volumes:
     driver: local
 
 services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    restart: always
+    # labels:
+      # - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy=jwilder/nginx-proxy
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      # append nginx location settings
+      - "./dockerconfig/nginx/default_location:/etc/nginx/vhost.d/default_location"
+      - proxy:/etc/nginx/vhost.d
+      - proxy:/usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      # - ./certs:/etc/nginx/certs:ro
+    depends_on:
+      - ec-cube
+      - mysql
+    networks:
+      - backend
+
   ec-cube:
     build:
       context: .
@@ -32,8 +53,16 @@ services:
       - "vendor:/var/www/html/vendor"
     networks:
       - backend
-    ports:
-      - 80:80
+    environment:
+      VIRTUAL_HOST: localhost
+
+  # <rails project will be here.>
+  api:
+    image: httpd:latest
+    networks:
+      - backend
+    environment:
+      VIRTUAL_HOST: localhost
 
   mysql:
     image: mysql:5.7

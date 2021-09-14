@@ -13,6 +13,7 @@
 
 namespace Eccube\Controller\Admin\Product;
 
+use Customize\Service\CorpseRequestApiService;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\ClassName;
 use Eccube\Event\EccubeEvents;
@@ -29,6 +30,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class ClassNameController extends AbstractController
 {
     /**
+     * @var CorpseRequestApiService
+     */
+    protected $corpseRequestApiService;
+
+    /**
      * @var ClassNameRepository
      */
     protected $classNameRepository;
@@ -36,10 +42,14 @@ class ClassNameController extends AbstractController
     /**
      * ClassNameController constructor.
      *
+     * @param CorpseRequestApiService $corpseRequestApiService
      * @param ClassNameRepository $classNameRepository
      */
-    public function __construct(ClassNameRepository $classNameRepository)
-    {
+    public function __construct(
+        CorpseRequestApiService $corpseRequestApiService,
+        ClassNameRepository $classNameRepository
+    ) {
+        $this->corpseRequestApiService = $corpseRequestApiService;
         $this->classNameRepository = $classNameRepository;
     }
 
@@ -104,6 +114,10 @@ class ClassNameController extends AbstractController
 
                 $this->addSuccess('admin.common.save_complete', 'admin');
 
+                // API
+                $url = $event->getRequest()->getUriForPath('/api/post_classes/'.$TargetClassName->getId());
+                $this->corpseRequestApiService->requestApi($url);
+
                 return $this->redirectToRoute('admin_product_class_name');
             }
 
@@ -116,6 +130,10 @@ class ClassNameController extends AbstractController
                     $this->classNameRepository->save($editForm->getData());
 
                     $this->addSuccess('admin.common.save_complete', 'admin');
+
+                    // API
+                    $url = $event->getRequest()->getUriForPath('/api/post_classes/'.$editForm->getData()->getId());
+                    $this->corpseRequestApiService->requestApi($url);
 
                     return $this->redirectToRoute('admin_product_class_name');
                 }

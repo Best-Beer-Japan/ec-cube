@@ -354,24 +354,12 @@ file that was distributed with this source code.
                                     <div class="col-3">
                                         <div class="d-inline-block">
                                             <span>{{ 'admin.product.beer_type'|trans }}</span>
-                                            {# <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span> #}
+                                            <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
                                         </div>
                                     </div>
                                     <div class="col mb-2">
                                         {{ form_widget(form.beer_type) }}
                                         {{ form_errors(form.beer_type) }}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-3">
-                                        <div class="d-inline-block">
-                                            <span>{{ 'admin.product.beer_style'|trans }}</span>
-                                            {# <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span> #}
-                                        </div>
-                                    </div>
-                                    <div class="col mb-2">
-                                        {{ form_widget(form.beer_style) }}
-                                        {{ form_errors(form.beer_style) }}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -388,6 +376,18 @@ file that was distributed with this source code.
                                             </div>
                                             {{ form_errors(form.alcohol_percentage) }}
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-3">
+                                        <div class="d-inline-block">
+                                            <span>{{ 'admin.product.beer_style'|trans }}</span>
+                                            <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col mb-2">
+                                        {{ form_widget(form.beer_style) }}
+                                        {{ form_errors(form.beer_style) }}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -470,6 +470,21 @@ file that was distributed with this source code.
                                             <div>
                                                 {{ form_widget(form.class.price01) }}
                                                 {{ form_errors(form.class.price01) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <div class="d-inline-block" data-tooltip="true" data-placement="top"
+                                                 title="{{ 'tooltip.product.bbj_price'|trans }}">
+                                                <span>{{ 'admin.product.bbj_price'|trans }}</span>
+                                                <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col mb-2">
+                                            <div>
+                                                {{ form_widget(form.class.bbj_price) }}
+                                                {{ form_errors(form.class.bbj_price) }}
                                             </div>
                                         </div>
                                     </div>

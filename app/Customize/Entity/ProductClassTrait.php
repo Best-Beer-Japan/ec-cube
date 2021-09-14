@@ -18,6 +18,13 @@ trait ProductClassTrait
     private $brewery_id;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="bbj_price", type="decimal", precision=12, scale=2, nullable=true)
+     */
+    private $bbj_price;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="original_product_class_id", type="integer", nullable=true, options={"unsigned":true})
@@ -59,6 +66,29 @@ trait ProductClassTrait
     {
         $this->original_product_class_id = $original_product_class_id;
 
+        return $this;
+    }
+
+    /**
+     * Get bbj_price.
+     *
+     * @return string|null
+     */
+    public function getBbjPrice(): ?string
+    {
+        return $this->bbj_price;
+    }
+
+    /**
+     * Set bbj_price.
+     *
+     * @param string|null $bbj_price
+     *
+     * @return self
+     */
+    public function setBbjPrice(?string $bbj_price)
+    {
+        $this->bbj_price = $bbj_price;
         return $this;
     }
 

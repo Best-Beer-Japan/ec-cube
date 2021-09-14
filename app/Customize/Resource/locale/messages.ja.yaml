@@ -7,10 +7,12 @@ front.entry.agree_invoice_shipment_date_base_check: "請求書は出荷日ベー
 common.customize_store_name: 店舗名
 
 admin.common.customize_store_name: 店舗名
+admin.common.company_and_customize_store_name: 会社・店舗名
 
 admin.customer.multi_search_label: 会員ID・メールアドレス・お名前・会社名・店舗名
 admin.customer.customer_info_warning_message: 会社名、住所、電話番号は<span class="text-danger">「ご請求先」</span>のデータを入力ください。
 
+admin.order.multi_search_label: 注文番号・お名前・会社名・店舗名・メールアドレス・電話番号
 admin.order.orderer_customize_store_name: 注文者店舗名
 
 admin.product.alcohol_percentage: アルコール度数
@@ -33,3 +35,5 @@ admin.product.product_csv.beer_style_description: ''
 front.product.beer_style: ビアスタイル
 front.product.alcohol_percentage: アルコール度数
 
+tooltip.product.bbj_price: BBJ卸価格です。
+admin.product.bbj_price: BBJ価格
