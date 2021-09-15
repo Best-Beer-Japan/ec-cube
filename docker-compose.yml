@@ -74,7 +74,7 @@ services:
       LETSENCRYPT_EMAIL: sysadmin@bestbeerjapan.com
     restart: always
 
-  # <rails project will be here.>
+  ### Corpse API ##################################
   api:
     build: ./corpse-api-brewery
     command: /bin/bash -c "rm -f /opt/eccube_api/api/tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0"
