@@ -74,13 +74,21 @@ services:
       LETSENCRYPT_EMAIL: sysadmin@bestbeerjapan.com
     restart: always
 
-  # <rails project will be here.>
+  ### Corpse API ##################################
   api:
-    image: httpd:latest
+    build: ./corpse-api-brewery
+    command: /bin/bash -c "rm -f /opt/eccube_api/api/tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0"
+    volumes:
+      - ".:/app"
+    ports:
+      - "3000:3000"
+    tty: true
     networks:
       - backend
     environment:
       VIRTUAL_HOST: abcbrewery.bestbeerjapan.com
+      BREWERY_ID: 1
+      DOMAIN: abcbrewery.bestbeerjapan.com
 
   ### MySQL ##################################
   mysql:

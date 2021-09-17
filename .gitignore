@@ -65,3 +65,6 @@ logs/*
 
 certs/
 log/
+
+corpse-api-brewery/
+corpse-api-bbj/
