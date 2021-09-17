@@ -56,13 +56,20 @@ services:
     environment:
       VIRTUAL_HOST: localhost
 
-  # <rails project will be here.>
   api:
-    image: httpd:latest
+    build: ./corpse-api-brewery
+    command: /bin/bash -c "rm -f /opt/eccube_api/api/tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0"
+    volumes:
+      - ".:/app"
+    ports:
+      - "3000:3000"
+    tty: true
     networks:
       - backend
     environment:
       VIRTUAL_HOST: localhost
+      BREWERY_ID: 0
+      DOMAIN: 127.0.0.1
 
   mysql:
     image: mysql:5.7
