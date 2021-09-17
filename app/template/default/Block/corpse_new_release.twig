@@ -1,0 +1,219 @@
+<div class="ec-corpse-newReleaseRole">
+    <div class="ec-role">
+        <div class="ec-corpse-newReleaseRole__Heading">
+            最新リリース
+        </div>
+        {% if Products|length > 0 %}
+            <div class="ec-shelfRole">
+                <ul class="ec-shelfGrid">
+                    {% for Product in Products %}
+                        {% set CorpseTags = Product.CorpseTags %}
+                        <li class="ec-shelfGrid__item">
+                            <a href="{{ url('product_detail', {'id': Product.id}) }}">
+                                <p class="ec-shelfGrid__item-image">
+                                    <img src="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}">
+                                </p>
+                            </a>
+
+                            {# 醸造所 -start- #}
+                            {% if CorpseTags[eccube_config.corpse_tag_brewery_group_no] is defined %}
+                                {% for CorpseTag in CorpseTags[eccube_config.corpse_tag_brewery_group_no] %}
+                                    <p class="ec-corpse-newReleaseRole__breweryName">{{ CorpseTag.name }}</p>
+                                {% endfor %}
+                            {% endif %}
+                            {# 醸造所 -end- #}
+
+                            <p>{{ Product.name }}</p>
+
+                            {# 容器 -start- #}
+                            {% set CorpseTagsContainers = [] %}
+                            {% if CorpseTags[eccube_config.corpse_tag_container_group_no] is defined %}
+                                {% set CorpseTagsContainers = CorpseTagsContainers|merge(CorpseTags[eccube_config.corpse_tag_container_group_no]) %}
+                            {% endif %}
+                            {% if CorpseTags[eccube_config.corpse_tag_mixpack_group_no] is defined  %}
+                                {% set CorpseTagsContainers = CorpseTagsContainers|merge(CorpseTags[eccube_config.corpse_tag_mixpack_group_no]) %}
+                            {% endif %}
+                            {% if CorpseTagsContainers|length > 0 %}
+                                {% for CorpseTag in CorpseTagsContainers %}
+                                    {% if loop.first %}
+                                        <div class="ec-corpse-newReleaseRole__list">
+                                    {% endif %}
+                                    <a href="{{ url('customize_tag_search_item', {'operation': 'add', 'tag_id': CorpseTag.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">
+                                        <div class="ec-corpse-newReleaseRole__listItem">
+                                            {{ CorpseTag.name }}
+                                        </div>
+                                    </a>
+                                    {% if loop.last != true and loop.index % 2 == 0%}
+                                        </div>
+                                        <div class="ec-corpse-newReleaseRole__list">
+                                    {% elseif loop.last %}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                            {# 容器 -end- #}
+
+                            {% if Product.description_list %}
+                                <p>{{ Product.description_list|raw|nl2br }}</p>
+                            {% endif %}
+                            <p class="price02-default">
+                                {% if is_granted('ROLE_USER') %}
+                                    {% if Product.hasProductClass %}
+                                        {% if Product.getPrice02Min == Product.getPrice02Max %}
+                                            {{ Product.getPrice02IncTaxMin|price }}
+                                        {% else %}
+                                            {{ Product.getPrice02IncTaxMin|price }} ～ {{ Product.getPrice02IncTaxMax|price }}
+                                        {% endif %}
+                                    {% else %}
+                                        {% if Product.mixpack_flag != 1 %}
+                                            {{ Product.getPrice02IncTaxMin|price }}
+                                        {% else %}
+                                            {% if Product.getPrice02IncTaxMin > 0 %}{{ Product.getPrice02IncTaxMin|price }}{% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                            </p>
+
+                            {% if is_granted('ROLE_USER') %}
+                                {% if Product.stock_find %}
+                                    {% if Product.mixpack_flag != 1 %}
+                                        {% set form = forms[Product.id] %}
+                                        <form name="form{{ Product.id }}" id="productForm{{ Product.id }}" action="{{ url('product_add_cart', {id:Product.id}) }}" method="post">
+                                            <div class="ec-productRole__actions">
+                                                {% if form.classcategory_id1 is defined %}
+                                                    <div class="ec-select">
+                                                        {{ form_widget(form.classcategory_id1) }}
+                                                        {{ form_errors(form.classcategory_id1) }}
+                                                    </div>
+                                                    {% if form.classcategory_id2 is defined %}
+                                                        <div class="ec-select">
+                                                            {{ form_widget(form.classcategory_id2) }}
+                                                            {{ form_errors(form.classcategory_id2) }}
+                                                        </div>
+                                                    {% endif %}
+                                                {% endif %}
+                                                <div class="ec-numberInput"><span>{{ '数量'|trans }}</span>
+                                                    {{ form_widget(form.quantity, {'attr': {'class': 'quantity'}}) }}
+                                                    {{ form_errors(form.quantity) }}
+                                                </div>
+                                            </div>
+                                            {{ form_rest(form) }}
+                                        </form>
+                                        <div class="ec-productRole__btn">
+                                            <button type="submit" class="ec-blockBtn--action add-cart" data-cartid="{{ Product.id }}" form="productForm{{ Product.id }}">
+                                                {{ 'カートに入れる'|trans }}
+                                            </button>
+                                        </div>
+                                    {% endif %}
+                                {% else %}
+                                    <div class="ec-productRole__btn">
+                                        <button type="button" class="ec-blockBtn--action" disabled="disabled">
+                                            {{ 'ただいま品切れ中です。'|trans }}
+                                        </button>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="ec-modal">
+                <div class="ec-modal-overlay">
+                    <div class="ec-modal-wrap">
+                        <span class="ec-modal-close"><span class="ec-icon"><img src="{{ asset('assets/icon/cross-dark.svg') }}" alt=""/></span></span>
+                        <div id="ec-modal-header" class="text-center">{{ 'カートに追加しました。'|trans }}</div>
+                        <div class="ec-modal-box">
+                            <div class="ec-role">
+                                <span class="ec-inlineBtn--cancel">{{ 'お買い物を続ける'|trans }}</span>
+                                <a href="{{ url('cart') }}" class="ec-inlineBtn--action">{{ 'カートへ進む'|trans }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+                <div class="ec-searchnavRole">
+                    <p>直近に更新された最新リリースの商品はありません。</p>
+                </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    $(function() {
+
+        eccube.productsClassCategories = {
+            {% for Product in Products %}
+            "{{ Product.id|escape('js') }}": {{ class_categories_as_json(Product)|raw }}{% if loop.last == false %}, {% endif %}
+            {% endfor %}
+        };
+
+        // 表示件数を変更
+        $('.disp-number').change(function() {
+            var dispNumber = $(this).val();
+            $('#disp_number').val(dispNumber);
+            $('#pageno').val(1);
+            $("#form1").submit();
+        });
+
+        // 並び順を変更
+        $('.order-by').change(function() {
+            var orderBy = $(this).val();
+            $('#orderby').val(orderBy);
+            $('#pageno').val(1);
+            $("#form1").submit();
+        });
+
+        $('.add-cart').on('click', function(e) {
+            var $form = $(this).parents('li').find('form');
+
+            // 個数フォームのチェック
+            var $quantity = $form.parent().find('.quantity');
+            if ($quantity.val() < 1) {
+                $quantity[0].setCustomValidity('{{ '1以上で入力してください。'|trans }}');
+                setTimeout(function() {
+                    loadingOverlay('hide');
+                }, 100);
+                return true;
+            } else {
+                $quantity[0].setCustomValidity('');
+            }
+            e.preventDefault();
+            $.ajax({
+                url: $form.attr('action'),
+                type: $form.attr('method'),
+                data: $form.serialize(),
+                dataType: 'json',
+                beforeSend: function(xhr, settings) {
+                    // Buttonを無効にする
+                    $('.add-cart').prop('disabled', true);
+                }
+            }).done(function(data) {
+                // レスポンス内のメッセージをalertで表示
+                $.each(data.messages, function() {
+                    $('#ec-modal-header').html(this);
+                });
+
+                $('.ec-modal').show()
+
+                // カートブロックを更新する
+                $.ajax({
+                    url: '{{ url('block_cart') }}',
+                    type: 'GET',
+                    dataType: 'html'
+                }).done(function(html) {
+                    $('.ec-headerRole__cart').html(html);
+                });
+            }).fail(function(data) {
+                alert('{{ 'カートへの追加に失敗しました。'|trans }}');
+            }).always(function(data) {
+                // Buttonを有効にする
+                $('.add-cart').prop('disabled', false);
+            });
+        });
+    });
+
+    $('.ec-modal-overlay, .ec-modal .ec-inlineBtn--cancel').on('click', function() {
+        $('.ec-modal').hide();
+    });
+</script>

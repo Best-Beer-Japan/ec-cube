@@ -92,6 +92,36 @@ Styleguide 13.2.1
   & &__plice {
     font-weight: bold;
   }
+  & &__breweryName {
+    font-size: 1.6em;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 10px;
+  }
+  & &__list {
+    font-size: 13px;
+    display: flex;
+    flex-wrap: wrap;
+
+    @include media_desktop {
+      flex-wrap: nowrap;
+    }
+
+    a {
+      color: #000000;
+      text-decoration: none;
+      width: calc(100% / 2);
+      margin: 10px 0;
+    }
+  }
+  & a &__listItem {
+    padding: 15px 5px;
+    margin: 0 5px;
+    text-align: center;
+    height: auto;
+    border-radius: 5px;
+    background-color: #0066FF;
+  }
 }
 
 /*

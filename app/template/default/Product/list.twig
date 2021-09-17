@@ -204,29 +204,68 @@ file that was distributed with this source code.
             <div class="ec-shelfRole">
                 <ul class="ec-shelfGrid">
                     {% for Product in pagination %}
+                        {% set CorpseTags = Product.CorpseTags %}
                         <li class="ec-shelfGrid__item">
                             <a href="{{ url('product_detail', {'id': Product.id}) }}">
                                 <p class="ec-shelfGrid__item-image">
                                     <img src="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}">
                                 </p>
-                                <p>{{ Product.name }}</p>
-                                {% if Product.description_list %}
-                                    <p>{{ Product.description_list|raw|nl2br }}</p>
-                                {% endif %}
-                                <p class="price02-default">
-                                    {% if is_granted('ROLE_USER') %}
-                                        {% if Product.hasProductClass %}
-                                            {% if Product.getPrice02Min == Product.getPrice02Max %}
-                                                {{ Product.getPrice02IncTaxMin|price }}
-                                            {% else %}
-                                                {{ Product.getPrice02IncTaxMin|price }} ～ {{ Product.getPrice02IncTaxMax|price }}
-                                            {% endif %}
-                                        {% else %}
-                                            {{ Product.getPrice02IncTaxMin|price }}
-                                        {% endif %}
-                                    {% endif %}
-                                </p>
                             </a>
+
+                            {# 醸造所 -start- #}
+                            {% if CorpseTags[eccube_config.corpse_tag_brewery_group_no] is defined %}
+                                {% for CorpseTag in CorpseTags[eccube_config.corpse_tag_brewery_group_no] %}
+                                    <p class="ec-shelfGrid__breweryName">{{ CorpseTag.name }}</p>
+                                {% endfor %}
+                            {% endif %}
+                            {# 醸造所 -end- #}
+
+                            <p>{{ Product.name }}</p>
+
+                            {# 容器 -start- #}
+                            {% set CorpseTagsContainers = [] %}
+                            {% if CorpseTags[eccube_config.corpse_tag_container_group_no] is defined %}
+                                {% set CorpseTagsContainers = CorpseTagsContainers|merge(CorpseTags[eccube_config.corpse_tag_container_group_no]) %}
+                            {% endif %}
+                            {% if CorpseTags[eccube_config.corpse_tag_mixpack_group_no] is defined  %}
+                                {% set CorpseTagsContainers = CorpseTagsContainers|merge(CorpseTags[eccube_config.corpse_tag_mixpack_group_no]) %}
+                            {% endif %}
+                            {% if CorpseTagsContainers|length > 0 %}
+                                {% for CorpseTag in CorpseTagsContainers %}
+                                    {% if loop.first %}
+                                        <div class="ec-shelfGrid__list">
+                                    {% endif %}
+                                    <a href="{{ url('customize_tag_search_item', {'operation': 'add', 'tag_id': CorpseTag.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">
+                                        <div class="ec-shelfGrid__listItem">
+                                            {{ CorpseTag.name }}
+                                        </div>
+                                    </a>
+                                    {% if loop.last != true and loop.index % 2 == 0%}
+                                        </div>
+                                        <div class="ec-shelfGrid__list">
+                                    {% elseif loop.last %}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                            {# 容器 -end- #}
+
+                            {% if Product.description_list %}
+                                <p>{{ Product.description_list|raw|nl2br }}</p>
+                            {% endif %}
+                            <p class="price02-default">
+                                {% if is_granted('ROLE_USER') %}
+                                    {% if Product.hasProductClass %}
+                                        {% if Product.getPrice02Min == Product.getPrice02Max %}
+                                            {{ Product.getPrice02IncTaxMin|price }}
+                                        {% else %}
+                                            {{ Product.getPrice02IncTaxMin|price }} ～ {{ Product.getPrice02IncTaxMax|price }}
+                                        {% endif %}
+                                    {% else %}
+                                        {{ Product.getPrice02IncTaxMin|price }}
+                                    {% endif %}
+                                {% endif %}
+                            </p>
 
                             {% if is_granted('ROLE_USER') %}
                                 {% if Product.stock_find %}
