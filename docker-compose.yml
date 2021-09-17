@@ -87,7 +87,7 @@ services:
       - backend
     environment:
       VIRTUAL_HOST: abcbrewery.bestbeerjapan.com
-      BREWERY_ID: 1
+      BREWERY_ID: 0
       DOMAIN: abcbrewery.bestbeerjapan.com
 
   ### MySQL ##################################
