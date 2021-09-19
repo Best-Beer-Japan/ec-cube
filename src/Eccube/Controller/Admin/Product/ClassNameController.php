@@ -13,7 +13,7 @@
 
 namespace Eccube\Controller\Admin\Product;
 
-use Customize\Service\CorpseRequestApiService;
+use Customize\Service\BreweryRequestApiService;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\ClassName;
 use Eccube\Event\EccubeEvents;
@@ -30,9 +30,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class ClassNameController extends AbstractController
 {
     /**
-     * @var CorpseRequestApiService
+     * @var BreweryRequestApiService
      */
-    protected $corpseRequestApiService;
+    protected $breweryRequestApiService;
 
     /**
      * @var ClassNameRepository
@@ -42,14 +42,14 @@ class ClassNameController extends AbstractController
     /**
      * ClassNameController constructor.
      *
-     * @param CorpseRequestApiService $corpseRequestApiService
+     * @param BreweryRequestApiService $breweryRequestApiService
      * @param ClassNameRepository $classNameRepository
      */
     public function __construct(
-        CorpseRequestApiService $corpseRequestApiService,
+        BreweryRequestApiService $breweryRequestApiService,
         ClassNameRepository $classNameRepository
     ) {
-        $this->corpseRequestApiService = $corpseRequestApiService;
+        $this->breweryRequestApiService = $breweryRequestApiService;
         $this->classNameRepository = $classNameRepository;
     }
 
@@ -116,7 +116,7 @@ class ClassNameController extends AbstractController
 
                 // API
                 $url = $event->getRequest()->getUriForPath('/api/post_classes/'.$TargetClassName->getId());
-                $this->corpseRequestApiService->requestApi($url);
+                $this->breweryRequestApiService->requestApi($url);
 
                 return $this->redirectToRoute('admin_product_class_name');
             }
@@ -133,7 +133,7 @@ class ClassNameController extends AbstractController
 
                     // API
                     $url = $event->getRequest()->getUriForPath('/api/post_classes/'.$editForm->getData()->getId());
-                    $this->corpseRequestApiService->requestApi($url);
+                    $this->breweryRequestApiService->requestApi($url);
 
                     return $this->redirectToRoute('admin_product_class_name');
                 }
