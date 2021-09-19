@@ -2,9 +2,7 @@
 
 namespace Customize\Service;
 
-use Eccube\Common\Constant;
 use Eccube\Common\EccubeConfig;
-use Eccube\Exception\PluginApiException;
 
 class CorpseRequestApiService
 {
