@@ -58,9 +58,9 @@ services:
 
   api:
     build: ./corpse-api-brewery
-    command: /bin/bash -c "rm -f /opt/eccube_api/api/tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0"
+    command: /bin/bash -c "rm -f /app/tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0"
     volumes:
-      - ".:/app"
+      - "./corpse-api-brewery:/app"
     ports:
       - "3000:3000"
     tty: true
