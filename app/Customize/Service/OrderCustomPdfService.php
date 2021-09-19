@@ -449,7 +449,7 @@ class OrderCustomPdfService extends TcpdfFpdi
 
         // protected function lfText($x, $y, $text, $size = 0, $style = '')
         // 会社名
-        $this->lfText(27, 63, $Shipping->getCompanyName(), 10);
+        $this->lfText(27, 63, $Shipping->getCompanyName().' '.$Shipping->getCustomizeStoreName(), 10);
 
         // 購入者氏名
         $text = $Shipping->getName01().'　'.$Shipping->getName02().'　様';
@@ -598,7 +598,7 @@ class OrderCustomPdfService extends TcpdfFpdi
             $arrOrder[$i][2] = '';
             $arrOrder[$i][3] = '';
 
-            foreach($Order->getTaxFreeDiscountItems() as $Item) {
+            foreach ($Order->getTaxFreeDiscountItems() as $Item) {
                 ++$i;
                 $arrOrder[$i][0] = '';
                 $arrOrder[$i][1] = '';
