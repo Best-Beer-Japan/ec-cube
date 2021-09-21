@@ -89,6 +89,7 @@ services:
       VIRTUAL_HOST: abcbrewery.bestbeerjapan.com
       BREWERY_ID: 0
       DOMAIN: abcbrewery.bestbeerjapan.com
+      RAILS_DATABASE_PASSWORD: ${DB_PASSWORD}
 
   ### MySQL ##################################
   mysql:
