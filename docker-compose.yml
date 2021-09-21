@@ -86,9 +86,11 @@ services:
     networks:
       - backend
     environment:
+      RAILS_ENV: production
       VIRTUAL_HOST: abcbrewery.bestbeerjapan.com
       BREWERY_ID: 0
       DOMAIN: abcbrewery.bestbeerjapan.com
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
       RAILS_DATABASE_PASSWORD: ${DB_PASSWORD}
 
   ### MySQL ##################################

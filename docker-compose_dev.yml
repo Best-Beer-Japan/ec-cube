@@ -67,9 +67,11 @@ services:
     networks:
       - backend
     environment:
+      RAILS_ENV: development
       VIRTUAL_HOST: localhost
       BREWERY_ID: 0
       DOMAIN: 127.0.0.1
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
       RAILS_DATABASE_PASSWORD: ${DB_PASSWORD}
 
   mysql:
