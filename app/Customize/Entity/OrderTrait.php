@@ -51,11 +51,11 @@ trait OrderTrait
     /**
      * Set original_id.
      *
-     * @param int $original_id
+     * @param int|null $original_id
      *
      * @return self
      */
-    public function setOriginalId(int $original_id): self
+    public function setOriginalId(?int $original_id): self
     {
         $this->original_id = $original_id;
 
@@ -65,9 +65,9 @@ trait OrderTrait
     /**
      * Get original_id.
      *
-     * @return int
+     * @return int|null
      */
-    public function getOriginalId(): int
+    public function getOriginalId(): ?int
     {
         return $this->original_id;
     }
