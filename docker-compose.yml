@@ -92,6 +92,7 @@ services:
       DOMAIN: abcbrewery.bestbeerjapan.com
       SECRET_KEY_BASE: ${SECRET_KEY_BASE}
       RAILS_DATABASE_PASSWORD: ${DB_PASSWORD}
+      RAILS_MATOME_EC_HOST: https://corpse-matome.bestbeerjapan.com
 
   ### MySQL ##################################
   mysql:
