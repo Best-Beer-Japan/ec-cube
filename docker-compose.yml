@@ -69,8 +69,8 @@ services:
     networks:
       - backend
     environment:
-      VIRTUAL_HOST: abcbrewery.bestbeerjapan.com
-      LETSENCRYPT_HOST: abcbrewery.bestbeerjapan.com
+      VIRTUAL_HOST: ${DOMAIN}
+      LETSENCRYPT_HOST: ${DOMAIN}
       LETSENCRYPT_EMAIL: sysadmin@bestbeerjapan.com
     restart: always
 
@@ -87,12 +87,12 @@ services:
       - backend
     environment:
       RAILS_ENV: production
-      VIRTUAL_HOST: abcbrewery.bestbeerjapan.com
-      BREWERY_ID: 0
-      DOMAIN: abcbrewery.bestbeerjapan.com
+      VIRTUAL_HOST: ${DOMAIN}
+      BREWERY_ID: ${BREWERY_ID}
+      DOMAIN: ${DOMAIN}
       SECRET_KEY_BASE: ${SECRET_KEY_BASE}
       RAILS_DATABASE_PASSWORD: ${DB_PASSWORD}
-      RAILS_MATOME_EC_HOST: https://corpse-matome.bestbeerjapan.com
+      RAILS_MATOME_EC_HOST: ${URL_MATOME}
 
   ### MySQL ##################################
   mysql:

@@ -69,11 +69,13 @@ services:
     environment:
       RAILS_ENV: development
       VIRTUAL_HOST: localhost
-      BREWERY_ID: 0
-      DOMAIN: 127.0.0.1
+      BREWERY_ID: ${BREWERY_ID}
+      DOMAIN: ${DOMAIN}
+      # DOMAIN: 127.0.0.1
       SECRET_KEY_BASE: ${SECRET_KEY_BASE}
       RAILS_DATABASE_PASSWORD: ${DB_PASSWORD}
-      RAILS_MATOME_EC_HOST: http://172.23.0.2:3001
+      RAILS_MATOME_EC_HOST: ${URL_MATOME}
+      # RAILS_MATOME_EC_HOST: http://172.23.0.2:3001
 
   mysql:
     image: mysql:5.7
