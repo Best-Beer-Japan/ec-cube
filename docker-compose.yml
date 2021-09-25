@@ -86,9 +86,9 @@ services:
     networks:
       - backend
     environment:
+      VIRTUAL_HOST: ${DOMAIN}
       RAILS_ENV: production
       SECRET_KEY_BASE: ${SECRET_KEY_BASE}
-      VIRTUAL_HOST: ${DOMAIN}
       RAILS_DATABASE: ${DB}
       RAILS_DATABASE_PASSWORD: ${DB_PASSWORD}
 
