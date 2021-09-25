@@ -13,7 +13,7 @@
 
 namespace Eccube\Controller\Admin\Product;
 
-use Customize\Service\CorpseRequestApiService;
+use Customize\Service\BreweryRequestApiService;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -31,9 +31,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class ClassCategoryController extends AbstractController
 {
     /**
-     * @var CorpseRequestApiService
+     * @var BreweryRequestApiService
      */
-    protected $corpseRequestApiService;
+    protected $breweryRequestApiService;
 
     /**
      * @var ProductClassRepository
@@ -53,18 +53,18 @@ class ClassCategoryController extends AbstractController
     /**
      * ClassCategoryController constructor.
      *
-     * @param CorpseRequestApiService $corpseRequestApiService
+     * @param BreweryRequestApiService $breweryRequestApiService
      * @param ProductClassRepository $productClassRepository
      * @param ClassCategoryRepository $classCategoryRepository
      * @param ClassNameRepository $classNameRepository
      */
     public function __construct(
-        CorpseRequestApiService $corpseRequestApiService,
+        BreweryRequestApiService $breweryRequestApiService,
         ProductClassRepository $productClassRepository,
         ClassCategoryRepository $classCategoryRepository,
         ClassNameRepository $classNameRepository
     ) {
-        $this->corpseRequestApiService = $corpseRequestApiService;
+        $this->breweryRequestApiService = $breweryRequestApiService;
         $this->productClassRepository = $productClassRepository;
         $this->classCategoryRepository = $classCategoryRepository;
         $this->classNameRepository = $classNameRepository;
@@ -135,7 +135,7 @@ class ClassCategoryController extends AbstractController
 
                 // API
                 $url = $event->getRequest()->getUriForPath('/api/post_classes/'.$TargetClassCategory->getClassName()->getId());
-                $this->corpseRequestApiService->requestApi($url);
+                $this->breweryRequestApiService->requestApi($url);
 
                 $this->addSuccess('admin.common.save_complete', 'admin');
 
@@ -150,7 +150,7 @@ class ClassCategoryController extends AbstractController
 
                     // API
                     $url = $event->getRequest()->getUriForPath('/api/post_classes/'.$editForm->getData()->getClassName()->getId());
-                    $this->corpseRequestApiService->requestApi($url);
+                    $this->breweryRequestApiService->requestApi($url);
 
                     return $this->redirectToRoute('admin_product_class_category', ['class_name_id' => $ClassName->getId()]);
                 }

@@ -2,8 +2,26 @@
 
 namespace Customize\Service;
 
+use Eccube\Common\EccubeConfig;
+
 class BreweryRequestApiService
 {
+    /**
+     * @var EccubeConfig
+     */
+    protected $eccubeConfig;
+
+    /**
+     * CorpseTagStyleController constructor.
+     *
+     * @param EccubeConfig $eccubeConfig
+     */
+    public function __construct(
+        EccubeConfig $eccubeConfig
+    ) {
+        $this->eccubeConfig = $eccubeConfig;
+    }
+
     /**
      * API request processing
      *
@@ -12,6 +30,10 @@ class BreweryRequestApiService
      */
     public function requestApi(string $url, bool $post = false)
     {
+        if (true !== $this->eccubeConfig['brewery_api_is_enable']) {
+            return;
+        }
+
         $curl = curl_init($url);
 
         if ($post) {
@@ -37,7 +59,7 @@ class BreweryRequestApiService
 
         if ($info['http_code'] !== 200) {
             log_error('http corpse_request_api', [$url, $info]);
-        } else{
+        } else {
             log_info('http corpse_request_api', $url);
         }
     }
