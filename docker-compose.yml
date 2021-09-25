@@ -88,20 +88,18 @@ services:
     environment:
       RAILS_ENV: production
       VIRTUAL_HOST: ${DOMAIN}
-      BREWERY_ID: ${BREWERY_ID}
-      DOMAIN: ${DOMAIN}
       SECRET_KEY_BASE: ${SECRET_KEY_BASE}
       RAILS_DATABASE_PASSWORD: ${DB_PASSWORD}
-      RAILS_MATOME_EC_HOST: ${URL_MATOME}
+      RAILS_DATABASE: ${DB}
 
   ### MySQL ##################################
   mysql:
     image: mysql:5.7
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
-      MYSQL_DATABASE: eccubedb
+      MYSQL_DATABASE: ${DB}
       MYSQL_USER: dbuser
-      MYSQL_PASSWORD: secret
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - mysql-database:/var/lib/mysql
       - "./dockerconfig/mysql/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf"
