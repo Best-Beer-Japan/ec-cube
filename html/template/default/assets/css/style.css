@@ -5702,22 +5702,19 @@ Styleguide 13.2.1
     font-weight: bold;
     color: #000000;
     margin-bottom: 10px; }
-.ec-shelfGrid .ec-shelfGrid__list {
-    font-size: 13px;
-    display: flex;
-    flex-wrap: wrap; }
-.ec-shelfGrid .ec-shelfGrid__list a {
-      color: #000000;
-      text-decoration: none;
-      width: calc(100% / 2);
-      margin: 10px 0; }
-.ec-shelfGrid a .ec-shelfGrid__listItem {
-    padding: 15px 5px;
-    margin: 0 5px;
-    text-align: center;
-    height: auto;
-    border-radius: 5px;
-    background-color: #0066FF; }
+.ec-shelfGrid .ec-shelfGrid__tags {
+    margin-top: 16px;
+    padding: 0; }
+.ec-shelfGrid .ec-shelfGrid__tag {
+    display: inline-block;
+    margin: 2px 0;
+    padding: 2px 5px;
+    list-style: none;
+    font-size: 80%;
+    color: #525263;
+    border: solid 1px #D7DADD;
+    border-radius: 3px;
+    background-color: #F5F7F8; }
 /*
 13.2.2 商品一覧グリッド（中央寄せ）
 
@@ -7500,22 +7497,19 @@ Styleguide 12.7.1
     font-weight: bold;
     color: #000000;
     margin-bottom: 10px; }
-.ec-corpse-newReleaseRole .ec-corpse-newReleaseRole__list {
-    font-size: 13px;
-    display: flex;
-    flex-wrap: wrap; }
-.ec-corpse-newReleaseRole .ec-corpse-newReleaseRole__list a {
-      color: #000000;
-      text-decoration: none;
-      width: calc(100% / 2);
-      margin: 10px 0; }
-.ec-corpse-newReleaseRole a .ec-corpse-newReleaseRole__listItem {
-    padding: 15px 5px;
-    margin: 0 5px;
-    text-align: center;
-    height: auto;
-    border-radius: 5px;
-    background-color: #0066FF; }
+.ec-corpse-newReleaseRole .ec-corpse-newReleaseRole__tags {
+    margin-top: 16px;
+    padding: 0; }
+.ec-corpse-newReleaseRole .ec-corpse-newReleaseRole__tag {
+    display: inline-block;
+    margin: 2px 0;
+    padding: 2px 5px;
+    list-style: none;
+    font-size: 80%;
+    color: #525263;
+    border: solid 1px #D7DADD;
+    border-radius: 3px;
+    background-color: #F5F7F8; }
 @media (min-width: 768px) {
       .ec-grid2 .ec-grid2__cell {
         width: 50%; }
@@ -8058,8 +8052,6 @@ Styleguide 12.7.1
         padding: 0 16px; }
       .ec-shelfGrid .ec-shelfGrid__item:nth-child(even) {
         padding: 0 16px; }
-      .ec-shelfGrid .ec-shelfGrid__list {
-        flex-wrap: nowrap; }
     .ec-shelfGridCenter {
       margin-left: -16px;
       margin-right: -16px; }
@@ -8173,7 +8165,7 @@ Styleguide 12.7.1
       .ec-userEditCompleteRole .ec-userEditCompleteRole__title {
         font-size: 32px; }
     .ec-corpse-tagStyleRole {
-      padding: 60px 0; }
+      padding: 15px 0; }
       .ec-corpse-tagStyleRole .ec-corpse-tagStyleRole__list {
         flex-wrap: nowrap; }
     .ec-corpse-tagStyleRole a {
@@ -8183,7 +8175,7 @@ Styleguide 12.7.1
         margin-right: 0;
         font-size: 20px; }
     .ec-corpse-tagBreweryRole {
-      padding: 60px 0; }
+      padding: 15px 0; }
       .ec-corpse-tagBreweryRole .ec-corpse-tagBreweryRole__list {
         flex-wrap: nowrap; }
     .ec-corpse-tagBreweryRole a {
@@ -8193,9 +8185,7 @@ Styleguide 12.7.1
         margin-right: 0;
         font-size: 20px; }
     .ec-corpse-newReleaseRole {
-      padding: 60px 0; }
-      .ec-corpse-newReleaseRole .ec-corpse-newReleaseRole__list {
-        flex-wrap: nowrap; } }
+      padding: 15px 0; } }
 @media only screen and (min-width: 768px) and (min-width: 768px) {
     .ec-off1Grid {
       display: flex; }

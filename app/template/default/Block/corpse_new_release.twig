@@ -7,7 +7,7 @@
             <div class="ec-shelfRole">
                 <ul class="ec-shelfGrid">
                     {% for Product in Products %}
-                        {% set CorpseTags = Product.CorpseTags %}
+
                         <li class="ec-shelfGrid__item">
                             <a href="{{ url('product_detail', {'id': Product.id}) }}">
                                 <p class="ec-shelfGrid__item-image">
@@ -16,42 +16,30 @@
                             </a>
 
                             {# 醸造所 -start- #}
-                            {% if CorpseTags[eccube_config.corpse_tag_brewery_group_no] is defined %}
-                                {% for CorpseTag in CorpseTags[eccube_config.corpse_tag_brewery_group_no] %}
-                                    <p class="ec-corpse-newReleaseRole__breweryName">{{ CorpseTag.name }}</p>
+                            {% set CorpseTagBrewerys = Product.CorpseTags([eccube_config.corpse_tag_brewery_group_no]) %}
+                            {% if CorpseTagBrewerys|length > 0 %}
+                                {% for CorpseTagBrewery in CorpseTagBrewerys %}
+                                    <p class="ec-corpse-newReleaseRole__breweryName">{{ CorpseTagBrewery.name }}</p>
                                 {% endfor %}
                             {% endif %}
                             {# 醸造所 -end- #}
 
                             <p>{{ Product.name }}</p>
 
-                            {# 容器 -start- #}
-                            {% set CorpseTagsContainers = [] %}
-                            {% if CorpseTags[eccube_config.corpse_tag_container_group_no] is defined %}
-                                {% set CorpseTagsContainers = CorpseTagsContainers|merge(CorpseTags[eccube_config.corpse_tag_container_group_no]) %}
+                            {# ミックスパック 容器 ビアスタイル -start- #}
+                            {% set CorpseTagContainers = Product.CorpseTags([eccube_config.corpse_tag_container_group_no, eccube_config.corpse_tag_style_group_no, eccube_config.corpse_tag_mixpack_group_no]) %}
+                            {% if CorpseTagContainers|length > 0 %}
+                                <ul class="ec-corpse-newReleaseRole__tags">
+                                    {% for CorpseTagContainer in CorpseTagContainers %}
+                                        <li class="ec-corpse-newReleaseRole__tag tag_{{ CorpseTagContainer.id }}">
+                                            <a href="{{ url('customize_tag_search_item', {'operation': 'add', 'tag_id': CorpseTagContainer.id}) }}" {{ csrf_token_for_anchor() }} class="load-overlay" style="text-decoration:none;color:#525263;" data-method="put" data-confirm="false">
+                                                {{ CorpseTagContainer }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
                             {% endif %}
-                            {% if CorpseTags[eccube_config.corpse_tag_mixpack_group_no] is defined  %}
-                                {% set CorpseTagsContainers = CorpseTagsContainers|merge(CorpseTags[eccube_config.corpse_tag_mixpack_group_no]) %}
-                            {% endif %}
-                            {% if CorpseTagsContainers|length > 0 %}
-                                {% for CorpseTag in CorpseTagsContainers %}
-                                    {% if loop.first %}
-                                        <div class="ec-corpse-newReleaseRole__list">
-                                    {% endif %}
-                                    <a href="{{ url('customize_tag_search_item', {'operation': 'add', 'tag_id': CorpseTag.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">
-                                        <div class="ec-corpse-newReleaseRole__listItem">
-                                            {{ CorpseTag.name }}
-                                        </div>
-                                    </a>
-                                    {% if loop.last != true and loop.index % 2 == 0%}
-                                        </div>
-                                        <div class="ec-corpse-newReleaseRole__list">
-                                    {% elseif loop.last %}
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
-                            {% endif %}
-                            {# 容器 -end- #}
+                            {# ミックスパック 容器 ビアスタイル -end- #}
 
                             {% if Product.description_list %}
                                 <p>{{ Product.description_list|raw|nl2br }}</p>
