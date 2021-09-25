@@ -15,6 +15,7 @@ final class Version20210816192145 extends AbstractMigration
     {
         $tagExists = $this->connection->fetchColumn("SELECT COUNT(*) FROM dtb_tag WHERE 1");
         if ($tagExists == 0) {
+            $this->addSql("DELETE FROM `dtb_tag`");
             $this->addSql("INSERT INTO `dtb_tag` (
                 `id`, `name`, `sort_no`, `discriminator_type`, `group_no`
                 ) VALUES ('1', 'ミックスパック', '1', 'tag', '1'),
