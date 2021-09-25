@@ -57,10 +57,10 @@ services:
       VIRTUAL_HOST: localhost
 
   api:
-    build: ./corpse-api-brewery
+    build: ./corpse-api-bbj
     command: /bin/bash -c "rm -f /app/tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0"
     volumes:
-      - "./corpse-api-brewery:/app"
+      - "./corpse-api-bbj:/app"
     ports:
       - "3000:3000"
     tty: true
@@ -69,21 +69,16 @@ services:
     environment:
       RAILS_ENV: development
       VIRTUAL_HOST: localhost
-      BREWERY_ID: ${BREWERY_ID}
-      DOMAIN: ${DOMAIN}
-      # DOMAIN: 127.0.0.1
-      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
       RAILS_DATABASE_PASSWORD: ${DB_PASSWORD}
-      RAILS_MATOME_EC_HOST: ${URL_MATOME}
-      # RAILS_MATOME_EC_HOST: http://172.23.0.2:3001
+      RAILS_DATABASE: ${DB}
 
   mysql:
     image: mysql:5.7
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
-      MYSQL_DATABASE: eccubedb
+      MYSQL_DATABASE: ${DB}
       MYSQL_USER: dbuser
-      MYSQL_PASSWORD: secret
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - mysql-database:/var/lib/mysql
       - "./dockerconfig/mysql/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf"
