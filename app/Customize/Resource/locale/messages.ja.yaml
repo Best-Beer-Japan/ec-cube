@@ -2,6 +2,7 @@ front.entry.warning_message: |
   会社名、住所、電話番号は<span class="text-danger">「ご請求先」</span>のデータを入力ください。納品先は購買時に指定することになります。
   登録後、会員登録承認メールが確認できましたらログインが可能となります。
 front.entry.agree_over_twenty: "私は20歳以上です。"
+front.entry.agree_invoice_shipment_date_base_check: "請求書は出荷日ベースで翌月末になります。"
 
 common.customize_store_name: 店舗名
 
