@@ -67,23 +67,24 @@ services:
     networks:
       - backend
     environment:
+      VIRTUAL_HOST: ${DOMAIN}
       RAILS_ENV: development
-      VIRTUAL_HOST: localhost
-      BREWERY_ID: ${BREWERY_ID}
-      DOMAIN: ${DOMAIN}
-      # DOMAIN: 127.0.0.1
       SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+      RAILS_DATABASE: ${DB}
       RAILS_DATABASE_PASSWORD: ${DB_PASSWORD}
-      RAILS_MATOME_EC_HOST: ${URL_MATOME}
+      BREWERY_ID: ${BREWERY_ID}
+      # DOMAIN: 127.0.0.1
+      DOMAIN: ${DOMAIN}
       # RAILS_MATOME_EC_HOST: http://172.23.0.2:3001
+      RAILS_MATOME_EC_HOST: ${URL_MATOME}
 
   mysql:
     image: mysql:5.7
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
-      MYSQL_DATABASE: eccubedb
+      MYSQL_DATABASE: ${DB}
       MYSQL_USER: dbuser
-      MYSQL_PASSWORD: secret
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - mysql-database:/var/lib/mysql
       - "./dockerconfig/mysql/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf"
