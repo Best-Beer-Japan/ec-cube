@@ -87,10 +87,10 @@ services:
       - backend
     environment:
       RAILS_ENV: production
-      VIRTUAL_HOST: ${DOMAIN}
       SECRET_KEY_BASE: ${SECRET_KEY_BASE}
-      RAILS_DATABASE_PASSWORD: ${DB_PASSWORD}
+      VIRTUAL_HOST: ${DOMAIN}
       RAILS_DATABASE: ${DB}
+      RAILS_DATABASE_PASSWORD: ${DB_PASSWORD}
 
   ### MySQL ##################################
   mysql:
