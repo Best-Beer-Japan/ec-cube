@@ -3,6 +3,7 @@
 namespace Customize\Event;
 
 use Customize\Service\CorpseRequestApiService;
+use Customize\Service\BreweryRequestApiService;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Event\TemplateEvent;
@@ -18,6 +19,11 @@ class FrontEvent implements EventSubscriberInterface
     protected $corpseRequestApiService;
 
     /**
+     * @var BreweryRequestApiService
+     */
+    protected $breweryRequestApiService;
+
+    /**
      * @var SessionInterface
      */
     protected $session;
@@ -31,15 +37,18 @@ class FrontEvent implements EventSubscriberInterface
      * FrontEvent constructor.
      *
      * @param CorpseRequestApiService $corpseRequestApiService
+     * @param BreweryRequestApiService $breweryRequestApiService
      * @param SessionInterface $session
      * @param TagRepository $tagRepository
      */
     public function __construct(
         CorpseRequestApiService $corpseRequestApiService,
+        BreweryRequestApiService $breweryRequestApiService,
         SessionInterface $session,
         TagRepository $tagRepository
     ) {
         $this->corpseRequestApiService = $corpseRequestApiService;
+        $this->breweryRequestApiService = $breweryRequestApiService;
         $this->session = $session;
         $this->tagRepository = $tagRepository;
     }
@@ -59,7 +68,16 @@ class FrontEvent implements EventSubscriberInterface
         foreach ($Order->getShippings() as $Shipping) {
             foreach ($Shipping->getOrderItems() as $item) {
                 if ($item->isProduct()) {
-                    $url = $event->getRequest()->getUriForPath('/api/post_products/'.$item->getProduct()->getId());
+                    $Brewery = $item->getProduct()->getBrewery();
+
+                    if (null === $Brewery) {
+                        continue;
+                    }
+
+                    // $breweryDomain 例：https://corpse-matome.bestbeerjapan.com
+                    $breweryDomain = $Brewery->getDomain();
+
+                    $url = $event->getRequest()->getUriForPath($breweryDomain.'/api/post_products/'.$item->getProduct()->getOriginalProductId());
 
                     $this->corpseRequestApiService->requestApi($url);
                 }
