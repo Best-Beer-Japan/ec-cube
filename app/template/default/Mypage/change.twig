@@ -64,6 +64,17 @@ file that was distributed with this source code.
                                 </dl>
                                 <dl>
                                     <dt>
+                                        {{ form_label(form.customize_account_name, 'common.customize_account_name', { 'label_attr': { 'class': 'ec-label' }}) }}
+                                    </dt>
+                                    <dd>
+                                        <div class="ec-halfInput{{ has_errors(form.customize_account_name) ? ' error' }}">
+                                            {{ form_widget(form.customize_account_name) }}
+                                            {{ form_errors(form.customize_account_name) }}
+                                        </div>
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt>
                                         {{ form_label(form.company_name, 'common.company_name', { 'label_attr': { 'class': 'ec-label' }}) }}
                                     </dt>
                                     <dd>

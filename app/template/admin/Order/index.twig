@@ -529,6 +529,7 @@ file that was distributed with this source code.
                                         <th class="border-top-0 pt-2 pb-2 text-center text-nowrap">{{ 'admin.order.shipping_status'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.tracking_number'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.delivery'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.common.customize_account_name'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center pr-3"></th>
                                     </tr>
                                     </thead>
@@ -603,6 +604,11 @@ file that was distributed with this source code.
                                                 <td class="align-middle text-center">
                                                     {{ Shipping.name01 ~ Shipping.name02 }}<br>
                                                     {{ Shipping.Pref.name }}
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    {% if Order.Customer is not null %}
+                                                        {{ Order.Customer.customize_account_name }}
+                                                    {% endif %}
                                                 </td>
                                                 <td class="align-middle pr-3">
                                                     <div class="text-right">
