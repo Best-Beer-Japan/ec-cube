@@ -4,7 +4,7 @@ namespace Customize\Service;
 
 use Eccube\Common\EccubeConfig;
 
-class CorpseRequestApiService
+class BreweryRequestApiService
 {
     /**
      * @var EccubeConfig
@@ -30,7 +30,7 @@ class CorpseRequestApiService
      */
     public function requestApi(string $url, bool $post = false)
     {
-        if (true !== $this->eccubeConfig['corpse_api_is_enable']) {
+        if (true !== $this->eccubeConfig['brewery_api_is_enable']) {
             return;
         }
 

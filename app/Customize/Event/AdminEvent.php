@@ -2,7 +2,7 @@
 
 namespace Customize\Event;
 
-use Customize\Service\CorpseRequestApiService;
+use Customize\Service\BreweryRequestApiService;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -10,19 +10,19 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class AdminEvent implements EventSubscriberInterface
 {
     /**
-     * @var CorpseRequestApiService
+     * @var BreweryRequestApiService
      */
-    protected $corpseRequestApiService;
+    protected $breweryRequestApiService;
 
     /**
      * FrontEvent constructor.
      *
-     * @param CorpseRequestApiService $corpseRequestApiService
+     * @param BreweryRequestApiService $breweryRequestApiService
      */
     public function __construct(
-        CorpseRequestApiService $corpseRequestApiService
+        BreweryRequestApiService $breweryRequestApiService
     ) {
-        $this->corpseRequestApiService = $corpseRequestApiService;
+        $this->breweryRequestApiService = $breweryRequestApiService;
     }
 
     public static function getSubscribedEvents(): array
@@ -38,6 +38,6 @@ class AdminEvent implements EventSubscriberInterface
 
         $url = $event->getRequest()->getUriForPath('/api/post_products/'.$Product->getId());
 
-        $this->corpseRequestApiService->requestApi($url);
+        $this->breweryRequestApiService->requestApi($url);
     }
 }

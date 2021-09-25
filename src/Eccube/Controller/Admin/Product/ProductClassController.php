@@ -13,7 +13,7 @@
 
 namespace Eccube\Controller\Admin\Product;
 
-use Customize\Service\CorpseRequestApiService;
+use Customize\Service\BreweryRequestApiService;
 use Doctrine\ORM\NoResultException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\ClassName;
@@ -37,9 +37,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductClassController extends AbstractController
 {
     /**
-     * @var CorpseRequestApiService
+     * @var BreweryRequestApiService
      */
-    protected $corpseRequestApiService;
+    protected $breweryRequestApiService;
 
     /**
      * @var ProductRepository
@@ -73,14 +73,14 @@ class ProductClassController extends AbstractController
      * @param ClassCategoryRepository $classCategoryRepository
      */
     public function __construct(
-        CorpseRequestApiService $corpseRequestApiService,
+        BreweryRequestApiService $breweryRequestApiService,
         ProductRepository $productRepository,
         ProductClassRepository $productClassRepository,
         ClassCategoryRepository $classCategoryRepository,
         BaseInfoRepository $baseInfoRepository,
         TaxRuleRepository $taxRuleRepository
     ) {
-        $this->corpseRequestApiService = $corpseRequestApiService;
+        $this->breweryRequestApiService = $breweryRequestApiService;
         $this->productRepository = $productRepository;
         $this->productClassRepository = $productClassRepository;
         $this->classCategoryRepository = $classCategoryRepository;
@@ -139,7 +139,7 @@ class ProductClassController extends AbstractController
 
                 // API
                 $url = $request->getUriForPath('/api/post_products/'.$Product->getId());
-                $this->corpseRequestApiService->requestApi($url);
+                $this->breweryRequestApiService->requestApi($url);
 
                 if ($request->get('return_product_list')) {
                     return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId(), 'return_product_list' => true]);
@@ -182,7 +182,7 @@ class ProductClassController extends AbstractController
 
                         // API
                         $url = $request->getUriForPath('/api/post_products/'.$Product->getId());
-                        $this->corpseRequestApiService->requestApi($url);
+                        $this->breweryRequestApiService->requestApi($url);
 
                         if ($request->get('return_product_list')) {
                             return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId(), 'return_product_list' => true]);
