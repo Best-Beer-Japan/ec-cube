@@ -429,6 +429,10 @@ class OrderController extends AbstractController
                             // 受注明細データにない場合は, 出荷を検索.
                             $ExportCsvRow->setData($csvService->getData($Csv, $Shipping));
                         }
+                        if ($ExportCsvRow->isDataNull() && $Product = $OrderItem->getProduct()) {
+                            // 受注明細データにない場合は, 商品を検索.
+                            $ExportCsvRow->setData($csvService->getData($Csv, $Product));
+                        }
 
                         $event = new EventArgs(
                             [
