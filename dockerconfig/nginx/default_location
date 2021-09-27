@@ -1,6 +1,0 @@
-location ^~ /api/ {
-    proxy_pass http://api:3000/;
-}
-location ^~ / {
-    proxy_pass http://ec-cube/;
-}
