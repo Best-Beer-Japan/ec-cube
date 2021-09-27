@@ -86,7 +86,7 @@ trait OrderTrait
      *
      * @return self
      */
-    public function setOrderNoSection(?string $customize_order_no_section): self
+    public function setCustomizeOrderNoSection(?string $customize_order_no_section): self
     {
         $this->customize_order_no_section = $customize_order_no_section;
 
@@ -98,7 +98,7 @@ trait OrderTrait
      *
      * @return string|null
      */
-    public function getOrderNoSection(): ?string
+    public function getCustomizeOrderNoSection(): ?string
     {
         return $this->customize_order_no_section;
     }
