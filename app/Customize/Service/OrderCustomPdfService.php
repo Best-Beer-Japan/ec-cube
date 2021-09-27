@@ -126,10 +126,16 @@ class OrderCustomPdfService extends TcpdfFpdi
      * @param BaseInfoRepository $baseInfoRepository
      * @param EccubeExtension $eccubeExtension
      * @param TaxExtension $taxExtension
-     * @throws \Exception
      */
-    public function __construct(EccubeConfig $eccubeConfig, OrderRepository $orderRepository, ShippingRepository $shippingRepository, TaxRuleService $taxRuleService, BaseInfoRepository $baseInfoRepository, EccubeExtension $eccubeExtension, TaxExtension $taxExtension)
-    {
+    public function __construct(
+        EccubeConfig $eccubeConfig,
+        OrderRepository $orderRepository,
+        ShippingRepository $shippingRepository,
+        TaxRuleService $taxRuleService,
+        BaseInfoRepository $baseInfoRepository,
+        EccubeExtension $eccubeExtension,
+        TaxExtension $taxExtension
+    ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->baseInfoRepository = $baseInfoRepository->get();
         $this->orderRepository = $orderRepository;
@@ -199,7 +205,7 @@ class OrderCustomPdfService extends TcpdfFpdi
         $this->setDefaultData($formData);
 
         // 備考のマジックノートをフラグへ変換する
-        if ($formData['note1'] == "[お届け日]") {
+        if ($formData['note1'] == '[お届け日]') {
             $this->magicNote = true;
         }
 
@@ -249,16 +255,16 @@ class OrderCustomPdfService extends TcpdfFpdi
 
             // マジックノートの処理をする
             $formData['note1'] = '';
-            if ($this->magicNote){
+            if ($this->magicNote) {
                 $shippingDeliveryDate = $Shipping->getShippingDeliveryDate();
                 $shippingDeliveryTime = $Shipping->getShippingDeliveryTime();
 
                 if (!is_null($shippingDeliveryDate) || !empty($shippingDeliveryTime)) {
-                    $formData['note1'] = "お届け希望日時:";
+                    $formData['note1'] = 'お届け希望日時:';
                     if (!is_null($shippingDeliveryDate)) {
                         $formData['note1'] = $formData['note1'].' '.$shippingDeliveryDate->format('Y/m/d');
                     }
-                    if (!empty($shippingDeliveryTime)){
+                    if (!empty($shippingDeliveryTime)) {
                         $formData['note1'] = $formData['note1'].' '.$shippingDeliveryTime;
                     }
                 }
