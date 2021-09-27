@@ -25,6 +25,13 @@ trait OrderTrait
     private $original_id;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="customize_order_no_section", type="string", length=255, nullable=true)
+     */
+    private $customize_order_no_section;
+
+    /**
      * Set customize_store_name.
      *
      * @param string|null $customize_store_name
@@ -70,5 +77,29 @@ trait OrderTrait
     public function getOriginalId(): ?int
     {
         return $this->original_id;
+    }
+
+    /**
+     * Set customize_order_no_section.
+     *
+     * @param string|null $customize_order_no_section
+     *
+     * @return self
+     */
+    public function setOrderNoSection(?string $customize_order_no_section): self
+    {
+        $this->customize_order_no_section = $customize_order_no_section;
+
+        return $this;
+    }
+
+    /**
+     * Get customize_order_no_section.
+     *
+     * @return string|null
+     */
+    public function getOrderNoSection(): ?string
+    {
+        return $this->customize_order_no_section;
     }
 }
