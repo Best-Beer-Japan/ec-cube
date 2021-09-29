@@ -17,23 +17,25 @@ trait ProductTrait
     /**
      * Get Tag
      * フロント側タグsort_no順の配列を作成する
+     * @param array $groups 表示するグループナンバー
      *
-     * @return []Tag
+     * @return array
      */
-    public function getCorpseTags()
+    public function getCorpseTags(array $groups = []): array
     {
         $tags = [];
 
         foreach ($this->getProductTag() as $productTag) {
             $Tag = $productTag->getTag();
-            $tags[$Tag->getGroupNo()][] = $Tag;
+
+            if (in_array($Tag->getGroupNo(), $groups)) {
+                $tags[] = $Tag;
+            }
         }
 
-        foreach ($tags as $tagGroup) {
-            usort($tagGroup, function (Tag $tag1, Tag $tag2) {
-                return $tag1->getSortNo() < $tag2->getSortNo();
-            });
-        }
+        usort($tags, function (Tag $tag1, Tag $tag2) {
+            return $tag1->getSortNo() < $tag2->getSortNo();
+        });
 
         return $tags;
     }

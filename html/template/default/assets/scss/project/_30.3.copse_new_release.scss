@@ -22,7 +22,7 @@ Styleguide 12.7.1
   color: black;
 
   @include media_desktop {
-    padding: 60px 0;
+    padding: 15px 0;
   }
   & &__Heading {
     font-size: 2em;
@@ -36,28 +36,19 @@ Styleguide 12.7.1
     color: #000000;
     margin-bottom: 10px;
   }
-  & &__list {
-    font-size: 13px;
-    display: flex;
-    flex-wrap: wrap;
-
-    @include media_desktop {
-      flex-wrap: nowrap;
-    }
-
-    a {
-      color: #000000;
-      text-decoration: none;
-      width: calc(100% / 2);
-      margin: 10px 0;
-    }
+  & &__tags {
+    margin-top: 16px;
+    padding: 0;
   }
-  & a &__listItem {
-    padding: 15px 5px;
-    margin: 0 5px;
-    text-align: center;
-    height: auto;
-    border-radius: 5px;
-    background-color: #0066FF;
+  & &__tag {
+    display: inline-block;
+    margin: 2px 0;
+    padding: 2px 5px;
+    list-style: none;
+    font-size: 80%;
+    color: #525263;
+    border: solid 1px #D7DADD;
+    border-radius: 3px;
+    background-color: #F5F7F8;
   }
 }
