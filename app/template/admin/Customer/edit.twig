@@ -114,6 +114,15 @@ file that was distributed with this source code.
 										</div>
 									</div>
 								</div>
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <span>{{ 'admin.common.customize_account_name'|trans }}</span>
+                                    </div>
+                                    <div class="col">
+                                        {{ form_widget(form.customize_account_name) }}
+                                        {{ form_errors(form.customize_account_name) }}
+                                    </div>
+                                </div>
 								<div class="row mb-2">
 									<div class="col-3">
 										<span>{{ 'common.company_name'|trans }}</span>
