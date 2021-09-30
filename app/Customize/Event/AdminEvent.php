@@ -50,7 +50,7 @@ class AdminEvent implements EventSubscriberInterface
 
         $url = $event->getRequest()->getUriForPath('/api/post_products/'.$Product->getId());
 
-        $this->breweryRequestApiService->requestApi($url);
+        $this->breweryRequestApiService->requestApi($url, true);
     }
 
     public function onAdminOrderCsvExportOrder(EventArgs $event)
