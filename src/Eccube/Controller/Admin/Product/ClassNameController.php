@@ -116,7 +116,7 @@ class ClassNameController extends AbstractController
 
                 // API
                 $url = $event->getRequest()->getUriForPath('/api/post_classes/'.$TargetClassName->getId());
-                $this->breweryRequestApiService->requestApi($url);
+                $this->breweryRequestApiService->requestApi($url, true);
 
                 return $this->redirectToRoute('admin_product_class_name');
             }
@@ -133,7 +133,7 @@ class ClassNameController extends AbstractController
 
                     // API
                     $url = $event->getRequest()->getUriForPath('/api/post_classes/'.$editForm->getData()->getId());
-                    $this->breweryRequestApiService->requestApi($url);
+                    $this->breweryRequestApiService->requestApi($url, true);
 
                     return $this->redirectToRoute('admin_product_class_name');
                 }

@@ -135,7 +135,7 @@ class ClassCategoryController extends AbstractController
 
                 // API
                 $url = $event->getRequest()->getUriForPath('/api/post_classes/'.$TargetClassCategory->getClassName()->getId());
-                $this->breweryRequestApiService->requestApi($url);
+                $this->breweryRequestApiService->requestApi($url, true);
 
                 $this->addSuccess('admin.common.save_complete', 'admin');
 
@@ -150,7 +150,7 @@ class ClassCategoryController extends AbstractController
 
                     // API
                     $url = $event->getRequest()->getUriForPath('/api/post_classes/'.$editForm->getData()->getClassName()->getId());
-                    $this->breweryRequestApiService->requestApi($url);
+                    $this->breweryRequestApiService->requestApi($url, true);
 
                     return $this->redirectToRoute('admin_product_class_category', ['class_name_id' => $ClassName->getId()]);
                 }

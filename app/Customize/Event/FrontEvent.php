@@ -61,7 +61,7 @@ class FrontEvent implements EventSubscriberInterface
                 if ($item->isProduct()) {
                     $url = $event->getRequest()->getUriForPath('/api/post_products/'.$item->getProduct()->getId());
 
-                    $this->corpseRequestApiService->requestApi($url);
+                    $this->corpseRequestApiService->requestApi($url, true);
                 }
             }
         }
