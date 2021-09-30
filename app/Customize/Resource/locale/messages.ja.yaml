@@ -5,8 +5,10 @@ front.entry.agree_over_twenty: "私は20歳以上です。"
 front.entry.agree_invoice_shipment_date_base_check: "請求書は出荷日ベースで翌月末になります。"
 
 common.customize_store_name: 店舗名
+common.customize_account_name: 振込名義
 
 admin.common.customize_store_name: 店舗名
+admin.common.customize_account_name: 振込名義
 admin.common.company_and_customize_store_name: 会社・店舗名
 
 admin.customer.multi_search_label: 会員ID・メールアドレス・お名前・会社名・店舗名
@@ -14,6 +16,7 @@ admin.customer.customer_info_warning_message: 会社名、住所、電話番号�
 
 admin.order.multi_search_label: 注文番号・お名前・会社名・店舗名・メールアドレス・電話番号
 admin.order.orderer_customize_store_name: 注文者店舗名
+admin.order.customize_order_no_section: BBJ注文番号
 
 admin.product.alcohol_percentage: アルコール度数
 admin.product.product_csv.alcohol_percentage: アルコール度数

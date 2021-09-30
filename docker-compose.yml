@@ -31,6 +31,7 @@ services:
       - 443:443
     volumes:
       - "./dockerconfig/nginx/default:/etc/nginx/vhost.d/default"
+      - "./dockerconfig/nginx/default_location:/etc/nginx/vhost.d/default_location"
       - proxy:/etc/nginx/vhost.d
       - proxy:/usr/share/nginx/html
       - /var/run/docker.sock:/tmp/docker.sock:ro

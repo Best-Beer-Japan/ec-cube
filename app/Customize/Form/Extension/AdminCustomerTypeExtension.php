@@ -34,6 +34,14 @@ class AdminCustomerTypeExtension extends AbstractTypeExtension
                         'max' => $this->eccubeConfig['eccube_stext_len'],
                     ]),
                 ],
+            ])
+            ->add('customize_account_name', TextType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
+                    ]),
+                ],
             ]);
     }
 
