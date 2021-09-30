@@ -77,10 +77,10 @@ services:
 
   ### Corpse API ##################################
   api:
-    build: ./corpse-api-brewery
+    build: ./corpse-api-bbj
     command: /bin/bash -c "rm -f /app/tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0"
     volumes:
-      - "./corpse-api-brewery:/app"
+      - "./corpse-api-bbj:/app"
     ports:
       - "3000:3000"
     tty: true
@@ -92,9 +92,6 @@ services:
       SECRET_KEY_BASE: ${SECRET_KEY_BASE}
       RAILS_DATABASE: ${DB}
       RAILS_DATABASE_PASSWORD: ${DB_PASSWORD}
-      BREWERY_ID: ${BREWERY_ID}
-      DOMAIN: ${DOMAIN}
-      RAILS_MATOME_EC_HOST: ${URL_MATOME}
 
   ### MySQL ##################################
   mysql:

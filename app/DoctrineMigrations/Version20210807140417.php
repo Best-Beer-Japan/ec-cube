@@ -71,7 +71,8 @@ final class Version20210807140417 extends AbstractMigration
                     ('6', 'フルーツビール', '6', 'beerstyle'),
                     ('7', 'サワー / ゴーゼ', '7', 'beerstyle'),
                     ('8', 'その他スタイル', '8', 'beerstyle'),
-                    ('9', 'ビール以外', '9', 'beerstyle')"
+                    ('9', 'ビール以外', '9', 'beerstyle'),
+                    ('10', 'その他', '10', 'beerstyle')"
             );
         }
 
