@@ -43,9 +43,9 @@ trait ProductTrait
     /**
      * @var int
      *
-     * @ORM\Column(name="original_product_id", type="integer", nullable=true, options={"unsigned":true})
+     * @ORM\Column(name="original_id", type="integer", nullable=true, options={"unsigned":true})
      */
-    private $original_product_id;
+    private $original_id;
 
     /**
      * @var string|null
@@ -97,27 +97,27 @@ trait ProductTrait
     private $ProductBeerContainers;
 
     /**
-     * Set original_product_id.
+     * Set original_id.
      *
-     * @param int|null $original_product_id
+     * @param int|null $original_id
      *
      * @return self
      */
-    public function setOriginalProductId(?int $original_product_id): self
+    public function setOriginalProductId(?int $original_id): self
     {
-        $this->original_product_id = $original_product_id;
+        $this->original_id = $original_id;
 
         return $this;
     }
 
     /**
-     * Get original_product_id.
+     * Get original_id.
      *
      * @return int|null
      */
     public function getOriginalProductId(): ?int
     {
-        return $this->original_product_id;
+        return $this->original_id;
     }
 
     /**
