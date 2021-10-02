@@ -27,9 +27,9 @@ trait ProductClassTrait
     /**
      * @var int
      *
-     * @ORM\Column(name="original_product_class_id", type="integer", nullable=true, options={"unsigned":true})
+     * @ORM\Column(name="original_id", type="integer", nullable=true, options={"unsigned":true})
      */
-    private $original_product_class_id;
+    private $original_id;
 
     /**
      * Set brewery_id.
@@ -56,15 +56,15 @@ trait ProductClassTrait
     }
 
     /**
-     * Set original_product_class_id.
+     * Set original_id.
      *
-     * @param int|null $original_product_class_id
+     * @param int|null $original_id
      *
      * @return self
      */
-    public function setOriginalProductClassId(?int $original_product_class_id): self
+    public function setOriginalProductClassId(?int $original_id): self
     {
-        $this->original_product_class_id = $original_product_class_id;
+        $this->original_id = $original_id;
 
         return $this;
     }
@@ -93,12 +93,12 @@ trait ProductClassTrait
     }
 
     /**
-     * Get original_product_class_id.
+     * Get original_id.
      *
      * @return int|null
      */
     public function getOriginalProductClassId(): ?int
     {
-        return $this->original_product_class_id;
+        return $this->original_id;
     }
 }
