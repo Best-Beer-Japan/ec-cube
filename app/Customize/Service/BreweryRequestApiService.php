@@ -52,6 +52,8 @@ class BreweryRequestApiService
 
         // Set option value
         curl_setopt_array($curl, $options);
+
+        curl_exec($curl);
         $info = curl_getinfo($curl);
         $message = curl_error($curl);
         $info['message'] = $message;
@@ -60,7 +62,7 @@ class BreweryRequestApiService
         if ($info['http_code'] !== 200) {
             log_error('http corpse_request_api', [$url, $info]);
         } else {
-            log_info('http corpse_request_api', $url);
+            log_info('http corpse_request_api', [$url]);
         }
     }
 }
