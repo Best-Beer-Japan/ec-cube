@@ -10,3 +10,7 @@ location ^~ /.well-known/acme-challenge/ {
 location ^~ /api/ {
     proxy_pass http://api:3000/api/;
 }
+
+location ^~ /sidekiq/ {
+    proxy_pass http://api:3000/sidekiq/;
+}
