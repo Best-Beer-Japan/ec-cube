@@ -77,6 +77,7 @@ services:
     tty: true
     networks:
       - backend
+      - sidekiq
     environment:
       VIRTUAL_HOST: ${DOMAIN}
       RAILS_ENV: development
