@@ -25,6 +25,7 @@ volumes:
     driver: local
 
 services:
+  ### ReverseProxy ############################
   nginx-proxy:
     image: jwilder/nginx-proxy
     restart: always
@@ -34,7 +35,7 @@ services:
       - 80:80
       - 443:443
     volumes:
-      # append nginx location settings
+      - "./dockerconfig/nginx/default:/etc/nginx/vhost.d/default"
       - "./dockerconfig/nginx/default_location:/etc/nginx/vhost.d/default_location"
       - proxy:/etc/nginx/vhost.d
       - proxy:/usr/share/nginx/html
@@ -44,8 +45,10 @@ services:
       - ec-cube
       - mysql
     networks:
+      - nginx-proxy
       - backend
 
+  ### ECCube4 ##################################
   ec-cube:
     build:
       context: .
@@ -82,9 +85,7 @@ services:
       RAILS_DATABASE: ${DB}
       RAILS_DATABASE_PASSWORD: ${DB_PASSWORD}
       BREWERY_ID: ${BREWERY_ID}
-      # DOMAIN: 127.0.0.1
       DOMAIN: ${DOMAIN}
-      # RAILS_MATOME_EC_HOST: http://172.23.0.2:3001
       RAILS_MATOME_EC_HOST: ${URL_MATOME}
 
   sidekiq:
