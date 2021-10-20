@@ -3,12 +3,19 @@ version: "3"
 networks:
   backend:
     driver: bridge
+  sidekiq:
+    driver: bridge
+  nginx-proxy:
+    external: true
 
 volumes:
   proxy:
     driver: local
 
   mysql-database:
+    driver: local
+
+  redis:
     driver: local
 
   ### ignore folder volume #####
@@ -56,7 +63,8 @@ services:
     environment:
       VIRTUAL_HOST: localhost
 
-  api:
+  ### Corpse API ##################################
+  api: &api_base
     build: ./corpse-api-brewery
     command: /bin/bash -c "rm -f /app/tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0"
     volumes:
@@ -69,6 +77,7 @@ services:
     environment:
       VIRTUAL_HOST: ${DOMAIN}
       RAILS_ENV: development
+      REDIS_URL: redis://redis:6379
       SECRET_KEY_BASE: ${SECRET_KEY_BASE}
       RAILS_DATABASE: ${DB}
       RAILS_DATABASE_PASSWORD: ${DB_PASSWORD}
@@ -77,6 +86,30 @@ services:
       DOMAIN: ${DOMAIN}
       # RAILS_MATOME_EC_HOST: http://172.23.0.2:3001
       RAILS_MATOME_EC_HOST: ${URL_MATOME}
+
+  sidekiq:
+    <<: *api_base
+    command: ["bundle", "exec", "sidekiq", "-C", "config/sidekiq.yml"]
+    volumes:
+      - "./corpse-api-brewery:/app"
+      - "./dockerconfig/sidekiq/sidekiq.yml:/app/config/sidekiq.yml"
+    ports:
+      - "3030:3000"
+    networks:
+      - backend
+      - sidekiq
+    depends_on:
+      - "redis"
+
+  redis:
+    image: redis:4.0
+    volumes:
+      - "redis:/data"
+    networks:
+      - sidekiq
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
 
   mysql:
     image: mysql:5.7
