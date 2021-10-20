@@ -4,6 +4,7 @@ namespace Customize\Form\Extension;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Form\Type\Admin\SearchOrderType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -29,6 +30,13 @@ class AdminSearchOrderTypeExtension extends AbstractTypeExtension
             ->add('customize_store_name', TextType::class, [
                 'label' => 'admin.order.orderer_customize_store_name',
                 'required' => false,
+            ])
+            ->add('Delivery', EntityType::class, [
+                'required' => false,
+                'label' => 'shipping.label.delivery_hour',
+                'class' => 'Eccube\Entity\Delivery',
+                'choice_label' => 'name',
+                'placeholder' => 'admin.common.select',
             ]);
     }
 
