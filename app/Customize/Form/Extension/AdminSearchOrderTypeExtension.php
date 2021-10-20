@@ -33,7 +33,7 @@ class AdminSearchOrderTypeExtension extends AbstractTypeExtension
             ])
             ->add('Delivery', EntityType::class, [
                 'required' => false,
-                'label' => 'shipping.label.delivery_hour',
+                'label' => 'admin.order.delivery_provider',
                 'class' => 'Eccube\Entity\Delivery',
                 'choice_label' => 'name',
                 'placeholder' => 'admin.common.select',
