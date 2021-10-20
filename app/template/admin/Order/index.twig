@@ -583,6 +583,7 @@ file that was distributed with this source code.
                                                     {% endif %}
                                                 </td>
                                                 <td class="align-middle text-center">
+                                                    {{ Shipping.Delivery }}<br>
                                                     {% if Order.is_multiple %}
                                                         <a href="{{ url('admin_shipping_edit', { id: Order.id }) }}">
                                                             {% if Shipping.shipping_date %}
