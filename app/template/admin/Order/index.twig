@@ -583,7 +583,7 @@ file that was distributed with this source code.
                                                     {% endif %}
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    {{ Shipping.Delivery }}<br>
+                                                    {{ Shipping.Delivery|length > 5 ? Shipping.Delivery|slice(0,5) ~ '…' : Shipping.Delivery }}<br>
                                                     {% if Order.is_multiple %}
                                                         <a href="{{ url('admin_shipping_edit', { id: Order.id }) }}">
                                                             {% if Shipping.shipping_date %}
