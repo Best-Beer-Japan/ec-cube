@@ -113,9 +113,10 @@ services:
     ports:
       - "3030:3000"
     networks:
+      - backend
       - sidekiq
     depends_on:
-      - "redis"
+      - redis
     restart: always
 
   redis:
