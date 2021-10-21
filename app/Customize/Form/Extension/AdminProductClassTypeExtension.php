@@ -6,6 +6,7 @@ use Eccube\Form\Type\Admin\ProductClassType;
 use Eccube\Form\Type\PriceType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class AdminProductClassTypeExtension extends AbstractTypeExtension
 {
@@ -14,6 +15,9 @@ class AdminProductClassTypeExtension extends AbstractTypeExtension
         $builder
             ->add('bbj_price', PriceType::class, [
                 'required' => false,
+                'constraints' => [
+                    new Assert\NotBlank(),
+                ],
             ]);
     }
 
