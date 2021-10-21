@@ -110,6 +110,8 @@ services:
     volumes:
       - "./corpse-api-brewery:/app"
       - "./dockerconfig/sidekiq/sidekiq.yml:/app/config/sidekiq.yml"
+    ports:
+      - "3030:3000"
     networks:
       - sidekiq
     depends_on:
