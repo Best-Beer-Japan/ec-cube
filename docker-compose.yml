@@ -101,6 +101,7 @@ services:
       BREWERY_ID: ${BREWERY_ID}
       DOMAIN: ${DOMAIN}
       RAILS_MATOME_EC_HOST: ${URL_MATOME}
+      REDIS_URL: redis://redis:6379
     restart: always
 
   sidekiq:
