@@ -99,7 +99,7 @@ services:
       RAILS_DATABASE: ${DB}
       RAILS_DATABASE_PASSWORD: ${DB_PASSWORD}
       BREWERY_ID: ${BREWERY_ID}
-      DOMAIN: ${DOMAIN}
+      FILE_DOMAIN: https://${DOMAIN}
       RAILS_MATOME_EC_HOST: ${URL_MATOME}
       REDIS_URL: redis://redis:6379
     restart: always

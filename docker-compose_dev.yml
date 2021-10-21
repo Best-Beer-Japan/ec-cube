@@ -86,7 +86,7 @@ services:
       RAILS_DATABASE: ${DB}
       RAILS_DATABASE_PASSWORD: ${DB_PASSWORD}
       BREWERY_ID: ${BREWERY_ID}
-      DOMAIN: ${DOMAIN}
+      FILE_DOMAIN: http://${DOMAIN}
       RAILS_MATOME_EC_HOST: ${URL_MATOME}
 
   sidekiq:
