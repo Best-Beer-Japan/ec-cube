@@ -79,7 +79,7 @@ class FrontEvent implements EventSubscriberInterface
 
                     $url = $event->getRequest()->getUriForPath($breweryDomain.'/api/post_products/'.$item->getProduct()->getOriginalProductId());
 
-                    $this->corpseRequestApiService->requestApi($url);
+                    $this->corpseRequestApiService->requestApi($url, true);
                 }
             }
         }

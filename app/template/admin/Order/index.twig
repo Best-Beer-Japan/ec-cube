@@ -381,7 +381,15 @@ file that was distributed with this source code.
                             </div>
                         </div>
                     </div>
-                    <div class="col"></div>
+                    <div class="col">
+                        <div class="form-row">
+                            <div class="col-12">
+                                <p class="col-form-label">{{ 'admin.order.delivery_provider'|trans }}</p>
+                                {{ form_widget(searchForm.Delivery) }}
+                                {{ form_errors(searchForm.Delivery) }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="row mb-2">
                     <div class="col">
@@ -575,6 +583,7 @@ file that was distributed with this source code.
                                                     {% endif %}
                                                 </td>
                                                 <td class="align-middle text-center">
+                                                    {{ Shipping.Delivery|length > 5 ? Shipping.Delivery|slice(0,5) ~ '…' : Shipping.Delivery }}<br>
                                                     {% if Order.is_multiple %}
                                                         <a href="{{ url('admin_shipping_edit', { id: Order.id }) }}">
                                                             {% if Shipping.shipping_date %}

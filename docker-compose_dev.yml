@@ -3,12 +3,19 @@ version: "3"
 networks:
   backend:
     driver: bridge
+  sidekiq:
+    driver: bridge
+  nginx-proxy:
+    external: true
 
 volumes:
   proxy:
     driver: local
 
   mysql-database:
+    driver: local
+
+  redis:
     driver: local
 
   ### ignore folder volume #####
@@ -18,6 +25,7 @@ volumes:
     driver: local
 
 services:
+  ### ReverseProxy ############################
   nginx-proxy:
     image: jwilder/nginx-proxy
     restart: always
@@ -27,7 +35,7 @@ services:
       - 80:80
       - 443:443
     volumes:
-      # append nginx location settings
+      - "./dockerconfig/nginx/default:/etc/nginx/vhost.d/default"
       - "./dockerconfig/nginx/default_location:/etc/nginx/vhost.d/default_location"
       - proxy:/etc/nginx/vhost.d
       - proxy:/usr/share/nginx/html
@@ -37,8 +45,10 @@ services:
       - ec-cube
       - mysql
     networks:
+      - nginx-proxy
       - backend
 
+  ### ECCube4 ##################################
   ec-cube:
     build:
       context: .
@@ -56,7 +66,8 @@ services:
     environment:
       VIRTUAL_HOST: ${DOMAIN}
 
-  api:
+  ### Corpse API ##################################
+  api: &api_base
     build: ./corpse-api-bbj
     command: /bin/bash -c "rm -f /app/tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0"
     volumes:
@@ -66,11 +77,35 @@ services:
     tty: true
     networks:
       - backend
+      - sidekiq
     environment:
       VIRTUAL_HOST: ${DOMAIN}
       RAILS_ENV: development
+      REDIS_URL: redis://redis:6379
       RAILS_DATABASE: ${DB}
       RAILS_DATABASE_PASSWORD: ${DB_PASSWORD}
+
+  sidekiq:
+    <<: *api_base
+    command: ["bundle", "exec", "sidekiq", "-C", "config/sidekiq.yml"]
+    volumes:
+      - "./corpse-api-brewery:/app"
+      - "./dockerconfig/sidekiq/sidekiq.yml:/app/config/sidekiq.yml"
+    ports:
+      - "3030:3000"
+    networks:
+      - backend
+      - sidekiq
+    depends_on:
+      - "redis"
+
+  redis:
+    image: redis:4.0
+    volumes:
+      - "redis:/data"
+    networks:
+      - sidekiq
+    command: redis-server --appendonly yes
 
   mysql:
     image: mysql:5.7

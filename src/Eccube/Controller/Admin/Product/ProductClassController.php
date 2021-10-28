@@ -139,7 +139,7 @@ class ProductClassController extends AbstractController
 
                 // API
                 $url = $request->getUriForPath('/api/post_products/'.$Product->getId());
-                $this->breweryRequestApiService->requestApi($url);
+                $this->breweryRequestApiService->requestApi($url, true);
 
                 if ($request->get('return_product_list')) {
                     return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId(), 'return_product_list' => true]);
@@ -182,7 +182,7 @@ class ProductClassController extends AbstractController
 
                         // API
                         $url = $request->getUriForPath('/api/post_products/'.$Product->getId());
-                        $this->breweryRequestApiService->requestApi($url);
+                        $this->breweryRequestApiService->requestApi($url, true);
 
                         if ($request->get('return_product_list')) {
                             return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId(), 'return_product_list' => true]);
