@@ -243,6 +243,13 @@ file that was distributed with this source code.
 									</label>
 									{{ form_errors(form.over_twenty) }}
 								</div>
+                                <div class="ec-checkbox{{ has_errors(form.invoice_shipment_date_base_check) ? ' error' }}">
+                                    <label>
+                                        {{ form_widget(form.invoice_shipment_date_base_check) }}
+                                        {{ 'front.entry.agree_invoice_shipment_date_base_check'|trans }}
+                                    </label>
+                                    {{ form_errors(form.invoice_shipment_date_base_check) }}
+                                </div>
 
                                 <button class="ec-blockBtn--action" type="submit" name="mode" value="confirm">{{ 'front.entry.agree'|trans }}</button>
                                 <a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{ 'front.entry.disagree'|trans }}</a>

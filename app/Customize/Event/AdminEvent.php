@@ -81,4 +81,33 @@ class AdminEvent implements EventSubscriberInterface
             }
         }
     }
+
+    public function onAdminOrderCsvExportOrder(EventArgs $event)
+    {
+        $Csv = $event->getArgument('Csv');
+        $ExportCsvRow = $event->getArgument('ExportCsvRow');
+        $OrderItem = $event->getArgument('OrderItem');
+
+        if ($Csv->getCsvType()->getId() === 3) {
+            //容器
+            if ($Csv->getFieldName() === 'ProductBeerContainers' && $OrderItem->getOrderItemType()->getId() === OrderItemType::PRODUCT) {
+                $ProductBeerContainers = $OrderItem->getProduct()->getProductBeerContainers()->toArray();
+
+                if (!empty($ProductBeerContainers)) {
+                    usort($ProductBeerContainers, function (ProductBeerContainer $BeerContainer1, ProductBeerContainer $BeerContainer2) {
+                        // 昇順
+                        return $BeerContainer1->getBeerContainer()->getSortNo() < $BeerContainer2->getBeerContainer()->getSortNo();
+                    });
+
+                    $BeerContainers = array_map(function ($ProductBeerContainer) use ($Csv) {
+                        return $ProductBeerContainer->offsetGet($Csv->getReferenceFieldName());
+                    }, $ProductBeerContainers);
+
+                    $ExportCsvRow->setData(implode($this->eccubeConfig['eccube_csv_export_multidata_separator'], $BeerContainers));
+
+                    return;
+                }
+            }
+        }
+    }
 }

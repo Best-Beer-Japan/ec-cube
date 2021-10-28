@@ -82,10 +82,10 @@ services:
 
   ### Corpse API ##################################
   api: &api_base
-    build: ./corpse-api-brewery
+    build: ./corpse-api-bbj
     command: /bin/bash -c "rm -f /app/tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0"
     volumes:
-      - "./corpse-api-brewery:/app"
+      - "./corpse-api-bbj:/app"
     ports:
       - "3000:3000"
     tty: true
@@ -98,9 +98,6 @@ services:
       SECRET_KEY_BASE: ${SECRET_KEY_BASE}
       RAILS_DATABASE: ${DB}
       RAILS_DATABASE_PASSWORD: ${DB_PASSWORD}
-      BREWERY_ID: ${BREWERY_ID}
-      FILE_DOMAIN: https://${DOMAIN}
-      RAILS_MATOME_EC_HOST: ${URL_MATOME}
       REDIS_URL: redis://redis:6379
     restart: always
 
