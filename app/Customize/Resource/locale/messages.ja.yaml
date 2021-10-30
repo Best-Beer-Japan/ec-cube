@@ -4,6 +4,8 @@ front.entry.warning_message: |
 front.entry.agree_over_twenty: "私は20歳以上です。"
 front.entry.agree_invoice_shipment_date_base_check: "請求書は出荷日ベースで翌月末になります。"
 
+front.shopping.checkout.corpse_equest_api.brewery_not_stock: "在庫が不足している為、購入処理を中止します。"
+
 common.customize_store_name: 店舗名
 common.customize_account_name: 振込名義
 
