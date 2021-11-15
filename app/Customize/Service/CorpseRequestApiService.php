@@ -6,6 +6,8 @@ use Eccube\Common\EccubeConfig;
 
 class CorpseRequestApiService
 {
+    protected $curl = null;
+
     /**
      * @var EccubeConfig
      */
@@ -22,22 +24,12 @@ class CorpseRequestApiService
         $this->eccubeConfig = $eccubeConfig;
     }
 
-    /**
-     * API request processing
-     *
-     * @param string $url
-     * @param bool $post
-     */
-    public function requestApi(string $url, bool $post = false)
-    {
-        if (true !== $this->eccubeConfig['corpse_api_is_enable']) {
-            return;
-        }
+    private function setCurl(string $url, bool $post = false) {
 
-        $curl = curl_init($url);
+        $this->curl = curl_init($url);
 
         if ($post) {
-            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($this->curl, CURLOPT_POST, 1);
         }
 
         // Option array
@@ -51,18 +43,69 @@ class CorpseRequestApiService
         ];
 
         // Set option value
-        curl_setopt_array($curl, $options);
+        curl_setopt_array($this->curl, $options);
+    }
 
-        curl_exec($curl);
-        $info = curl_getinfo($curl);
-        $message = curl_error($curl);
+    private function execCurl() {
+        curl_exec($this->curl);
+
+        $info = curl_getinfo($this->curl);
+
+        $message = curl_error($this->curl);
         $info['message'] = $message;
-        curl_close($curl);
+
+        curl_close($this->curl);
+
+        return $info;
+    }
+
+    /**
+     * API request processing
+     *
+     * @param string $url
+     * @param bool $post
+     */
+    public function requestApi(string $url, bool $post = false)
+    {
+        if (true !== $this->eccubeConfig['corpse_api_is_enable']) {
+            return;
+        }
+
+        $this->setCurl($url, $post);
+
+        $info = $this->execCurl();
 
         if ($info['http_code'] !== 200) {
             log_error('http corpse_request_api', [$url, $info]);
         } else {
             log_info('http corpse_request_api', [$url]);
+        }
+    }
+
+    /**
+     * API request processing
+     *
+     * @param string $url
+     * @param bool $post
+     */
+    public function orderRequestApi(string $url, bool $post = false)
+    {
+        if (true !== $this->eccubeConfig['corpse_api_is_enable']) {
+            return true;
+        }
+
+        $this->setCurl($url, $post);
+
+        $info = $this->execCurl();
+
+        if ($info['http_code'] !== 200) {
+            log_error('http corpse_order_request_api', [$url, $info]);
+
+            return false;
+        } else {
+            log_info('http corpse_order_request_api', [$url]);
+
+            return true;
         }
     }
 }
