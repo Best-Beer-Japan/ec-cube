@@ -3,7 +3,6 @@
 namespace Customize\Form\Extension;
 
 use Customize\Entity\BeerContainer;
-use Customize\Entity\ProductBeerContainer;
 use Customize\Form\Type\Master\BeerStyleType;
 use Customize\Form\Type\Master\BeerTypeType;
 use Customize\Repository\BeerContainerRepository;
@@ -14,7 +13,6 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -107,40 +105,6 @@ class ProductTypePublishDateExtension extends AbstractTypeExtension
                 $BeerContainers[] = $ProductBeerContainer->getBeerContainer();
             }
             $form['BeerContainer']->setData($BeerContainers);
-        });
-
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-            $form = $event->getForm();
-            $Product = $event->getData();
-
-            $BeerContainers = $form->get('BeerContainer')->getData();
-
-/*
-            if (0 == count($BeerContainers)) {
-                $form['BeerContainer']->addError(new FormError(trans('admin.common.file_select_empty')));
-
-                return;
-            }
-*/
-
-            // 容器の情報を一度リセット
-            foreach ($Product->getProductBeerContainers() as $ProductBeerContainer) {
-                $Product->removeProductBeerContainer($ProductBeerContainer);
-                $this->entityManager->remove($ProductBeerContainer);
-            }
-            $this->entityManager->flush();
-
-            // 容器の情報を登録
-            foreach ($BeerContainers as $BeerContainer) {
-                $ProductBeerContainer = new ProductBeerContainer();
-                $ProductBeerContainer->setProductId($Product->getId())
-                    ->setBeerContainerId($BeerContainer->getId())
-                    ->setProduct($Product)
-                    ->setBeerContainer($BeerContainer);
-
-                $this->entityManager->persist($ProductBeerContainer);
-                $Product->addProductBeerContainer($ProductBeerContainer);
-            }
         });
     }
 
