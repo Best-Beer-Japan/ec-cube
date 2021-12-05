@@ -54,8 +54,22 @@ file that was distributed with this source code.
                     },
                 });
 
+                $('input.datetimepicker-input-month').datetimepicker({
+                    locale: '{{ eccube_config.locale }}',
+                    format: 'YYYY-MM',
+                    useCurrent: false,
+                    buttons: {
+                        showToday: true,
+                        showClose: true
+                    },
+                });
+
                 // datetimepicker で value が消えてしまうので更新
                 $('input.datetimepicker-input').each(function() {
+                    $(this).val($(this).data('value'));
+                });
+
+                $('input.datetimepicker-input-month').each(function() {
                     $(this).val($(this).data('value'));
                 });
             });
@@ -401,7 +415,32 @@ file that was distributed with this source code.
                             </div>
                         </div>
                     </div>
+                    <div class="col">
+                        <div class="form-row">
+                            <div class="col-12">
+                                <label class="col-form-label"  data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.customize_billing_date'|trans }}">{{ 'admin.order.change_billing_date'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
+                                {{ form_widget(searchForm.customize_billing_date,  { 'label_attr': { 'class': 'checkbox-inline' }}) }}
+                                {{ form_errors(searchForm.customize_billing_date) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
                     <div class="col"></div>
+                    <div class="col">
+                        <label class="col-form-label">{{ 'admin.order.customize_billing_date'|trans }}</label>
+                        <div class="form-row align-items-center">
+                            <div class="col">
+                                {{ form_widget(searchForm.order_customize_billing_datetime_start) }}
+                                {{ form_errors(searchForm.order_customize_billing_datetime_start) }}
+                            </div>
+                            <div class="col-auto text-center">{{ 'admin.common.separator__range'|trans }}</div>
+                            <div class="col">
+                                {{ form_widget(searchForm.order_customize_billing_datetime_end) }}
+                                {{ form_errors(searchForm.order_customize_billing_datetime_end) }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 {# エンティティ拡張の自動出力 #}
