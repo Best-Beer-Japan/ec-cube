@@ -2,165 +2,41 @@
 
 namespace Customize\Controller\Admin\Order;
 
-use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\ExportCsvRow;
-use Eccube\Entity\Master\CsvType;
-use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
-use Eccube\Entity\OrderPdf;
-use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
-use Eccube\Form\Type\Admin\OrderPdfType;
-use Eccube\Form\Type\Admin\SearchOrderType;
-use Eccube\Repository\CustomerRepository;
-use Eccube\Repository\Master\OrderStatusRepository;
-use Eccube\Repository\Master\PageMaxRepository;
-use Eccube\Repository\Master\ProductStatusRepository;
-use Eccube\Repository\Master\SexRepository;
-use Eccube\Repository\OrderPdfRepository;
-use Eccube\Repository\OrderRepository;
-use Eccube\Repository\PaymentRepository;
-use Eccube\Repository\ProductStockRepository;
+use Eccube\Repository\Master\CsvTypeRepository;
 use Eccube\Service\CsvExportService;
-use Eccube\Service\MailService;
-// use Eccube\Service\OrderPdfService;
-use Customize\Service\OrderCustomPdfService as OrderPdfService;
-use Eccube\Service\OrderStateMachine;
-use Eccube\Service\PurchaseFlow\PurchaseFlow;
-use Eccube\Util\FormUtil;
-use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class OrderController extends AbstractController
 {
-    /**
-     * @var PurchaseFlow
-     */
-    protected $purchaseFlow;
-
     /**
      * @var CsvExportService
      */
     protected $csvExportService;
 
     /**
-     * @var CustomerRepository
+     * @var CsvTypeRepository
      */
-    protected $customerRepository;
-
-    /**
-     * @var PaymentRepository
-     */
-    protected $paymentRepository;
-
-    /**
-     * @var SexRepository
-     */
-    protected $sexRepository;
-
-    /**
-     * @var OrderStatusRepository
-     */
-    protected $orderStatusRepository;
-
-    /**
-     * @var PageMaxRepository
-     */
-    protected $pageMaxRepository;
-
-    /**
-     * @var ProductStatusRepository
-     */
-    protected $productStatusRepository;
-
-    /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
-
-    /** @var OrderPdfRepository */
-    protected $orderPdfRepository;
-
-    /**
-     * @var ProductStockRepository
-     */
-    protected $productStockRepository;
-
-    /** @var OrderPdfService */
-    protected $orderPdfService;
-
-    /**
-     * @var ValidatorInterface
-     */
-    protected $validator;
-
-    /**
-     * @var OrderStateMachine
-     */
-    protected $orderStateMachine;
-
-    /**
-     * @var MailService
-     */
-    protected $mailService;
+    protected $csvTypeRepository;
 
     /**
      * OrderController constructor.
      *
-     * @param PurchaseFlow $orderPurchaseFlow
      * @param CsvExportService $csvExportService
-     * @param CustomerRepository $customerRepository
-     * @param PaymentRepository $paymentRepository
-     * @param SexRepository $sexRepository
-     * @param OrderStatusRepository $orderStatusRepository
-     * @param PageMaxRepository $pageMaxRepository
-     * @param ProductStatusRepository $productStatusRepository
-     * @param ProductStockRepository $productStockRepository
-     * @param OrderRepository $orderRepository
-     * @param OrderPdfRepository $orderPdfRepository
-     * @param ValidatorInterface $validator
-     * @param OrderStateMachine $orderStateMachine ;
+     * @param CsvTypeRepository $csvTypeRepository
      */
     public function __construct(
-        PurchaseFlow $orderPurchaseFlow,
         CsvExportService $csvExportService,
-        CustomerRepository $customerRepository,
-        PaymentRepository $paymentRepository,
-        SexRepository $sexRepository,
-        OrderStatusRepository $orderStatusRepository,
-        PageMaxRepository $pageMaxRepository,
-        ProductStatusRepository $productStatusRepository,
-        ProductStockRepository $productStockRepository,
-        OrderRepository $orderRepository,
-        OrderPdfRepository $orderPdfRepository,
-        ValidatorInterface $validator,
-        OrderStateMachine $orderStateMachine,
-        MailService $mailService
+        CsvTypeRepository $csvTypeRepository
     ) {
-        $this->purchaseFlow = $orderPurchaseFlow;
         $this->csvExportService = $csvExportService;
-        $this->customerRepository = $customerRepository;
-        $this->paymentRepository = $paymentRepository;
-        $this->sexRepository = $sexRepository;
-        $this->orderStatusRepository = $orderStatusRepository;
-        $this->pageMaxRepository = $pageMaxRepository;
-        $this->productStatusRepository = $productStatusRepository;
-        $this->productStockRepository = $productStockRepository;
-        $this->orderRepository = $orderRepository;
-        $this->orderPdfRepository = $orderPdfRepository;
-        $this->validator = $validator;
-        $this->orderStateMachine = $orderStateMachine;
-        $this->mailService = $mailService;
+        $this->csvTypeRepository = $csvTypeRepository;
     }
 
     /**
@@ -207,5 +83,112 @@ class OrderController extends AbstractController
         }
 
         return $this->json(array_merge(['status' => 'OK'], $result));
+    }
+
+    /**
+     * 請求CSVの出力.
+     *
+     * @Route("/%eccube_admin_route%/customize/order/export/billing_date", name="admin_customize_order_export_billing_date")
+     *
+     * @param Request $request
+     *
+     * @return StreamedResponse
+     */
+    public function exportShipping(Request $request)
+    {
+        $filename = 'billing_date_'.(new \DateTime())->format('YmdHis').'.csv';
+        $CsvType = $this->csvTypeRepository->findOneBy(['name' => '請求CSV']);
+        $response = $this->exportCsv($request, $CsvType->getId(), $filename);
+        log_info('請求CSV出力ファイル名', [$filename]);
+
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     * @param $csvTypeId
+     * @param string $fileName
+     *
+     * @return StreamedResponse
+     */
+    protected function exportCsv(Request $request, $csvTypeId, $fileName)
+    {
+        // タイムアウトを無効にする.
+        set_time_limit(0);
+
+        // sql loggerを無効にする.
+        $em = $this->entityManager;
+        $em->getConfiguration()->setSQLLogger(null);
+
+        $response = new StreamedResponse();
+        $response->setCallback(function () use ($request, $csvTypeId) {
+            // CSV種別を元に初期化.
+            $this->csvExportService->initCsvType($csvTypeId);
+
+            // ヘッダ行の出力.
+            $this->csvExportService->exportHeader();
+
+            // 受注データ検索用のクエリビルダを取得.
+            $qb = $this->csvExportService
+                ->getOrderQueryBuilder($request);
+
+            $qb->leftJoin('o.Customer', 'c');
+            $qb->orderBy('c.id', 'ASC');
+            $qb->addorderBy('o.id', 'ASC');
+
+            // データ行の出力.
+            $this->csvExportService->setExportQueryBuilder($qb);
+            $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
+                $Csvs = $csvService->getCsvs();
+
+                $Order = $entity;
+                $OrderItems = $Order->getOrderItems();
+
+                foreach ($OrderItems as $OrderItem) {
+                    $ExportCsvRow = new ExportCsvRow();
+
+                    // CSV出力項目と合致するデータを取得.
+                    foreach ($Csvs as $Csv) {
+                        // 受注データを検索.
+                        $ExportCsvRow->setData($csvService->getData($Csv, $Order));
+                        if ($ExportCsvRow->isDataNull()) {
+                            // 受注データにない場合は, 受注明細を検索.
+                            $ExportCsvRow->setData($csvService->getData($Csv, $OrderItem));
+                        }
+                        if ($ExportCsvRow->isDataNull() && $Shipping = $OrderItem->getShipping()) {
+                            // 受注明細データにない場合は, 出荷を検索.
+                            $ExportCsvRow->setData($csvService->getData($Csv, $Shipping));
+                        }
+                        if ($ExportCsvRow->isDataNull() && $Product = $OrderItem->getProduct()) {
+                            // 受注明細データにない場合は, 商品を検索.
+                            $ExportCsvRow->setData($csvService->getData($Csv, $Product));
+                        }
+
+                        $event = new EventArgs(
+                            [
+                                'csvService' => $csvService,
+                                'Csv' => $Csv,
+                                'OrderItem' => $OrderItem,
+                                'ExportCsvRow' => $ExportCsvRow,
+                            ],
+                            $request
+                        );
+                        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_CSV_EXPORT_ORDER, $event);
+
+                        $ExportCsvRow->pushData();
+                    }
+
+                    //$row[] = number_format(memory_get_usage(true));
+                    // 出力.
+                    $csvService->fputcsv($ExportCsvRow->getRow());
+                }
+            });
+        });
+
+        $response->headers->set('Content-Type', 'application/octet-stream');
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$fileName);
+        $response->send();
+
+        return $response;
     }
 }
