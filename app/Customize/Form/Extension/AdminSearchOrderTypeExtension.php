@@ -43,9 +43,9 @@ class AdminSearchOrderTypeExtension extends AbstractTypeExtension
             ])
             ->add('customize_billing_date', ChoiceType::class, [
                 'label' => 'admin.order.customize_billing_date',
-                'placeholder' => 'admin.common.select__unspecified',
+                'placeholder' => '請求月の範囲を指定',
                 'choices' => [
-                    '未設定' => 1,
+                    '未設定の請求月' => 1,
                 ],
                 'required' => false,
                 'expanded' => false,

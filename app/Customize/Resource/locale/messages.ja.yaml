@@ -24,7 +24,7 @@ admin.order.order_customize_billing_date__end: 請求月(終了)
 admin.order.orderer_customize_store_name: 注文者店舗名
 admin.order.customize_order_no_section: BBJ注文番号
 
-tooltip.order.customize_billing_date: 未設定を選択すると、請求月で設定された範囲は無視され、請求月が設定されてないデータを検索します。
+tooltip.order.customize_billing_date: 未設定の請求月を選択すると、請求月で設定された範囲は無視され、請求月が設定されてないデータを検索します。
 
 admin.product.alcohol_percentage: アルコール度数
 admin.product.product_csv.alcohol_percentage: アルコール度数
