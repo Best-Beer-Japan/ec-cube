@@ -54,6 +54,10 @@
                     updater = new BulkBillingUpdate(modal, eventTarget);
                     modal.modal();
                     break;
+                case 'billing_lift':
+                    updater = new BulkBillingLift(modal, eventTarget);
+                    modal.modal();
+                    break;
                 default:
                 case 'status':
                     if (eventTarget.data('bulk-update')) {
@@ -244,6 +248,35 @@
                     var url = $(this).data('update-billing-url');
                     var data = {'billing_year': $('#option_billing_year').val(),'billing_month': $('#option_billing_month').val()};
                     return ConfirmationModal.prototype.getPromises.call(this, progress, url, data);
+                });
+            }
+        }
+    });
+    /*
+     * 請求月一括解除
+     */
+    function BulkBillingLift(modal, eventTarget) {
+        ConfirmationModal.call(this, modal);
+        this.eventTarget = eventTarget;
+    }
+    // extend super class
+    BulkBillingLift.prototype = Object.create(ConfirmationModal.prototype, {
+        constructor: {
+            value: ConfirmationModal
+        },
+        modalTitle: {
+            value: "{{ 'admin.order.change_billing_date'|trans }}"
+        },
+        getTotalCount: {
+            value: function () {
+                return $('input[data-id]:checked').length;
+            }
+        },
+        getPromises: {
+            value: function (progress) {
+                return $('input[data-id]:checked').map(function () {
+                    var url = $(this).data('lift-billing-url');
+                    return ConfirmationModal.prototype.getPromises.call(this, progress, url);
                 });
             }
         }

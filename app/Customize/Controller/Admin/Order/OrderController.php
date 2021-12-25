@@ -86,6 +86,37 @@ class OrderController extends AbstractController
     }
 
     /**
+     * Update to order status
+     *
+     * @Route("/%eccube_admin_route%/order/{id}/billing_date/lift", requirements={"id" = "\d+"}, name="admin_order_lift_billing_date", methods={"PUT"})
+     *
+     * @param Request $request
+     * @param Order $Order
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function liftOrderBilling(Request $request, Order $Order)
+    {
+        if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
+            return $this->json(['status' => 'NG'], 400);
+        }
+
+        try {
+            $Order->setCustomizeBillingMonthDate(null);
+            $this->entityManager->persist($Order);
+            $this->entityManager->flush();
+
+            log_info('請求月一括変更処理完了', [$Order->getId()]);
+        } catch (\Exception $e) {
+            log_error('予期しないエラーです', [$e->getMessage()]);
+
+            return $this->json(['status' => 'NG'], 500);
+        }
+
+        return $this->json(array_merge(['status' => 'OK']));
+    }
+
+    /**
      * 請求CSVの出力.
      *
      * @Route("/%eccube_admin_route%/customize/order/export/billing_date", name="admin_customize_order_export_billing_date")

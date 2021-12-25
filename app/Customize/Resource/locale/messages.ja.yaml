@@ -7,6 +7,7 @@ common.customize_store_name: 店舗名
 common.customize_account_name: 振込名義
 
 admin.common.billing_decision: 請求月を決定
+admin.common.billing_lift: 請求月を解除
 admin.common.customize_store_name: 店舗名
 admin.common.customize_account_name: 振込名義
 admin.common.company_and_customize_store_name: 会社・店舗名

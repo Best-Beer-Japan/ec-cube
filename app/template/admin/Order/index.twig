@@ -516,6 +516,9 @@ file that was distributed with this source code.
                                 <button type="button" id="btn_billing_month" class="btn btn-ec-regular mr-2 progressModal" data-type="billing" data-bulk-update="true" data-submit="bulk">
                                     {{ 'admin.common.billing_decision'|trans }}
                                 </button>
+                                <button type="button" id="btn_billing_lift" class="btn btn-ec-regular mr-2 progressModal" data-type="billing_lift" data-bulk-update="true" data-submit="bulk">
+                                    {{ 'admin.common.billing_lift'|trans }}
+                                </button>
                             </div>
                         </div>
                         <div class="row justify-content-between mb-2">
@@ -622,6 +625,7 @@ file that was distributed with this source code.
                                                            data-notify-mail-url="{{ url('admin_shipping_notify_mail', { id: Shipping.id}) }}"
                                                            data-update-status-url="{{ url('admin_shipping_update_order_status', { id: Shipping.id}) }}"
                                                            data-update-billing-url="{{ url('admin_order_update_billing_date', { id: Order.id}) }}"
+                                                           data-lift-billing-url="{{ url('admin_order_lift_billing_date', { id: Order.id}) }}"
                                                     />
                                                 </td>
                                                 <td class="align-middle text-left">
