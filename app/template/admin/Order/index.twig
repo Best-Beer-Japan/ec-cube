@@ -44,6 +44,10 @@ file that was distributed with this source code.
                     $(this).data('value', $(this).val());
                 });
 
+                $('input.datetimepicker-input-month').each(function() {
+                    $(this).data('value', $(this).val());
+                });
+
                 $('input.datetimepicker-input').datetimepicker({
                     locale: '{{ eccube_config.locale }}',
                     format: 'YYYY-MM-DD HH:mm:ss',
@@ -54,8 +58,22 @@ file that was distributed with this source code.
                     },
                 });
 
+                $('input.datetimepicker-input-month').datetimepicker({
+                    locale: '{{ eccube_config.locale }}',
+                    format: 'YYYY-MM',
+                    useCurrent: false,
+                    buttons: {
+                        showToday: true,
+                        showClose: true
+                    },
+                });
+
                 // datetimepicker で value が消えてしまうので更新
                 $('input.datetimepicker-input').each(function() {
+                    $(this).val($(this).data('value'));
+                });
+
+                $('input.datetimepicker-input-month').each(function() {
                     $(this).val($(this).data('value'));
                 });
             });
@@ -401,7 +419,32 @@ file that was distributed with this source code.
                             </div>
                         </div>
                     </div>
+                    <div class="col">
+                        <div class="form-row">
+                            <div class="col-12">
+                                <label class="col-form-label"  data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.customize_billing_date'|trans }}">{{ 'admin.order.change_billing_date'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
+                                {{ form_widget(searchForm.customize_billing_date,  { 'label_attr': { 'class': 'checkbox-inline' }}) }}
+                                {{ form_errors(searchForm.customize_billing_date) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
                     <div class="col"></div>
+                    <div class="col">
+                        <label class="col-form-label">{{ 'admin.order.customize_billing_date'|trans }}</label>
+                        <div class="form-row align-items-center">
+                            <div class="col">
+                                {{ form_widget(searchForm.order_customize_billing_datetime_start) }}
+                                {{ form_errors(searchForm.order_customize_billing_datetime_start) }}
+                            </div>
+                            <div class="col-auto text-center">{{ 'admin.common.separator__range'|trans }}</div>
+                            <div class="col">
+                                {{ form_widget(searchForm.order_customize_billing_datetime_end) }}
+                                {{ form_errors(searchForm.order_customize_billing_datetime_end) }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 {# エンティティ拡張の自動出力 #}
@@ -449,11 +492,39 @@ file that was distributed with this source code.
 
                     <form id="form_bulk" method="POST" action="">
                         <input type="hidden" name="{{ constant('Eccube\\Common\\Constant::TOKEN_NAME') }}" value="{{ csrf_token(constant('Eccube\\Common\\Constant::TOKEN_NAME')) }}">
+                        <div class="row justify-content-between mb-2 d-none btn-bulk-wrapper">
+                            <div class="col-12">
+                                <label class="mr-2" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.bulk_actions'|trans }}">{{ 'admin.common.bulk_actions'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-inline-block mr-2">
+                                    <select class="custom-select" id="option_billing_year">
+                                        <option value="" selected>年</option>
+                                        {% for year in "now"|date("Y")-1.."now"|date("Y")+1 %}
+                                            <option value="{{ year }}">{{ year }}月</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="d-inline-block mr-2">
+                                    <select class="custom-select" id="option_billing_month">
+                                        <option value="" selected>月</option>
+                                        {% for month in 1..12 %}
+                                            <option value="{{ month }}">{{ '%02s'|format(month) }}月</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <button type="button" id="btn_billing_month" class="btn btn-ec-regular mr-2 progressModal" data-type="billing" data-bulk-update="true" data-submit="bulk">
+                                    {{ 'admin.common.billing_decision'|trans }}
+                                </button>
+                                <button type="button" id="btn_billing_lift" class="btn btn-ec-regular mr-2 progressModal" data-type="billing_lift" data-bulk-update="true" data-submit="bulk">
+                                    {{ 'admin.common.billing_lift'|trans }}
+                                </button>
+                            </div>
+                        </div>
                         <div class="row justify-content-between mb-2">
                             <div class="col-7">
                                 <div class="row justify-content-between">
                                     <div class="col-auto d-none btn-bulk-wrapper">
-                                        <label class="mr-2" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.bulk_actions'|trans }}">{{ 'admin.common.bulk_actions'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
                                         <button id="bulkSendMail" type="button" class="btn btn-ec-regular mr-2" data-type="mail" data-bulk-update="true">
                                             {{ 'admin.order.send_mail'|trans }}
                                         </button>
@@ -499,6 +570,9 @@ file that was distributed with this source code.
                                                 <a class="dropdown-item" href="{{ url('admin_order_export_shipping') }}" id="shippingCsvDownload">
                                                     {{ 'admin.order.shipping_csv'|trans }}
                                                 </a>
+                                                <a class="dropdown-item" href="{{ url('admin_customize_order_export_billing_date') }}" id="billingDateCsvDownload">
+                                                    {{ 'admin.order.billing_date_csv'|trans }}
+                                                </a>
                                             </div>
                                         </div>
 
@@ -531,7 +605,7 @@ file that was distributed with this source code.
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.common.company_and_customize_store_name'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.orderer'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center text-nowrap">{{ 'admin.common.payment_method'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.order_status'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.order_status'|trans }} / {{ 'admin.order.change_billing_date_title'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.purchase_price'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.message_short'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center text-nowrap">{{ 'admin.order.shipping_status'|trans }}</th>
@@ -550,6 +624,8 @@ file that was distributed with this source code.
                                                            data-preview-notify-mail-url="{{ url('admin_shipping_preview_notify_mail', { id: Shipping.id}) }}"
                                                            data-notify-mail-url="{{ url('admin_shipping_notify_mail', { id: Shipping.id}) }}"
                                                            data-update-status-url="{{ url('admin_shipping_update_order_status', { id: Shipping.id}) }}"
+                                                           data-update-billing-url="{{ url('admin_order_update_billing_date', { id: Order.id}) }}"
+                                                           data-lift-billing-url="{{ url('admin_order_lift_billing_date', { id: Order.id}) }}"
                                                     />
                                                 </td>
                                                 <td class="align-middle text-left">
@@ -566,6 +642,7 @@ file that was distributed with this source code.
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span class="badge badge-ec-blue" style="background-color: #fff; color: {{ Order.OrderStatusColor }}; border-color: {{ Order.OrderStatusColor }}">{{ Order.OrderStatus }}</span>
+                                                    {% if Order.customize_billing_month_date is not empty %}<br>{{ Order.customize_billing_month_date|date('Y年m月') }}{% endif %}
                                                 </td>
                                                 <td class="align-middle text-right">
                                                     {{ Order.payment_total|price }}<br>
