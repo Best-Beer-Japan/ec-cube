@@ -130,7 +130,8 @@ class CorpseNewReleaseController extends AbstractController
 
         $qb = $this->productRepository
             ->createQueryBuilder('p')
-            ->where('p.update_date > :update_date')
+            ->where('p.Status = 1')
+            ->andWhere('p.update_date > :update_date')
             ->andWhere('p.list_open_flag = 1')
             //->orderBy('p.update_date', 'DESC')
             ->setMaxResults(4)
