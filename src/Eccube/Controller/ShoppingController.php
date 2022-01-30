@@ -13,6 +13,7 @@
 
 namespace Eccube\Controller;
 
+use Customize\Service\CorpseRequestApiService;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Order;
 use Eccube\Entity\Shipping;
@@ -47,6 +48,11 @@ class ShoppingController extends AbstractShoppingController
     protected $cartService;
 
     /**
+     * @var CorpseRequestApiService
+     */
+    protected $corpseRequestApiService;
+
+    /**
      * @var MailService
      */
     protected $mailService;
@@ -63,11 +69,13 @@ class ShoppingController extends AbstractShoppingController
 
     public function __construct(
         CartService $cartService,
+        CorpseRequestApiService $corpseRequestApiService,
         MailService $mailService,
         OrderRepository $orderRepository,
         OrderHelper $orderHelper
     ) {
         $this->cartService = $cartService;
+        $this->corpseRequestApiService = $corpseRequestApiService;
         $this->mailService = $mailService;
         $this->orderRepository = $orderRepository;
         $this->orderHelper = $orderHelper;
@@ -360,6 +368,14 @@ class ShoppingController extends AbstractShoppingController
 
                 if ($response) {
                     return $response;
+                }
+
+                // Breweryへ在庫確保の問い合わせ POST <まとめECドメイン>/api/post_orders/:まとめEC注文ID
+                $url = $request->getUriForPath('/api/post_orders/'.$Order->getId());
+
+                if (false === $this->corpseRequestApiService->orderRequestApi($url, true)) {
+                    $this->addError('front.shopping.checkout.corpse_equest_api.brewery_not_stock');
+                    return $this->redirectToRoute('shopping_error');
                 }
 
                 log_info('[注文処理] PaymentMethodを取得します.', [$Order->getPayment()->getMethodClass()]);
