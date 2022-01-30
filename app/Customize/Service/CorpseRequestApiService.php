@@ -77,4 +77,31 @@ class CorpseRequestApiService
             log_info('http corpse_request_api', [$url]);
         }
     }
+
+    /**
+     * API request processing
+     *
+     * @param string $url
+     * @param bool $post
+     */
+    public function orderRequestApi(string $url, bool $post = false)
+    {
+        if (true !== $this->eccubeConfig['corpse_api_is_enable']) {
+            return true;
+        }
+
+        $this->setCurl($url, $post);
+
+        $info = $this->execCurl();
+
+        if ($info['http_code'] !== 200) {
+            log_error('http corpse_order_request_api', [$url, $info]);
+
+            return false;
+        } else {
+            log_info('http corpse_order_request_api', [$url]);
+
+            return true;
+        }
+    }
 }
