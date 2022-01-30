@@ -43,11 +43,15 @@ class CorpseRequestApiService
         ];
 
         // Set option value
-        curl_setopt_array($curl, $options);
+        curl_setopt_array($this->curl, $options);
+    }
 
-        curl_exec($curl);
-        $info = curl_getinfo($curl);
-        $message = curl_error($curl);
+    private function execCurl() {
+        curl_exec($this->curl);
+
+        $info = curl_getinfo($this->curl);
+
+        $message = curl_error($this->curl);
         $info['message'] = $message;
 
         curl_close($this->curl);
