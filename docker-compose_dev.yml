@@ -107,6 +107,28 @@ services:
       - sidekiq
     command: redis-server --appendonly yes
 
+  sidekiq:
+    <<: *api_base
+    command: ["bundle", "exec", "sidekiq", "-C", "config/sidekiq.yml"]
+    volumes:
+      - "./corpse-api-brewery:/app"
+      - "./dockerconfig/sidekiq/sidekiq.yml:/app/config/sidekiq.yml"
+    ports:
+      - "3030:3000"
+    networks:
+      - backend
+      - sidekiq
+    depends_on:
+      - "redis"
+
+  redis:
+    image: redis:4.0
+    volumes:
+      - "redis:/data"
+    networks:
+      - sidekiq
+    command: redis-server --appendonly yes
+
   mysql:
     image: mysql:5.7
     environment:

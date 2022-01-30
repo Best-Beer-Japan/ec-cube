@@ -256,7 +256,7 @@ class OrderCustomPdfService extends TcpdfFpdi
 
             // マジックノートの処理をする
             $formData['note1'] = '';
-            $formData['note4'] = $Order->getOrderNoSection();
+            $formData['note4'] = $Order->getCustomizeOrderNoSection();
             if ($this->magicNote) {
                 $shippingDeliveryDate = $Shipping->getShippingDeliveryDate();
                 $shippingDeliveryTime = $Shipping->getShippingDeliveryTime();

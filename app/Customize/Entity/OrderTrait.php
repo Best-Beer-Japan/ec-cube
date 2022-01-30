@@ -32,6 +32,13 @@ trait OrderTrait
     private $customize_order_no_section;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="customize_billing_month_date", type="datetimetz", nullable=true)
+     */
+    private $customize_billing_month_date;
+
+    /**
      * Set customize_store_name.
      *
      * @param string|null $customize_store_name
@@ -101,5 +108,29 @@ trait OrderTrait
     public function getCustomizeOrderNoSection(): ?string
     {
         return $this->customize_order_no_section;
+    }
+
+    /**
+     * Set customize_billing_month_date.
+     *
+     * @param \DateTime|null $customize_billing_month_date
+     *
+     * @return self
+     */
+    public function setCustomizeBillingMonthDate(?\DateTime $customize_billing_month_date): self
+    {
+        $this->customize_billing_month_date = $customize_billing_month_date;
+
+        return $this;
+    }
+
+    /**
+     * Get customize_billing_month_date.
+     *
+     * @return \DateTime|null
+     */
+    public function getCustomizeBillingMonthDate(): ?\DateTime
+    {
+        return $this->customize_billing_month_date;
     }
 }
