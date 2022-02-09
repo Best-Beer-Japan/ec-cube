@@ -16,7 +16,7 @@ trait ProductTrait
     /**
      * @var string|null
      *
-     * @ORM\Column(name="alcohol_percentage ", type="decimal", precision=5, scale=2, nullable=true)
+     * @ORM\Column(name="alcohol_percentage", type="decimal", precision=5, scale=2, nullable=true)
      */
     private $alcohol_percentage;
 
