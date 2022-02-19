@@ -49,3 +49,17 @@ front.product.alcohol_percentage: アルコール度数
 
 tooltip.product.bbj_price: BBJ卸価格です。
 admin.product.bbj_price: BBJ価格
+
+customize.admin.setting.shop.invoice_setting: 請求書設定
+customize.admin.setting.shop.financial_info: 振込先設定
+customize.admin.setting.shop.invoice.registration_number: 登録番号
+customize.admin.setting.shop.invoice.shop_name: 店名
+customize.admin.setting.shop.invoice.person_in_charge_name: 担当者名
+customize.admin.setting.shop.invoice.financial_institution_name: 金融機関名
+customize.admin.setting.shop.invoice.branch_name: 支店名
+customize.admin.setting.shop.invoice.account_type: 口座種類
+customize.admin.setting.shop.invoice.account_type.001: 普通
+customize.admin.setting.shop.invoice.account_type.002: 当座
+customize.admin.setting.shop.invoice.account_number: 口座番号
+customize.admin.setting.shop.invoice.account_holder_name: 口座名義
+

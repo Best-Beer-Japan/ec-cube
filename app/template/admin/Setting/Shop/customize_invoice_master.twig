@@ -1,0 +1,171 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['setting', 'shop', 'customize_shop_invoice'] %}
+
+{% block title %}{{ 'customize.admin.setting.shop.invoice_setting'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.setting.shop'|trans }}{% endblock %}
+
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
+
+{% block javascript %}
+    <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
+{% endblock %}
+
+{% block main %}
+    <form name="form1" role="form" class="form-horizontal h-adr" id="point_form" method="post" action="">
+        <span class="p-country-name" style="display:none;">Japan</span>
+
+        {{ form_widget(form._token) }}
+
+        <div class="c-contentsArea__cols">
+            <div class="c-contentsArea__primaryCol">
+                <div class="c-primaryCol">
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{ 'admin.setting.shop.shop.base_info'|trans }}</span></div>
+                        <div id="ex-shop-basic" class="card-body">
+                            <div class="row mb-2">
+                                <div class="col-3"><span>{{ 'customize.admin.setting.shop.invoice.registration_number'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.registration_number) }}
+                                    {{ form_errors(form.registration_number) }}
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-3"><span>{{ 'admin.common.company_name'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.company_name) }}
+                                    {{ form_errors(form.company_name) }}
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-3"><span>{{ 'customize.admin.setting.shop.invoice.shop_name'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.shop_name) }}
+                                    {{ form_errors(form.shop_name) }}
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-3"><span>{{ 'customize.admin.setting.shop.invoice.person_in_charge_name'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.person_in_charge_name) }}
+                                    {{ form_errors(form.person_in_charge_name) }}
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-3"><span>{{ 'admin.common.address'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    <div class="mb-2">
+                                        <div class="row justify-content-start">
+                                            <div class="col-auto text-center pr-0"><span class="align-middle">{{ 'admin.common.postal_symbol'|trans }}</span></div>
+                                            <div class="col-2">
+                                                {{ form_widget(form.postal_code) }}
+                                            </div>
+                                            {{ form_errors(form.postal_code) }}
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <div class="row justify-content-start">
+                                            <div class="col-3">
+                                                {{ form_widget(form.address.pref) }}
+                                                {{ form_errors(form.address.pref) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        {{ form_widget(form.address.addr01) }}
+                                        {{ form_errors(form.address.addr01) }}
+                                    </div>
+                                    <div class="mb-2">
+                                        {{ form_widget(form.address.addr02) }}
+                                        {{ form_errors(form.address.addr02) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-3"><span>{{ 'admin.common.phone_number'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col">
+                                    {{ form_widget(form.phone_number) }}
+                                    {{ form_errors(form.phone_number) }}
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-3"><span>{{ 'admin.common.mail_address'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col">
+                                    {{ form_widget(form.email) }}
+                                    {{ form_errors(form.email) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{ 'customize.admin.setting.shop.financial_info'|trans }}</span></div>
+                        <div id="ex-shop-basic" class="card-body">
+                            <div class="row mb-2">
+                                <div class="col-3"><span>{{ 'customize.admin.setting.shop.invoice.financial_institution_name'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.financial_institution_name) }}
+                                    {{ form_errors(form.financial_institution_name) }}
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-3"><span>{{ 'customize.admin.setting.shop.invoice.branch_name'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.branch_name) }}
+                                    {{ form_errors(form.branch_name) }}
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-3"><span>{{ 'customize.admin.setting.shop.invoice.account_type'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.account_type) }}
+                                    {{ form_errors(form.account_type) }}
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-3"><span>{{ 'customize.admin.setting.shop.invoice.account_number'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.account_number) }}
+                                    {{ form_errors(form.account_number) }}
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-3"><span>{{ 'customize.admin.setting.shop.invoice.account_holder_name'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.account_holder_name) }}
+                                    {{ form_errors(form.account_holder_name) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="c-conversionArea">
+            <div class="c-conversionArea__container">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-6">
+                        <div class="c-conversionArea__leftBlockItem">
+                        </div>
+                    </div>
+                    <div id="ex-conversion-action" class="col-6">
+                        <div class="row align-items-center justify-content-end">
+                            <div class="col-auto">
+                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.registration'|trans }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
