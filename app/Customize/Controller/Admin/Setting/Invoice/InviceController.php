@@ -1,6 +1,6 @@
 <?php
 
-namespace Customize\Controller\Admin\Setting\Shop;
+namespace Customize\Controller\Admin\Setting\Invoice;
 
 use Customize\Form\Type\Admin\InvoiceMasterType;
 use Customize\Repository\InvoiceRepository;
@@ -30,8 +30,8 @@ class InviceController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/customize/setting/shop/invoice", name="customize_admin_setting_shop_invoice")
-     * @Template("@admin/Setting/Shop/customize_invoice_master.twig")
+     * @Route("/%eccube_admin_route%/customize/setting/invoice", name="customize_admin_setting_invoice")
+     * @Template("@admin/Setting/Invoice/customize_invoice_master.twig")
      *
      * @param Request $request
      *
@@ -52,7 +52,7 @@ class InviceController extends AbstractController
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 
-            return $this->redirectToRoute('customize_admin_setting_shop_invoice');
+            return $this->redirectToRoute('customize_admin_setting_invoice');
         }
 
         return [

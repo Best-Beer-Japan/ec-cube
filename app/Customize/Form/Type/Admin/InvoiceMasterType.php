@@ -104,8 +104,8 @@ class InvoiceMasterType extends AbstractType
             ])
             ->add('account_type', ChoiceType::class, [
                 'choices' => [
-                    'customize.admin.setting.shop.invoice.account_type.001' => 1,
-                    'customize.admin.setting.shop.invoice.account_type.002' => 2,
+                    'customize.admin.setting.invice.invoice.account_type.001' => 1,
+                    'customize.admin.setting.invice.invoice.account_type.002' => 2,
                 ],
                 'expanded' => true,
                 'multiple' => false,

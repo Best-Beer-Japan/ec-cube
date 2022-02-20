@@ -10,10 +10,10 @@ file that was distributed with this source code.
 #}
 {% extends '@admin/default_frame.twig' %}
 
-{% set menus = ['setting', 'shop', 'customize_shop_invoice'] %}
+{% set menus = ['setting', 'customize_invoice', 'customize_invoice_index'] %}
 
-{% block title %}{{ 'customize.admin.setting.shop.invoice_setting'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.setting.shop'|trans }}{% endblock %}
+{% block title %}{{ 'customize.admin.setting.invice.invoice_setting'|trans }}{% endblock %}
+{% block sub_title %}{{ 'customize.admin.setting.invice'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -34,7 +34,7 @@ file that was distributed with this source code.
                         <div class="card-header"><span>{{ 'admin.setting.shop.shop.base_info'|trans }}</span></div>
                         <div id="ex-shop-basic" class="card-body">
                             <div class="row mb-2">
-                                <div class="col-3"><span>{{ 'customize.admin.setting.shop.invoice.registration_number'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col-3"><span>{{ 'customize.admin.setting.invice.invoice.registration_number'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.registration_number) }}
                                     {{ form_errors(form.registration_number) }}
@@ -48,14 +48,14 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col-3"><span>{{ 'customize.admin.setting.shop.invoice.shop_name'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col-3"><span>{{ 'customize.admin.setting.invice.invoice.shop_name'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.shop_name) }}
                                     {{ form_errors(form.shop_name) }}
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col-3"><span>{{ 'customize.admin.setting.shop.invoice.person_in_charge_name'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col-3"><span>{{ 'customize.admin.setting.invice.invoice.person_in_charge_name'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.person_in_charge_name) }}
                                     {{ form_errors(form.person_in_charge_name) }}
@@ -108,38 +108,38 @@ file that was distributed with this source code.
                         </div>
                     </div>
                     <div class="card rounded border-0 mb-4">
-                        <div class="card-header"><span>{{ 'customize.admin.setting.shop.financial_info'|trans }}</span></div>
+                        <div class="card-header"><span>{{ 'customize.admin.setting.invice.financial_info'|trans }}</span></div>
                         <div id="ex-shop-basic" class="card-body">
                             <div class="row mb-2">
-                                <div class="col-3"><span>{{ 'customize.admin.setting.shop.invoice.financial_institution_name'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col-3"><span>{{ 'customize.admin.setting.invice.invoice.financial_institution_name'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.financial_institution_name) }}
                                     {{ form_errors(form.financial_institution_name) }}
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col-3"><span>{{ 'customize.admin.setting.shop.invoice.branch_name'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col-3"><span>{{ 'customize.admin.setting.invice.invoice.branch_name'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.branch_name) }}
                                     {{ form_errors(form.branch_name) }}
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col-3"><span>{{ 'customize.admin.setting.shop.invoice.account_type'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col-3"><span>{{ 'customize.admin.setting.invice.invoice.account_type'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.account_type) }}
                                     {{ form_errors(form.account_type) }}
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col-3"><span>{{ 'customize.admin.setting.shop.invoice.account_number'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col-3"><span>{{ 'customize.admin.setting.invice.invoice.account_number'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.account_number) }}
                                     {{ form_errors(form.account_number) }}
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col-3"><span>{{ 'customize.admin.setting.shop.invoice.account_holder_name'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col-3"><span>{{ 'customize.admin.setting.invice.invoice.account_holder_name'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.account_holder_name) }}
                                     {{ form_errors(form.account_holder_name) }}

@@ -14,11 +14,12 @@ class CustomizeNav implements EccubeNav
         return [
             'setting' => [
                 'children' => [
-                    'shop' => [
+                    'customize_invoice' => [
+                        'name' => 'customize.admin.setting.invice',
                         'children' => [
-                            'customize_shop_invoice' => [
-                                'name' => 'customize.admin.setting.shop.invoice_setting',
-                                'url' => 'customize_admin_setting_shop_invoice',
+                            'customize_invoice_index' => [
+                                'name' => 'customize.admin.setting.invice.invoice_setting',
+                                'url' => 'customize_admin_setting_invoice',
                             ],
                         ],
                     ],
