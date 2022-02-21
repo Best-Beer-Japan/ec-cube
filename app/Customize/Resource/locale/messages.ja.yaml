@@ -12,6 +12,7 @@ admin.common.customize_store_name: 店舗名
 admin.common.customize_account_name: 振込名義
 admin.common.company_and_customize_store_name: 会社・店舗名
 
+
 admin.customer.multi_search_label: 会員ID・メールアドレス・お名前・会社名・店舗名
 admin.customer.customer_info_warning_message: 会社名、住所、電話番号は<span class="text-danger">「ご請求先」</span>のデータを入力ください。
 
@@ -24,6 +25,7 @@ admin.order.order_customize_billing_date__start: 請求月(開始)
 admin.order.order_customize_billing_date__end: 請求月(終了)
 admin.order.orderer_customize_store_name: 注文者店舗名
 admin.order.customize_order_no_section: BBJ注文番号
+admin.order.buy_date: 購入日
 
 tooltip.order.customize_billing_date: 未設定の請求月を選択すると、請求月で設定された範囲は無視され、請求月が設定されてないデータを検索します。
 
@@ -56,6 +58,7 @@ admin.product.bbj_price: BBJ価格
 customize.admin.setting.invice: 請求書設定
 customize.admin.setting.invice.invoice_setting: 基本設定
 customize.admin.setting.invice.financial_info: 振込先設定
+customize.admin.setting.invice.invoice_billing: 請求一覧
 
 customize.admin.setting.invice.invoice.registration_number: 登録番号
 customize.admin.setting.invice.invoice.shop_name: 店名

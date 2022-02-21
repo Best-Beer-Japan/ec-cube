@@ -21,6 +21,10 @@ class CustomizeNav implements EccubeNav
                                 'name' => 'customize.admin.setting.invice.invoice_setting',
                                 'url' => 'customize_admin_setting_invoice',
                             ],
+                            'customize_invoice_billing' => [
+                                'name' => 'customize.admin.setting.invice.invoice_billing',
+                                'url' => 'customize_admin_setting_invoice_billing',
+                            ],
                         ],
                     ],
                 ],

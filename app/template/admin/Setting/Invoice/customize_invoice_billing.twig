@@ -1,0 +1,93 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['setting', 'customize_invoice', 'customize_invoice_list'] %}
+
+{% block title %}{{ 'customize.admin.setting.invice.invoice_setting'|trans }}{% endblock %}
+{% block sub_title %}{{ 'customize.admin.setting.invice'|trans }}{% endblock %}
+
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
+
+{% block main %}
+    <div class="c-outsideBlock">
+        <form id='form1' method="post" action="{{ url('customize_admin_setting_invoice_billing') }}">
+            {{ form_widget(form._token) }}
+            <div class="c-outsideBlock__contents">
+                <div class="row justify-content-start">
+
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <div class="form-inline">
+                                {{ form_widget(form.year) }} 年
+                                {{ form_widget(form.month) }} 月
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="c-outsideBlock__contents mb-5">
+                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.search'|trans }}</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <div class="card rounded border-0 mb-4 d-block">
+                    <div class="card-body p-0">
+                        <table class="table table-sm">
+                            <thead>
+                            <tr>
+                                <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.customer.customer_id'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2 text-center">{{ 'common.company_name'|trans }} / {{ 'common.customize_store_name'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.common.name'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.order_status'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.purchase_price'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.buy_date'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2 text-center"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for Order in Orders %}
+                                <tr id="ex-">
+                                    <td class="align-middle text-center pl-3 pr-3 pt-3 pb-3">
+                                        {{ Order.Customer.id }}
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        {{ Order.Customer.company_name }}{% if Order.Customer.company_name %}<br>{% endif %}{{ Order.Customer.customize_store_name }}
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        {{ Order.Customer.name01 }}{{ Order.Customer.name02 }}
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        <span class="badge badge-ec-blue" style="background-color: #fff; color: {{ Order.OrderStatusColor }}; border-color: {{ Order.OrderStatusColor }}">{{ Order.OrderStatus }}</span>
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        {{ Order.payment_total|price }}
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        {{ Order.order_date|date_min }}
+                                    </td>
+                                    <td class="align-middle pr-3" colspan="3">
+
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
