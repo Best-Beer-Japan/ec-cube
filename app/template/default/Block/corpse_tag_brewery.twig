@@ -1,0 +1,23 @@
+<div class="ec-corpse-tagBreweryRole">
+    <div class="ec-role">
+        <div class="ec-corpse-tagBreweryRole__Heading">
+            醸造所一覧
+        </div>
+        {% for Tag in Tags %}
+            {% if loop.first %}
+                <div class="ec-corpse-tagBreweryRole__list">
+            {% endif %}
+            <a href="{{ url('product_list') }}?tag_ids[]={{ Tag.id }}">
+                <div class="ec-corpse-tagBreweryRole__listItem">
+                    <i class="ec-corpse-tagBreweryRole__itemIcon fas fa-beer fa-fw"></i>{{ Tag.name }}
+                </div>
+            </a>
+            {% if loop.last != true and loop.index % 3 == 0%}
+                </div>
+                <div class="ec-corpse-tagBreweryRole__list">
+            {% elseif loop.last %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

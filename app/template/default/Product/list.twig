@@ -209,24 +209,50 @@ file that was distributed with this source code.
                                 <p class="ec-shelfGrid__item-image">
                                     <img src="{{ asset(Product.main_list_image|no_image_product, 'save_image') }}">
                                 </p>
-                                <p>{{ Product.name }}</p>
-                                {% if Product.description_list %}
-                                    <p>{{ Product.description_list|raw|nl2br }}</p>
-                                {% endif %}
-                                <p class="price02-default">
-                                    {% if is_granted('ROLE_USER') %}
-                                        {% if Product.hasProductClass %}
-                                            {% if Product.getPrice02Min == Product.getPrice02Max %}
-                                                {{ Product.getPrice02IncTaxMin|price }}
-                                            {% else %}
-                                                {{ Product.getPrice02IncTaxMin|price }} ～ {{ Product.getPrice02IncTaxMax|price }}
-                                            {% endif %}
-                                        {% else %}
-                                            {{ Product.getPrice02IncTaxMin|price }}
-                                        {% endif %}
-                                    {% endif %}
-                                </p>
                             </a>
+
+                            {# 醸造所 -start- #}
+                            {% set CorpseTagBrewerys = Product.CorpseTags([eccube_config.corpse_tag_brewery_group_no]) %}
+                            {% if CorpseTagBrewerys|length > 0 %}
+                                {% for CorpseTagBrewery in CorpseTagBrewerys %}
+                                    <p class="ec-shelfGrid__breweryName">{{ CorpseTagBrewery.name }}</p>
+                                {% endfor %}
+                            {% endif %}
+                            {# 醸造所 -end- #}
+
+                            <p>{{ Product.name }}</p>
+
+                            {# ミックスパック 容器 ビアスタイル -start- #}
+                            {% set CorpseTagContainers = Product.CorpseTags([eccube_config.corpse_tag_container_group_no, eccube_config.corpse_tag_style_group_no, eccube_config.corpse_tag_mixpack_group_no]) %}
+                            {% if CorpseTagContainers|length > 0 %}
+                                <ul class="ec-shelfGrid__tags">
+                                    {% for CorpseTagContainer in CorpseTagContainers %}
+                                        <li class="ec-shelfGrid__tag tag_{{ CorpseTagContainer.id }}">
+                                            <a href="{{ url('customize_tag_search_item', {'operation': 'add', 'tag_id': CorpseTagContainer.id}) }}" {{ csrf_token_for_anchor() }} class="load-overlay" style="text-decoration:none;color:#525263;" data-method="put" data-confirm="false">
+                                                {{ CorpseTagContainer }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                            {# ミックスパック 容器 ビアスタイル -end- #}
+
+                            {% if Product.description_list %}
+                                <p>{{ Product.description_list|raw|nl2br }}</p>
+                            {% endif %}
+                            <p class="price02-default">
+                                {% if is_granted('ROLE_USER') %}
+                                    {% if Product.hasProductClass %}
+                                        {% if Product.getPrice02Min == Product.getPrice02Max %}
+                                            {{ Product.getPrice02IncTaxMin|price }}
+                                        {% else %}
+                                            {{ Product.getPrice02IncTaxMin|price }} ～ {{ Product.getPrice02IncTaxMax|price }}
+                                        {% endif %}
+                                    {% else %}
+                                        {{ Product.getPrice02IncTaxMin|price }}
+                                    {% endif %}
+                                {% endif %}
+                            </p>
 
                             {% if is_granted('ROLE_USER') %}
                                 {% if Product.stock_find %}

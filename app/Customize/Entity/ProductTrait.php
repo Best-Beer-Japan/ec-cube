@@ -7,12 +7,46 @@ use Customize\Entity\Master\BeerType;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Annotation\EntityExtension;
+use Eccube\Entity\Tag;
 
 /**
  * @EntityExtension("Eccube\Entity\Product")
  */
 trait ProductTrait
 {
+    /**
+     * Get Tag
+     * フロント側タグsort_no順の配列を作成する
+     * @param array $groups 表示するグループナンバー
+     *
+     * @return array
+     */
+    public function getCorpseTags(array $groups = []): array
+    {
+        $tags = [];
+
+        foreach ($this->getProductTag() as $productTag) {
+            $Tag = $productTag->getTag();
+
+            if (in_array($Tag->getGroupNo(), $groups)) {
+                $tags[] = $Tag;
+            }
+        }
+
+        usort($tags, function (Tag $tag1, Tag $tag2) {
+            return $tag1->getSortNo() < $tag2->getSortNo();
+        });
+
+        return $tags;
+    }
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="original_id", type="integer", nullable=true, options={"unsigned":true})
+     */
+    private $original_id;
+
     /**
      * @var string|null
      *
@@ -46,11 +80,45 @@ trait ProductTrait
     private $BeerType;
 
     /**
+     * @var BeerType
+     *
+     * @ORM\ManyToOne(targetEntity="Customize\Entity\Brewery")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="brewery_id", referencedColumnName="id")
+     * })
+     */
+    private $Brewery;
+
+    /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Customize\Entity\ProductBeerContainer", mappedBy="Product", cascade={"persist","remove"})
      */
     private $ProductBeerContainers;
+
+    /**
+     * Set original_id.
+     *
+     * @param int|null $original_id
+     *
+     * @return self
+     */
+    public function setOriginalProductId(?int $original_id): self
+    {
+        $this->original_id = $original_id;
+
+        return $this;
+    }
+
+    /**
+     * Get original_id.
+     *
+     * @return int|null
+     */
+    public function getOriginalProductId(): ?int
+    {
+        return $this->original_id;
+    }
 
     /**
      * Set alcohol_percentage.
@@ -146,6 +214,30 @@ trait ProductTrait
     public function getBeerType(): ?BeerType
     {
         return $this->BeerType;
+    }
+
+    /**
+     * Set Brewery.
+     *
+     * @param Brewery|null $Brewery
+     *
+     * @return self
+     */
+    public function setBrewery(?Brewery $Brewery): self
+    {
+        $this->Brewery = $Brewery;
+
+        return $this;
+    }
+
+    /**
+     * Get Brewery.
+     *
+     * @return Brewery|null
+     */
+    public function getBrewery(): ?Brewery
+    {
+        return $this->Brewery;
     }
 
     /**
