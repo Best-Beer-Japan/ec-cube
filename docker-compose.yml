@@ -68,8 +68,8 @@ services:
     networks:
       - backend
     environment:
-      VIRTUAL_HOST: abcbrewery.bestbeerjapan.com
-      LETSENCRYPT_HOST: abcbrewery.bestbeerjapan.com
+      VIRTUAL_HOST: kaiganbrewery.bestbeerjapan.com
+      LETSENCRYPT_HOST: kaiganbrewery.bestbeerjapan.com
       LETSENCRYPT_EMAIL: sysadmin@bestbeerjapan.com
     restart: always
 
