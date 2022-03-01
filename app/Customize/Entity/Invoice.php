@@ -126,6 +126,20 @@ if (!class_exists('\Customize\Entity\Invoice')) {
         private $registration_number;
 
         /**
+         * @var int|null
+         *
+         * @ORM\Column(name="payment_deadline_month", type="integer", nullable=true, options={"unsigned":true})
+         */
+        private $payment_deadline_month;
+
+        /**
+         * @var int|null
+         *
+         * @ORM\Column(name="payment_deadline_day", type="integer", nullable=true, options={"unsigned":true})
+         */
+        private $payment_deadline_day;
+
+        /**
          * @var Pref
          *
          * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
@@ -480,6 +494,54 @@ if (!class_exists('\Customize\Entity\Invoice')) {
         public function getRegistrationNumber(): ?string
         {
             return $this->registration_number;
+        }
+
+        /**
+         * Set paymentDeadlineMonth.
+         *
+         * @param int|null $paymentDeadlineMonth
+         *
+         * @return Invoice
+         */
+        public function setPaymentDeadlineMonth(?int $paymentDeadlineMonth): Invoice
+        {
+            $this->payment_deadline_month = $paymentDeadlineMonth;
+
+            return $this;
+        }
+
+        /**
+         * Get paymentDeadlineMonth.
+         *
+         * @return int|null
+         */
+        public function getPaymentDeadlineMonth(): ?int
+        {
+            return $this->payment_deadline_month;
+        }
+
+        /**
+         * Set paymentDeadlineDay.
+         *
+         * @param int|null $paymentDeadlineDay
+         *
+         * @return Invoice
+         */
+        public function setPaymentDeadlineDay(?int $paymentDeadlineDay): Invoice
+        {
+            $this->payment_deadline_day = $paymentDeadlineDay;
+
+            return $this;
+        }
+
+        /**
+         * Get paymentDeadlineDay.
+         *
+         * @return int|null
+         */
+        public function getPaymentDeadlineDay(): ?int
+        {
+            return $this->payment_deadline_day;
         }
 
         /**

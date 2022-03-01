@@ -71,3 +71,8 @@ customize.admin.setting.invice.invoice.account_type.002: 当座
 customize.admin.setting.invice.invoice.account_number: 口座番号
 customize.admin.setting.invice.invoice.account_holder_name: 口座名義
 
+customize.admin.setting.invice.invoice.payment_deadline: お支払い期限
+customize.admin.setting.invice.invoice.payment_deadline_month.001: 当月
+customize.admin.setting.invice.invoice.payment_deadline_month.002: 翌月
+customize.admin.setting.invice.invoice.payment_deadline_month.003: 翌々月
+customize.admin.setting.invice.invoice.payment_deadline_day.032: 末日

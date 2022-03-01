@@ -6,3 +6,9 @@ parameters:
 
   brewery_api_is_enable: true          #brewery(各社EC)のAPIの有効・無効
   corpse_api_is_enable: false           #corpse(まとめEC)のAPIの有効・無効
+
+  invoice_payment_deadline_month_001: 1    #当月
+  invoice_payment_deadline_month_002: 2    #翌月
+  invoice_payment_deadline_month_003: 3    #翌々月
+
+  invoice_payment_deadline_day_032: 32      #末日

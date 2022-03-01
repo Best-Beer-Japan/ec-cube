@@ -145,6 +145,22 @@ file that was distributed with this source code.
                                     {{ form_errors(form.account_holder_name) }}
                                 </div>
                             </div>
+                            <div class="row mb-2">
+                                <div class="col-3">
+                                    <span>{{ 'customize.admin.setting.invice.invoice.payment_deadline'|trans }}</span>
+                                    <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                </div>
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col">
+                                            {{ form_widget(form.payment_deadline_month) }}
+                                        </div>
+                                        <div class="col">
+                                            {{ form_widget(form.payment_deadline_day) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

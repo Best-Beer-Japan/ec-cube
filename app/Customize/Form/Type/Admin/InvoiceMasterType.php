@@ -144,7 +144,36 @@ class InvoiceMasterType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('payment_deadline_month', ChoiceType::class, [
+                'placeholder' => 'admin.common.select',
+                'choices' => [
+                    'customize.admin.setting.invice.invoice.payment_deadline_month.001' => 1,
+                    'customize.admin.setting.invice.invoice.payment_deadline_month.002' => 2,
+                    'customize.admin.setting.invice.invoice.payment_deadline_month.003' => 3,
+                ],
+                'expanded' => false,
+                'multiple' => false,
+                'constraints' => [
+                    new Assert\NotBlank(),
+                ],
+            ])
         ;
+
+        for ($i = 1; $i < 32; $i++) {
+            $days[sprintf('%02d', $i).'日'] = $i;
+        }
+        $days[trans('customize.admin.setting.invice.invoice.payment_deadline_day.032')] = $this->eccubeConfig['invoice_payment_deadline_day_032'];
+
+        $builder
+            ->add('payment_deadline_day', ChoiceType::class, [
+                'placeholder' => 'admin.common.select',
+                'choices' => $days,
+                'expanded' => false,
+                'multiple' => false,
+                'constraints' => [
+                    new Assert\NotBlank(),
+                ],
+            ]);
     }
 
     /**
