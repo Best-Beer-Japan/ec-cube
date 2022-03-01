@@ -79,6 +79,20 @@ if (!class_exists('\Customize\Entity\Invoice')) {
         /**
          * @var string|null
          *
+         * @ORM\Column(name="logo_image", type="text", nullable=true)
+         */
+        private $logo_image;
+
+        /**
+         * @var string|null
+         *
+         * @ORM\Column(name="imprint_image", type="text", nullable=true)
+         */
+        private $imprint_image;
+
+        /**
+         * @var string|null
+         *
          * @ORM\Column(name="person_in_charge_name", type="string", length=255, nullable=true)
          */
         private $person_in_charge_name;
@@ -326,6 +340,54 @@ if (!class_exists('\Customize\Entity\Invoice')) {
         public function getEmail(): ?string
         {
             return $this->email;
+        }
+
+        /**
+         * Set logoImage.
+         *
+         * @param string|null $logoImage
+         *
+         * @return Invoice
+         */
+        public function setLogoImage(?string $logoImage): Invoice
+        {
+            $this->logo_image = $logoImage;
+
+            return $this;
+        }
+
+        /**
+         * Get logoImage.
+         *
+         * @return string|null
+         */
+        public function getLogoImage(): ?string
+        {
+            return $this->logo_image;
+        }
+
+        /**
+         * Set imprintImage.
+         *
+         * @param string|null $imprintImage
+         *
+         * @return Invoice
+         */
+        public function setImprintImage(?string $imprintImage): Invoice
+        {
+            $this->imprint_image = $imprintImage;
+
+            return $this;
+        }
+
+        /**
+         * Get imprintImage.
+         *
+         * @return string|null
+         */
+        public function getImprintImage(): ?string
+        {
+            return $this->imprint_image;
         }
 
         /**

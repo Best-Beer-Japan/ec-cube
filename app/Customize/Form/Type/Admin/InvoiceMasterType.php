@@ -8,8 +8,10 @@ use Eccube\Form\Type\PhoneNumberType;
 use Eccube\Form\Type\PostalType;
 use Eccube\Form\Validator\Email;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -41,6 +43,44 @@ class InvoiceMasterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('logo_image_delete', CheckboxType::class, [
+                'label' => 'common.delete',
+                'required' => false,
+                'mapped' => false,
+            ])
+            ->add('imprint_image_delete', CheckboxType::class, [
+                'label' => 'common.delete',
+                'required' => false,
+                'mapped' => false,
+            ])
+            ->add('logo_image_file', FileType::class, [
+                'label' => false,
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new Assert\File([
+                        'maxSize' => $this->eccubeConfig['invoice_image_max_size'].'k',
+                    ]),
+                    new Assert\File([
+                        'mimeTypes' => ['image/gif', 'image/png', 'image/jpeg'],
+                        'mimeTypesMessage' => trans('admin.store.template.invalid_upload_file'),
+                    ]),
+                ],
+            ])
+            ->add('imprint_image_file', FileType::class, [
+                'label' => false,
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new Assert\File([
+                        'maxSize' => $this->eccubeConfig['invoice_image_max_size'].'k',
+                    ]),
+                    new Assert\File([
+                        'mimeTypes' => ['image/gif', 'image/png', 'image/jpeg'],
+                        'mimeTypesMessage' => trans('admin.store.template.invalid_upload_file'),
+                    ]),
+                ],
+            ])
             ->add('company_name', TextType::class, [
                 'required' => true,
                 'constraints' => [

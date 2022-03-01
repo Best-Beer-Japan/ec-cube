@@ -60,6 +60,24 @@ class InviceController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $logoImageFile = $form['logo_image_file']->getData();
+            if (!empty($logoImageFile)) {
+                $Invoice->setLogoImage('data:'.$logoImageFile->getMimeType().';base64,'.base64_encode(file_get_contents($logoImageFile->getPathname())));
+            } else {
+                if ($form['logo_image_delete']->getData()) {
+                    $Invoice->setLogoImage(null);
+                }
+            }
+
+            $imprintImageFile = $form['imprint_image_file']->getData();
+            if (!empty($imprintImageFile)) {
+                $Invoice->setImprintImage('data:'.$imprintImageFile->getMimeType().';base64,'.base64_encode(file_get_contents($imprintImageFile->getPathname())));
+            } else {
+                if ($form['imprint_image_delete']->getData()) {
+                    $Invoice->setImprintImage(null);
+                }
+            }
+
             $this->entityManager->persist($Invoice);
             $this->entityManager->flush();
 
@@ -70,6 +88,7 @@ class InviceController extends AbstractController
 
         return [
             'form' => $form->createView(),
+            'Invoice' => $Invoice,
         ];
     }
 

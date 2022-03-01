@@ -19,10 +19,33 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
+    <script>
+        $(function() {
+            $('#file-select-logo').click(function() {
+                $('#invoice_master_logo_image_file').click();
+                $('#invoice_master_logo_image_file').on('change', function() {
+                    var files = $(this).prop('files');
+                    if (files.length) {
+                        $('#admin_logo_image_file_name').text(files[0].name);
+                    }
+                });
+            });
+
+            $('#file-select-imprint').click(function() {
+                $('#invoice_master_imprint_image_file').click();
+                $('#invoice_master_imprint_image_file').on('change', function() {
+                    var files = $(this).prop('files');
+                    if (files.length) {
+                        $('#admin_imprint_image_file_name').text(files[0].name);
+                    }
+                });
+            });
+        });
+    </script>
 {% endblock %}
 
 {% block main %}
-    <form name="form1" role="form" class="form-horizontal h-adr" id="point_form" method="post" action="">
+    <form name="form1" role="form" class="form-horizontal h-adr" id="invoice_master_form" method="post" action="" enctype="multipart/form-data">
         <span class="p-country-name" style="display:none;">Japan</span>
 
         {{ form_widget(form._token) }}
@@ -159,6 +182,37 @@ file that was distributed with this source code.
                                             {{ form_widget(form.payment_deadline_day) }}
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{ 'customize.admin.setting.invice.image'|trans }}</span></div>
+                        <div id="ex-shop-basic" class="card-body">
+                            <div class="row mb-2">
+                                <div class="col-3"><span>{{ 'customize.admin.setting.invice.image.logo'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {% if Invoice.logo_image %}
+                                        <div><img src="{{ Invoice.logo_image }}"></div>
+                                        {{ form_widget(form.logo_image_delete) }}
+                                    {% endif %}
+                                    <span id="file-select-logo" class="btn btn-ec-regular mr-2">{{ 'admin.common.file_select'|trans }}</span>
+                                    <span id="admin_logo_image_file_name">{{ 'admin.common.file_select_empty'|trans }}</span>
+                                    {{ form_widget(form.logo_image_file, {'attr': {'accept': 'mage/png,image/jpeg,image/gif', 'class': 'd-none'}}) }}
+                                    {{ form_errors(form.logo_image_file) }}
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-3"><span>{{ 'customize.admin.setting.invice.image.imprint'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {% if Invoice.imprint_image %}
+                                        <div><img src="{{ Invoice.imprint_image }}"></div>
+                                        {{ form_widget(form.imprint_image_delete) }}
+                                    {% endif %}
+                                    <span id="file-select-imprint" class="btn btn-ec-regular mr-2">{{ 'admin.common.file_select'|trans }}</span>
+                                    <span id="admin_imprint_image_file_name">{{ 'admin.common.file_select_empty'|trans }}</span>
+                                    {{ form_widget(form.imprint_image_file, {'attr': {'accept': 'mage/png,image/jpeg,image/gif', 'class': 'd-none'}}) }}
+                                    {{ form_errors(form.imprint_image_file) }}
                                 </div>
                             </div>
                         </div>
