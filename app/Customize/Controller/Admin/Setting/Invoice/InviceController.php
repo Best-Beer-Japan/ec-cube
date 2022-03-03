@@ -104,11 +104,6 @@ class InviceController extends AbstractController
 
         $form = $builder->getForm();
 
-        $dt = Carbon::now();
-
-        $year = $dt->year;
-        $month = $dt->month;
-
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -119,10 +114,23 @@ class InviceController extends AbstractController
                     $month = $form->get('month')->getData();
                 }
             }
+        } else {
+            if ($request->get('resume')) {
+                $year = $this->session->get('eccube.admin.setting.invoice.year');
+                $month = $this->session->get('eccube.admin.setting.invoice.month');
+            } else {
+                $dt = Carbon::now();
+
+                $year = $dt->year;
+                $month = $dt->month;
+            }
+
+            $form->get('year')->setData($year);
+            $form->get('month')->setData($month);
         }
 
         $this->session->set('eccube.admin.setting.invoice.year', $year);
-        $this->session->set('eccube.admin.ordesettingr.invoice.month', $month);
+        $this->session->set('eccube.admin.setting.invoice.month', $month);
 
         //指定の年月
         $searchCustomizeBillingMonthDate = new \DateTime();

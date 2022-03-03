@@ -14,19 +14,16 @@ class InvoiceBillingType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $dt = Carbon::now();
 
         $years = range(2020, $dt->year);
         $months = range(1, 12);
-
 
         $builder
             ->add('year', ChoiceType::class, [
                 'label' => 'admin.customer.birth_month',
                 'placeholder' => '--',
                 'required' => false,
-                'data' => date('Y'),
                 'choices' => array_combine($years, $years),
                 'mapped' => false,
             ])
@@ -34,7 +31,6 @@ class InvoiceBillingType extends AbstractType
                 'label' => 'admin.customer.birth_month',
                 'placeholder' => '--',
                 'required' => false,
-                'data' => date('n'),
                 'choices' => array_combine($months, $months),
                 'mapped' => false,
             ]);
