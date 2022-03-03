@@ -6,6 +6,8 @@ front.entry.agree_over_twenty: "私は20歳以上です。"
 common.customize_store_name: 店舗名
 common.customize_account_name: 振込名義
 
+admin.common.invoice_download: 請求書ダウンロード
+
 admin.common.billing_decision: 請求月を決定
 admin.common.billing_lift: 請求月を解除
 admin.common.customize_store_name: 店舗名

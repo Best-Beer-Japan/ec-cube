@@ -121,6 +121,9 @@ class InviceController extends AbstractController
             }
         }
 
+        $this->session->set('eccube.admin.setting.invoice.year', $year);
+        $this->session->set('eccube.admin.ordesettingr.invoice.month', $month);
+
         //指定の年月
         $searchCustomizeBillingMonthDate = new \DateTime();
         $searchCustomizeBillingMonthDate->setDate($year, $month, 1)->setTime(0, 0, 0);
