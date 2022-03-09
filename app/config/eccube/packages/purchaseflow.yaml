@@ -18,7 +18,7 @@ services:
             - #
                 - '@Eccube\Service\PurchaseFlow\Processor\DeliverySettingValidator' # 配送設定のチェック
                 - '@Eccube\Service\PurchaseFlow\Processor\ProductStatusValidator' # 商品の公開状態のチェック
-                - '@Eccube\Service\PurchaseFlow\Processor\PriceChangeValidator' # 商品価格の変更検知
+                # - '@Eccube\Service\PurchaseFlow\Processor\PriceChangeValidator' # 商品価格の変更検知
                 - '@Eccube\Service\PurchaseFlow\Processor\StockValidator' # 在庫のチェック
                 - '@Eccube\Service\PurchaseFlow\Processor\SaleLimitValidator' # 販売制限数のチェック
 
@@ -60,7 +60,7 @@ services:
             - #
                 - '@Eccube\Service\PurchaseFlow\Processor\DeliverySettingValidator'
                 - '@Eccube\Service\PurchaseFlow\Processor\ProductStatusValidator'
-                - '@Eccube\Service\PurchaseFlow\Processor\PriceChangeValidator'
+                # - '@Eccube\Service\PurchaseFlow\Processor\PriceChangeValidator'
 
     eccube.purchase.flow.shopping.holder_validators:
         class: Doctrine\Common\Collections\ArrayCollection
@@ -157,3 +157,4 @@ services:
             - #
                 - '@Eccube\Service\PurchaseFlow\Processor\StockDiffProcessor'
                 - '@Eccube\Service\PurchaseFlow\Processor\PointDiffProcessor'
+
