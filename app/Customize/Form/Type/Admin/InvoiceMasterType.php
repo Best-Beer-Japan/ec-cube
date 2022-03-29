@@ -90,10 +90,9 @@ class InvoiceMasterType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('shop_name', TextType::class, [
-                'required' => true,
+            ->add('brewery_name', TextType::class, [
+                'required' => false,
                 'constraints' => [
-                    new Assert\NotBlank(),
                     new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
                     ]),

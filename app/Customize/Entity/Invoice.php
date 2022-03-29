@@ -37,9 +37,9 @@ if (!class_exists('\Customize\Entity\Invoice')) {
         /**
          * @var string|null
          *
-         * @ORM\Column(name="shop_name", type="string", length=255, nullable=true)
+         * @ORM\Column(name="brewery_name", type="string", length=255, nullable=true)
          */
-        private $shop_name;
+        private $brewery_name;
 
         /**
          * @var string|null
@@ -199,27 +199,27 @@ if (!class_exists('\Customize\Entity\Invoice')) {
         }
 
         /**
-         * Set shopName.
+         * Set breweryName.
          *
-         * @param string|null $shopName
+         * @param string|null $breweryName
          *
          * @return Invoice
          */
-        public function setShopName(?string $shopName): Invoice
+        public function setBreweryName(?string $breweryName): Invoice
         {
-            $this->shop_name = $shopName;
+            $this->brewery_name = $breweryName;
 
             return $this;
         }
 
         /**
-         * Get shopName.
+         * Get breweryName.
          *
          * @return string|null
          */
-        public function getShopName(): ?string
+        public function getBreweryName(): ?string
         {
-            return $this->shop_name;
+            return $this->brewery_name;
         }
 
         /**

@@ -64,7 +64,7 @@ customize.admin.setting.invice.image: 画像設定
 customize.admin.setting.invice.invoice_billing: 請求一覧
 
 customize.admin.setting.invice.invoice.registration_number: 登録番号
-customize.admin.setting.invice.invoice.shop_name: 店名
+customize.admin.setting.invice.invoice.brewery_name: 醸造所名
 customize.admin.setting.invice.invoice.person_in_charge_name: 担当者名
 customize.admin.setting.invice.invoice.financial_institution_name: 金融機関名
 customize.admin.setting.invice.invoice.branch_name: 支店名
