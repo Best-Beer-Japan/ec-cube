@@ -57,7 +57,13 @@ file that was distributed with this source code.
                         <div class="card-header"><span>{{ 'admin.setting.shop.shop.base_info'|trans }}</span></div>
                         <div id="ex-shop-basic" class="card-body">
                             <div class="row mb-2">
-                                <div class="col-3"><span>{{ 'customize.admin.setting.invice.invoice.registration_number'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'customize.tooltip.invoice.registration_number'|trans }}">
+                                        <span>{{ 'customize.admin.setting.invice.invoice.registration_number'|trans }}</span>
+                                        <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                        <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span>
+                                    </div>
+                                </div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.registration_number) }}
                                     {{ form_errors(form.registration_number) }}
