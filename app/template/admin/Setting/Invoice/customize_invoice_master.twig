@@ -190,7 +190,10 @@ file that was distributed with this source code.
                         <div class="card-header"><span>{{ 'customize.admin.setting.invice.image'|trans }}</span></div>
                         <div id="ex-shop-basic" class="card-body">
                             <div class="row mb-2">
-                                <div class="col-3"><span>{{ 'customize.admin.setting.invice.image.logo'|trans }}</span></div>
+                                <div class="col-3">
+                                    <span>{{ 'customize.admin.setting.invice.image.logo'|trans }}</span>
+                                    <br>{{ 'customize.admin.setting.invice.image_logo_size'|trans }}
+                                </div>
                                 <div class="col mb-2">
                                     {% if Invoice.logo_image %}
                                         <div><img src="{{ Invoice.logo_image }}"></div>
@@ -203,7 +206,10 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col-3"><span>{{ 'customize.admin.setting.invice.image.imprint'|trans }}</span></div>
+                                <div class="col-3">
+                                    <span>{{ 'customize.admin.setting.invice.image.imprint'|trans }}</span>
+                                    <br>{{ 'customize.admin.setting.invice.image_imprint_size'|trans }}
+                                </div>
                                 <div class="col mb-2">
                                     {% if Invoice.imprint_image %}
                                         <div><img src="{{ Invoice.imprint_image }}"></div>
