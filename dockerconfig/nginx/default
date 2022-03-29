@@ -7,10 +7,10 @@ location ^~ /.well-known/acme-challenge/ {
     break;
 }
 
-location ^~ /api/ {
-    proxy_pass http://api:3000/api/;
-}
+# location ^~ /api/ {
+#     proxy_pass http://api:3000/api/;
+# }
 
-location ^~ /sidekiq/ {
-    proxy_pass http://api:3000/sidekiq/;
-}
+# location ^~ /sidekiq/ {
+#     proxy_pass http://api:3000/sidekiq/;
+# }
