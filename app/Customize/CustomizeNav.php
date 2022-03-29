@@ -12,6 +12,14 @@ class CustomizeNav implements EccubeNav
     public static function getNav()
     {
         return [
+            'order' => [
+                'children' => [
+                    'customize_invoice_billing' => [
+                        'name' => 'customize.admin.setting.invice.invoice_billing',
+                        'url' => 'customize_admin_setting_invoice_billing',
+                    ],
+                ],
+            ],
             'setting' => [
                 'children' => [
                     'customize_invoice' => [
@@ -20,10 +28,6 @@ class CustomizeNav implements EccubeNav
                             'customize_invoice_index' => [
                                 'name' => 'customize.admin.setting.invice.invoice_setting',
                                 'url' => 'customize_admin_setting_invoice',
-                            ],
-                            'customize_invoice_billing' => [
-                                'name' => 'customize.admin.setting.invice.invoice_billing',
-                                'url' => 'customize_admin_setting_invoice_billing',
                             ],
                         ],
                     ],
