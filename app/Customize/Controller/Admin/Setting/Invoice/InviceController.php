@@ -9,6 +9,7 @@ use Customize\Repository\InvoiceRepository;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Repository\OrderRepository;
+use Eccube\Util\StringUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -104,6 +105,10 @@ class InviceController extends AbstractController
 
         $form = $builder->getForm();
 
+        $year = null;
+        $month = null;
+        $multi = null;
+
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -112,6 +117,9 @@ class InviceController extends AbstractController
                 }
                 if ($form->get('month')->getData() !== null) {
                     $month = $form->get('month')->getData();
+                }
+                if ($form->get('multi')->getData() !== null) {
+                    $multi = $form->get('multi')->getData();
                 }
             }
         } else {
@@ -129,15 +137,23 @@ class InviceController extends AbstractController
             $form->get('month')->setData($month);
         }
 
+        $this->session->set('eccube.admin.setting.invoice.multi', $multi);
         $this->session->set('eccube.admin.setting.invoice.year', $year);
         $this->session->set('eccube.admin.setting.invoice.month', $month);
 
         //指定の年月
         $searchCustomizeBillingMonthDate = new \DateTime();
-        $searchCustomizeBillingMonthDate->setDate($year, $month, 1)->setTime(0, 0, 0);
+        $searchCustomizeBillingMonthDate->setDate($year, $month, 1)->setTime(0, 0);
 
-        $qb = $this->orderRepository->createQueryBuilder('o');
+        $qb = $this->orderRepository
+            ->createQueryBuilder('o')
+            ->leftJoin('o.Customer', 'c');
 
+        if (null !== $multi) {
+            $qb
+                ->andWhere('c.id = :multi')
+                ->setParameter('multi', $multi);
+        }
         // 購入処理中, 決済処理中は検索対象から除外
         $qb->andWhere($qb->expr()->notIn('o.OrderStatus', ':status'))
             ->setParameter('status', [OrderStatus::PROCESSING, OrderStatus::PENDING]);

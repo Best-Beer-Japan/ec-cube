@@ -10,10 +10,10 @@ file that was distributed with this source code.
 #}
 {% extends '@admin/default_frame.twig' %}
 
-{% set menus = ['setting', 'customize_invoice', 'customize_invoice_list'] %}
+{% set menus = ['order', 'customize_invoice_billing'] %}
 
-{% block title %}{{ 'customize.admin.setting.invice.invoice_setting'|trans }}{% endblock %}
-{% block sub_title %}{{ 'customize.admin.setting.invice'|trans }}{% endblock %}
+{% block title %}{{ 'customize.admin.setting.invice.invoice_billing'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.order.order_management'|trans }}{% endblock %}
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -22,23 +22,31 @@ file that was distributed with this source code.
         <div class="c-contentsArea__primaryCol">
             <div class="c-primaryCol">
 
-                <div class="row justify-content-between mb-2">
-                    <div class="col-7">
+                <div class="row justify-content-start">
+                    <div>
                         <form id='form1' method="post" action="{{ url('customize_admin_setting_invoice_billing') }}">
                             {{ form_widget(form._token) }}
                             <div class="c-outsideBlock__contents">
                                 <div class="row justify-content-start">
-                                    <div class="col-6">
-                                        <div class="form-inline">
-                                            {{ form_widget(form.year) }} 年
-                                            {{ form_widget(form.month) }} 月
-                                            <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.search'|trans }}</button>
+                                    <div class="col">
+                                        <div class="mb-2">
+                                            <label class="col-form-label" data-tooltip="true" data-placement="top" title="{{ 'customize.tooltip.setting.invice.billing.multi_search_label'|trans }}">{{ 'customize.admin.setting.invice.billing.multi_search_label'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
+                                            <div class="form-inline">
+                                                {{ form_widget(form.multi, {'attr': {'style': 'margin-right:5px'}}) }}
+                                                {{ form_errors(form.multi) }}
+                                                {{ form_widget(form.year) }} 年
+                                                {{ form_widget(form.month) }} 月
+                                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.search'|trans }}</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </form>
                     </div>
+                </div>
+                <div class="row justify-content-between mb-2">
+                    <div class="col-6"></div>
                     <div class="col-5 text-right">
                         <div class="d-inline-block">
                             <div class="btn-group" role="group">

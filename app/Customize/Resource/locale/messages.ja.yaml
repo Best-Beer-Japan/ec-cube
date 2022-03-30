@@ -58,6 +58,9 @@ admin.product.bbj_price: BBJ価格
 # 請求書設定
 #------------------------------------------------------------------------------------
 customize.tooltip.invoice.registration_number: 適格請求書発行事業者の登録番号です。
+customize.tooltip.setting.invice.billing.multi_search_label: 情報を入力して一覧の絞り込み検索ができます。
+
+customize.admin.setting.invice.billing.multi_search_label: 会員ID
 
 customize.admin.setting.invice: 請求書設定
 customize.admin.setting.invice.invoice_setting: 基本設定
