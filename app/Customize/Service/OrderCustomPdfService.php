@@ -484,7 +484,7 @@ class OrderCustomPdfService extends TcpdfFpdi
         // 総合計金額
         if (!$Order->isMultiple()) {
             $this->SetFont(self::FONT_SJIS, 'B', 15);
-            $paymentTotalText = $this->price_visible && $this->eccubeExtension->getPriceFilter($Order->getPaymentTotal());
+            $paymentTotalText = $this->price_visible ? $this->eccubeExtension->getPriceFilter($Order->getPaymentTotal()) : '';
 
             $this->setBasePosition(120, 95.5);
             $this->Cell(5, 7, '', 0, 0, '', 0, '');
@@ -541,9 +541,9 @@ class OrderCustomPdfService extends TcpdfFpdi
             // 購入数量
             $arrOrder[$i][1] = number_format($OrderItem->getQuantity());
             // 税込金額（単価）
-            $arrOrder[$i][2] = $this->price_visible && $this->eccubeExtension->getPriceFilter($OrderItem->getPriceIncTax());
+            $arrOrder[$i][2] = $this->price_visible ? $this->eccubeExtension->getPriceFilter($OrderItem->getPriceIncTax()) : '';
             // 小計（商品毎）
-            $arrOrder[$i][3] = $this->price_visible && $this->eccubeExtension->getPriceFilter($OrderItem->getTotalPrice());
+            $arrOrder[$i][3] = $this->price_visible ? $this->eccubeExtension->getPriceFilter($OrderItem->getTotalPrice()) : '';
 
             ++$i;
         }
@@ -563,25 +563,25 @@ class OrderCustomPdfService extends TcpdfFpdi
             $arrOrder[$i][0] = '';
             $arrOrder[$i][1] = '';
             $arrOrder[$i][2] = '商品合計';
-            $arrOrder[$i][3] = $this->price_visible && $this->eccubeExtension->getPriceFilter($Order->getSubtotal());
+            $arrOrder[$i][3] = $this->price_visible ? $this->eccubeExtension->getPriceFilter($Order->getSubtotal()) : '';
 
             ++$i;
             $arrOrder[$i][0] = '';
             $arrOrder[$i][1] = '';
             $arrOrder[$i][2] = '送料';
-            $arrOrder[$i][3] = $this->price_visible && $this->eccubeExtension->getPriceFilter($Order->getDeliveryFeeTotal());
+            $arrOrder[$i][3] = $this->price_visible ? $this->eccubeExtension->getPriceFilter($Order->getDeliveryFeeTotal()) : '';
 
             ++$i;
             $arrOrder[$i][0] = '';
             $arrOrder[$i][1] = '';
             $arrOrder[$i][2] = '手数料';
-            $arrOrder[$i][3] = $this->price_visible && $this->eccubeExtension->getPriceFilter($Order->getCharge());
+            $arrOrder[$i][3] = $this->price_visible ? $this->eccubeExtension->getPriceFilter($Order->getCharge()) : '';
 
             ++$i;
             $arrOrder[$i][0] = '';
             $arrOrder[$i][1] = '';
             $arrOrder[$i][2] = '値引き';
-            $arrOrder[$i][3] = $this->price_visible && $this->eccubeExtension->getPriceFilter($Order->getTaxableDiscount());
+            $arrOrder[$i][3] = $this->price_visible ? $this->eccubeExtension->getPriceFilter($Order->getTaxableDiscount()) : '';
 
             ++$i;
             $arrOrder[$i][0] = '';
@@ -593,14 +593,14 @@ class OrderCustomPdfService extends TcpdfFpdi
             $arrOrder[$i][0] = '';
             $arrOrder[$i][1] = '';
             $arrOrder[$i][2] = '合計';
-            $arrOrder[$i][3] = $this->price_visible && $this->eccubeExtension->getPriceFilter($Order->getTaxableTotal());
+            $arrOrder[$i][3] = $this->price_visible ? $this->eccubeExtension->getPriceFilter($Order->getTaxableTotal()) : '';
 
             foreach ($Order->getTaxableTotalByTaxRate() as $rate => $total) {
                 ++$i;
                 $arrOrder[$i][0] = '';
                 $arrOrder[$i][1] = '';
                 $arrOrder[$i][2] = '('.$rate.'%対象)';
-                $arrOrder[$i][3] = $this->price_visible && $this->eccubeExtension->getPriceFilter($total);
+                $arrOrder[$i][3] = $this->price_visible ? $this->eccubeExtension->getPriceFilter($total) : '';
             }
 
             ++$i;
@@ -614,14 +614,14 @@ class OrderCustomPdfService extends TcpdfFpdi
                 $arrOrder[$i][0] = '';
                 $arrOrder[$i][1] = '';
                 $arrOrder[$i][2] = $Item->getProductName();
-                $arrOrder[$i][3] = $this->price_visible && $this->eccubeExtension->getPriceFilter($Item->getTotalPrice());
+                $arrOrder[$i][3] = $this->price_visible ? $this->eccubeExtension->getPriceFilter($Item->getTotalPrice()) : '';
             }
 
             ++$i;
             $arrOrder[$i][0] = '';
             $arrOrder[$i][1] = '';
             $arrOrder[$i][2] = '請求金額';
-            $arrOrder[$i][3] = $this->price_visible && $this->eccubeExtension->getPriceFilter($Order->getPaymentTotal());
+            $arrOrder[$i][3] = $this->price_visible ? $this->eccubeExtension->getPriceFilter($Order->getPaymentTotal()) : '';
 
             if ($isShowReducedTaxMess) {
                 ++$i;
