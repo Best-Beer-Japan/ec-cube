@@ -24,6 +24,7 @@ use Eccube\Form\Type\Front\ShoppingShippingType;
 use Eccube\Form\Type\Shopping\CustomerAddressType;
 use Eccube\Form\Type\Shopping\OrderType;
 use Eccube\Repository\OrderRepository;
+use Eccube\Repository\PluginRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\MailService;
 use Eccube\Service\OrderHelper;
@@ -61,16 +62,23 @@ class ShoppingController extends AbstractShoppingController
      */
     protected $orderRepository;
 
+    /**
+     * @var PluginRepository
+     */
+    protected $pluginRepository;
+
     public function __construct(
         CartService $cartService,
         MailService $mailService,
         OrderRepository $orderRepository,
-        OrderHelper $orderHelper
+        OrderHelper $orderHelper,
+        PluginRepository $pluginRepository
     ) {
         $this->cartService = $cartService;
         $this->mailService = $mailService;
         $this->orderRepository = $orderRepository;
         $this->orderHelper = $orderHelper;
+        $this->pluginRepository = $pluginRepository;
     }
 
     /**
@@ -108,6 +116,12 @@ class ShoppingController extends AbstractShoppingController
         log_info('[注文手続] 受注の初期化処理を開始します.');
         $Customer = $this->getUser() ? $this->getUser() : $this->orderHelper->getNonMember();
         $Order = $this->orderHelper->initializeOrder($Cart, $Customer);
+
+        $Plugin = $this->pluginRepository->findOneBy(['code' => 'DeliveryFeeExtension', 'enabled' => true]);
+        if (null !== $Plugin) {
+            $OrderDeliveryPaymentHelper = $this->container->get('order.delivery.payment');
+            $OrderDeliveryPaymentHelper->confirmationOrder($Order);
+        }
 
         // 集計処理.
         log_info('[注文手続] 集計処理を開始します.', [$Order->getId()]);
