@@ -34,7 +34,7 @@ class InvoiceBillingType extends AbstractType
     {
         $dt = Carbon::now();
 
-        $years = range(2020, $dt->year);
+        $years = range(2020, $dt->year + 1);
         $months = range(1, 12);
 
         $builder
