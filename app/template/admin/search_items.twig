@@ -23,9 +23,9 @@ file that was distributed with this source code.
                 {%- endfor -%}
             {%- elseif child.vars.name == 'order_customize_billing_datetime_start' or child.vars.name == 'order_customize_billing_datetime_end' -%}
                 {% if 'datetime' in child.vars.id %}
-                    {{ child.vars.data|date_format('', 'Y/m') }}
+                    {{ child.vars.data|date('Y/m') }}
                 {% else %}
-                    {{ child.vars.data|date_format('', 'Y/m') }}
+                    {{ child.vars.data|date('Y/m') }}
                 {% endif %}
             {%- elseif php_is_a(child.vars.data, '\DateTime') -%}
                 {# DateTimeType の時は分まで表示 #}
