@@ -120,7 +120,7 @@ class PurchaseFlow
 
         $flowResult = new PurchaseFlowResult($itemHolder);
 
-        foreach ($itemHolder->getItems() as $item) {
+        foreach ($itemHolder->getItems()->productItemRevers() as $item) {
             foreach ($this->itemValidators as $itemValidator) {
                 $result = $itemValidator->execute($item, $context);
                 $flowResult->addProcessResult($result);
