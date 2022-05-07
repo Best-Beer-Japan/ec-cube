@@ -4,5 +4,12 @@ parameters:
   corpse_tag_style_group_no: 3 #ビアスタイル
   corpse_tag_brewery_group_no: 4 #醸造所
 
-  brewery_api_is_enable: false #brewery(各社EC)のAPIの有効・無効
-  corpse_api_is_enable: false #corpse(まとめEC)のAPIの有効・無効
+  brewery_api_is_enable: false          #brewery(各社EC)のAPIの有効・無効
+  corpse_api_is_enable: false           #corpse(まとめEC)のAPIの有効・無効
+
+  invoice_image_max_size: 50
+  invoice_payment_deadline_month_001: 1    #当月
+  invoice_payment_deadline_month_002: 2    #翌月
+  invoice_payment_deadline_month_003: 3    #翌々月
+
+  invoice_payment_deadline_day_032: 32      #末日

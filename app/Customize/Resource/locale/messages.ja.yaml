@@ -6,11 +6,14 @@ front.entry.agree_over_twenty: "私は20歳以上です。"
 common.customize_store_name: 店舗名
 common.customize_account_name: 振込名義
 
+admin.common.invoice_download: 請求書ダウンロード
+
 admin.common.billing_decision: 請求月を決定
 admin.common.billing_lift: 請求月を解除
 admin.common.customize_store_name: 店舗名
 admin.common.customize_account_name: 振込名義
 admin.common.company_and_customize_store_name: 会社・店舗名
+
 
 admin.customer.multi_search_label: 会員ID・メールアドレス・お名前・会社名・店舗名
 admin.customer.customer_info_warning_message: 会社名、住所、電話番号は<span class="text-danger">「ご請求先」</span>のデータを入力ください。
@@ -24,6 +27,7 @@ admin.order.order_customize_billing_date__start: 請求月(開始)
 admin.order.order_customize_billing_date__end: 請求月(終了)
 admin.order.orderer_customize_store_name: 注文者店舗名
 admin.order.customize_order_no_section: BBJ注文番号
+admin.order.buy_date: 購入日
 
 tooltip.order.customize_billing_date: 未設定の請求月を選択すると、請求月で設定された範囲は無視され、請求月が設定されてないデータを検索します。
 
@@ -49,3 +53,39 @@ front.product.alcohol_percentage: アルコール度数
 
 tooltip.product.bbj_price: BBJ卸価格です。
 admin.product.bbj_price: BBJ価格
+
+#------------------------------------------------------------------------------------
+# 請求書設定
+#------------------------------------------------------------------------------------
+customize.tooltip.invoice.registration_number: 適格請求書発行事業者の登録番号です。
+customize.tooltip.setting.invice.billing.multi_search_label: 情報を入力して一覧の絞り込み検索ができます。
+
+customize.admin.setting.invice.billing.multi_search_label: 会員ID
+
+customize.admin.setting.invice: 請求書設定
+customize.admin.setting.invice.invoice_setting: 基本設定
+customize.admin.setting.invice.financial_info: 振込先設定
+customize.admin.setting.invice.image: 画像設定
+customize.admin.setting.invice.invoice_billing: 請求一覧
+
+customize.admin.setting.invice.invoice.registration_number: 登録番号
+customize.admin.setting.invice.invoice.brewery_name: 醸造所名
+customize.admin.setting.invice.invoice.person_in_charge_name: 担当者名
+customize.admin.setting.invice.invoice.financial_institution_name: 金融機関名
+customize.admin.setting.invice.invoice.branch_name: 支店名
+customize.admin.setting.invice.invoice.account_type: 口座種類
+customize.admin.setting.invice.invoice.account_type.001: 普通
+customize.admin.setting.invice.invoice.account_type.002: 当座
+customize.admin.setting.invice.invoice.account_number: 口座番号
+customize.admin.setting.invice.invoice.account_holder_name: 口座名義
+
+customize.admin.setting.invice.invoice.payment_deadline: お支払い期限
+customize.admin.setting.invice.invoice.payment_deadline_month.001: 当月
+customize.admin.setting.invice.invoice.payment_deadline_month.002: 翌月
+customize.admin.setting.invice.invoice.payment_deadline_month.003: 翌々月
+customize.admin.setting.invice.invoice.payment_deadline_day.032: 末日
+
+customize.admin.setting.invice.image.logo: 会社ロゴ
+customize.admin.setting.invice.image.imprint: 印影
+customize.admin.setting.invice.image_logo_size: 画像サイズは50kb以内
+customize.admin.setting.invice.image_imprint_size: 画像サイズは50kb以内
