@@ -32,6 +32,10 @@ class ProductStatusValidator extends ItemValidator
      */
     protected function validate(ItemInterface $item, PurchaseContext $context)
     {
+        if (method_exists($item, 'getChildren') && $item->isMixPackItem()) {
+            return;
+        }
+
         if ($item->isProduct()) {
             $Product = $item->getProductClass()->getProduct();
             if ($Product->getStatus()->getId() != ProductStatus::DISPLAY_SHOW) {

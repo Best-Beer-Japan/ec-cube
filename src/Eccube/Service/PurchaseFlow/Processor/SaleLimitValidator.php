@@ -35,6 +35,10 @@ class SaleLimitValidator extends ItemValidator
             return;
         }
 
+        if (method_exists($item, 'getChildren') && $item->isMixPackItem()) {
+            return;
+        }
+
         $limit = $item->getProductClass()->getSaleLimit();
         if (is_null($limit)) {
             return;
