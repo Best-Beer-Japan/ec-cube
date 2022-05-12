@@ -64,8 +64,10 @@ class StockMultipleValidator extends ItemHolderValidator
             $stock = $ProductClass->getStock();
 
             if ($stock == 0) {
+                // 在庫数がゼロの場合
                 foreach ($Items as $Item) {
                     $Item->setQuantity(0);
+                    $this->mixpackStockZero($Item);
                 }
                 $this->throwInvalidItemException('front.shopping.out_of_stock_zero', $ProductClass, true);
             }
@@ -75,12 +77,37 @@ class StockMultipleValidator extends ItemHolderValidator
                     $stock = $stock - $Item->getQuantity();
                 } else {
                     $Item->setQuantity($stock);
+                    $this->mixpackStockZero($Item);
                     $stock = 0;
                     $isOver = true;
                 }
             }
             if ($isOver) {
                 $this->throwInvalidItemException('front.shopping.out_of_stock', $ProductClass, true);
+            }
+        }
+    }
+
+    protected function mixpackStockZero($Item) {
+        if (!$Item->isMixPackItem()) {
+            // Mixpack以外は戻す
+            return;
+        }
+
+        if ($Item->isMixPackParentItem()) {
+            // Mixpackの親商品だったら子商品の個数を０に
+            foreach ($Item->getChildren() as $child) {
+                $child->setQuantity(0);
+            }
+        }
+
+        if ($Item->isMixPackChildItem()) {
+            // Mixpackの子商品だったら親商品と子商品を０に
+            $Parent = $Item->getParent();
+            $Parent->setQuantity(0);
+
+            foreach ($Parent->getChildren() as $child) {
+                $child->setQuantity(0);
             }
         }
     }

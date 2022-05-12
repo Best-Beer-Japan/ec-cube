@@ -45,6 +45,9 @@ class SaleLimitMultipleValidator extends ItemHolderValidator
     {
         $OrderItemsByProductClass = [];
         foreach ($itemHolder->getItems() as $Item) {
+            if (method_exists($Item, 'getChildren') && $Item->isMixPackItem()) {
+                continue;
+            }
             if ($Item->isProduct()) {
                 $id = $Item->getProductClass()->getId();
                 $OrderItemsByProductClass[$id][] = $Item;
