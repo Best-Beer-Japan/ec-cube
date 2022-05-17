@@ -3,10 +3,13 @@
 namespace Customize\Event;
 
 use Customize\Service\CorpseRequestApiService;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Event\TemplateEvent;
+use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\TagRepository;
+use Eccube\Util\StringUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -23,6 +26,16 @@ class FrontEvent implements EventSubscriberInterface
     protected $session;
 
     /**
+     * @var EntityManagerInterface
+     */
+    protected $entityManager;
+
+    /**
+     * @var CustomerRepository
+     */
+    protected $customerRepository;
+
+    /**
      * @var TagRepository
      */
     protected $tagRepository;
@@ -32,24 +45,60 @@ class FrontEvent implements EventSubscriberInterface
      *
      * @param CorpseRequestApiService $corpseRequestApiService
      * @param SessionInterface $session
+     * @param EntityManagerInterface $entityManager
+     * @param CustomerRepository $customerRepository
      * @param TagRepository $tagRepository
      */
     public function __construct(
         CorpseRequestApiService $corpseRequestApiService,
         SessionInterface $session,
+        EntityManagerInterface $entityManager,
+        CustomerRepository $customerRepository,
         TagRepository $tagRepository
     ) {
         $this->corpseRequestApiService = $corpseRequestApiService;
         $this->session = $session;
+        $this->entityManager = $entityManager;
+        $this->customerRepository = $customerRepository;
         $this->tagRepository = $tagRepository;
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
+            EccubeEvents::FRONT_ENTRY_INDEX_COMPLETE => ['onFrontEntryIndexComplete', 999999],
+            EccubeEvents::FRONT_MYPAGE_CHANGE_INDEX_COMPLETE => ['onFrontMypageChangeIndexComplete', 999999],
             EccubeEvents::FRONT_SHOPPING_COMPLETE_INITIALIZE => ['onFrontShoppingCompleteInitialize', 999999],
             'Product/list.twig' => ['onTemplateFrontProductList', 999999],
         ];
+    }
+
+    public function onFrontEntryIndexComplete(EventArgs $event)
+    {
+        $Customer = $event->getArgument('Customer');
+
+        if (null === $Customer->getCustomizeInvoiceParentKey()) {
+            // 請求書まとめ親コードが設定されていなければ発行
+            $key = $this->customerRepository->getUniqueCustomizeInvoiceParentKey();
+            $Customer->setCustomizeInvoiceParentKey($key);
+
+            $this->entityManager->persist($Customer);
+            $this->entityManager->flush();
+        }
+    }
+
+    public function onFrontMypageChangeIndexComplete(EventArgs $event)
+    {
+        $Customer = $event->getArgument('Customer');
+
+        if (null === $Customer->getCustomizeInvoiceParentKey()) {
+            // 請求書まとめ親コードが設定されていなければ発行
+            $key = $this->customerRepository->getUniqueCustomizeInvoiceParentKey();
+            $Customer->setCustomizeInvoiceParentKey($key);
+
+            $this->entityManager->persist($Customer);
+            $this->entityManager->flush();
+        }
     }
 
     public function onFrontShoppingCompleteInitialize(EventArgs $event)
