@@ -25,6 +25,13 @@ trait CustomerTrait
     private $customize_account_name;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="customize_invoice_parent_key", type="string", length=255, nullable=true)
+     */
+    private $customize_invoice_parent_key;
+
+    /**
      * Set customize_store_name.
      *
      * @param string|null $customize_store_name
@@ -70,5 +77,29 @@ trait CustomerTrait
     public function getCustomizeAccountName(): ?string
     {
         return $this->customize_account_name;
+    }
+
+    /**
+     * Set customize_invoice_parent_key.
+     *
+     * @param string|null $customize_invoice_parent_key
+     *
+     * @return self
+     */
+    public function setCustomizeInvoiceParentKey(?string $customize_invoice_parent_key): self
+    {
+        $this->customize_invoice_parent_key = $customize_invoice_parent_key;
+
+        return $this;
+    }
+
+    /**
+     * Get customize_invoice_parent_key.
+     *
+     * @return string|null
+     */
+    public function getCustomizeInvoiceParentKey(): ?string
+    {
+        return $this->customize_invoice_parent_key;
     }
 }

@@ -9,6 +9,7 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Repository\CustomerRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class AdminEvent implements EventSubscriberInterface
@@ -24,6 +25,11 @@ class AdminEvent implements EventSubscriberInterface
     protected $entityManager;
 
     /**
+     * @var CustomerRepository
+     */
+    protected $customerRepository;
+
+    /**
      * @var BreweryRequestApiService
      */
     protected $breweryRequestApiService;
@@ -32,24 +38,43 @@ class AdminEvent implements EventSubscriberInterface
      * FrontEvent constructor.
      *
      * @param EccubeConfig $eccubeConfig
+     * @param EntityManagerInterface $entityManager
+     * @param CustomerRepository $customerRepository
      * @param BreweryRequestApiService $breweryRequestApiService
      */
     public function __construct(
         EccubeConfig $eccubeConfig,
         EntityManagerInterface $entityManager,
+        CustomerRepository $customerRepository,
         BreweryRequestApiService $breweryRequestApiService
     ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->entityManager = $entityManager;
+        $this->customerRepository = $customerRepository;
         $this->breweryRequestApiService = $breweryRequestApiService;
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
+            EccubeEvents::ADMIN_CUSTOMER_EDIT_INDEX_COMPLETE => ['onAdminCustomerEditIndexComplete', 999999],
             EccubeEvents::ADMIN_PRODUCT_EDIT_COMPLETE => ['onAdminProductEditComplete', 999999],
             EccubeEvents::ADMIN_ORDER_CSV_EXPORT_ORDER => ['onAdminOrderCsvExportOrder', 999999],
         ];
+    }
+
+    public function onAdminCustomerEditIndexComplete(EventArgs $event)
+    {
+        $Customer = $event->getArgument('Customer');
+
+        if (null === $Customer->getCustomizeInvoiceParentKey()) {
+            // 請求書まとめ親コードが設定されていなければ発行
+            $key = $this->customerRepository->getUniqueCustomizeInvoiceParentKey();
+            $Customer->setCustomizeInvoiceParentKey($key);
+
+            $this->entityManager->persist($Customer);
+            $this->entityManager->flush();
+        }
     }
 
     public function onAdminProductEditComplete(EventArgs $event)

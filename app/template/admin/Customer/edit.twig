@@ -65,6 +65,17 @@ file that was distributed with this source code.
 											<p>{{ Customer.id }}</p>
 										</div>
 									</div>
+                                    <div class="row mb-2">
+                                        <div class="col-3">
+                                            <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'customize.tooltip.customer.invoice_parent_key'|trans }}">
+                                                <span>{{ 'customize.admin.customer.invoice_parent_key'|trans }}</span>
+                                                <i class="fa fa-question-circle fa-lg ml-1"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <p>{{ Customer.customize_invoice_parent_key }}</p>
+                                        </div>
+                                    </div>
 								{% endif %}
 								<div class="row mb-2">
 									<div class="col-3">
