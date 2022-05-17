@@ -17,9 +17,6 @@ admin.common.company_and_customize_store_name: 会社・店舗名
 
 admin.customer.multi_search_label: 会員ID・メールアドレス・お名前・会社名・店舗名
 admin.customer.customer_info_warning_message: 会社名、住所、電話番号は<span class="text-danger">「ご請求先」</span>のデータを入力ください。
-customize.admin.customer.invoice_parent_key: 親コード
-
-customize.tooltip.customer.invoice_parent_key: 親コードが設定されていない会員は編集をすると設定されます。
 
 admin.order.multi_search_label: 注文番号・お名前・会社名・店舗名・メールアドレス・電話番号
 admin.order.change_billing_date: 請求月の設定
