@@ -89,12 +89,23 @@ class FrontEvent implements EventSubscriberInterface
 
     public function onFrontMypageChangeIndexComplete(EventArgs $event)
     {
+        $form = $event->getArgument('form');
         $Customer = $event->getArgument('Customer');
 
         if (null === $Customer->getCustomizeInvoiceParentKey()) {
             // 請求書まとめ親コードが設定されていなければ発行
             $key = $this->customerRepository->getUniqueCustomizeInvoiceParentKey();
             $Customer->setCustomizeInvoiceParentKey($key);
+
+            $this->entityManager->persist($Customer);
+            $this->entityManager->flush();
+        }
+
+        // 請求書親設定
+        $customize_relation_invoice_parent_key = $form['customize_relation_invoice_parent_key']->getData();
+        if (null !== $customize_relation_invoice_parent_key) {
+            $ParentKeyCustomer = $this->customerRepository->findOneBy(['customize_invoice_parent_key' => $form['customize_relation_invoice_parent_key']->getData()]);
+            $Customer->setInvoiceParent($ParentKeyCustomer);
 
             $this->entityManager->persist($Customer);
             $this->entityManager->flush();

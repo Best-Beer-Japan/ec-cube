@@ -46,6 +46,19 @@ file that was distributed with this source code.
                                         </div>
                                     </dd>
                                 </dl>
+                                {% if form.vars.data.hasInvoiceChildren == false %}
+                                <dl>
+                                    <dt>
+                                        <label class="ec-label">{{ 'customize.admin.customer.invoice_parent_key'|trans }}</label>
+                                    </dt>
+                                    <dd>
+                                        <div class="ec-input{{ has_errors(form.customize_relation_invoice_parent_key) ? ' error' }}">
+                                            {{ form_widget(form.customize_relation_invoice_parent_key) }}
+                                            {{ form_errors(form.customize_relation_invoice_parent_key) }}
+                                        </div>
+                                    </dd>
+                                </dl>
+                                {% endif %}
                                 <dl>
                                     <dt>
                                         {{ form_label(form.name, 'common.name', { 'label_attr': { 'class': 'ec-label' }}) }}
