@@ -58,31 +58,26 @@ class FrontEntityTypeExtension extends AbstractTypeExtension
             ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-            $Customer = $event->getData();
+            $form = $event->getForm();
 
-            if ($Customer instanceof Customer && null !== $Customer->getId()) {
-                $form = $event->getForm();
-
-                $form->add('customize_relation_invoice_parent_key', TextType::class, [
-                    'mapped' => false,
-                    'constraints' => [
-                        new Assert\Length([
-                            'max' => $this->eccubeConfig['eccube_stext_len'],
-                        ]),
-                    ],
-                ]);
-            }
+            $form->add('customize_relation_invoice_parent_key', TextType::class, [
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
+                    ]),
+                ],
+            ]);
         });
 
         $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
             $form = $event->getForm();
             $Customer = $event->getData();
 
-            if ($Customer instanceof Customer && null !== $Customer->getId()) {
-                $ParentCustomer = $Customer->getInvoiceParent();
-                if (null !== $ParentCustomer) {
-                    $form['customize_relation_invoice_parent_key']->setData($ParentCustomer->getCustomizeInvoiceParentKey());
-                }
+            $ParentCustomer = $Customer->getInvoiceParent();
+            if (null !== $ParentCustomer) {
+                $form['customize_relation_invoice_parent_key']->setData($ParentCustomer->getCustomizeInvoiceParentKey());
             }
         });
 
