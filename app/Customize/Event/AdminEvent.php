@@ -65,6 +65,7 @@ class AdminEvent implements EventSubscriberInterface
 
     public function onAdminCustomerEditIndexComplete(EventArgs $event)
     {
+        $form = $event->getArgument('form');
         $Customer = $event->getArgument('Customer');
 
         if (null === $Customer->getCustomizeInvoiceParentKey()) {
@@ -75,6 +76,18 @@ class AdminEvent implements EventSubscriberInterface
             $this->entityManager->persist($Customer);
             $this->entityManager->flush();
         }
+
+        // 請求書親設定
+        $customize_relation_invoice_parent_key = $form['customize_relation_invoice_parent_key']->getData();
+        if (null !== $customize_relation_invoice_parent_key) {
+            $ParentKeyCustomer = $this->customerRepository->findOneBy(['customize_invoice_parent_key' => $form['customize_relation_invoice_parent_key']->getData()]);
+            $Customer->setInvoiceParent($ParentKeyCustomer);
+        } else {
+            $Customer->setInvoiceParent(null);
+        }
+
+        $this->entityManager->persist($Customer);
+        $this->entityManager->flush();
     }
 
     public function onAdminProductEditComplete(EventArgs $event)
