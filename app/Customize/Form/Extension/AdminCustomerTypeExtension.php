@@ -5,6 +5,7 @@ namespace Customize\Form\Extension;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Customer;
 use Eccube\Form\Type\Admin\CustomerType;
+use Eccube\Repository\CustomerRepository;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,11 +22,19 @@ class AdminCustomerTypeExtension extends AbstractTypeExtension
     protected $eccubeConfig;
 
     /**
+     * @var CustomerRepository
+     */
+    protected $customerRepository;
+
+    /**
      * AdminCustomerTypeExtension constructor.
      */
-    public function __construct(EccubeConfig $eccubeConfig)
-    {
+    public function __construct(
+        EccubeConfig $eccubeConfig,
+        CustomerRepository $customerRepository
+    ) {
         $this->eccubeConfig = $eccubeConfig;
+        $this->customerRepository = $customerRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
