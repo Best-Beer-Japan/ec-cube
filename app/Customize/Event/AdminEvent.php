@@ -4,6 +4,7 @@ namespace Customize\Event;
 
 use Customize\Entity\ProductBeerContainer;
 use Customize\Service\BreweryRequestApiService;
+use Customize\Service\CustomerInvoiceService;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Master\OrderItemType;
@@ -35,23 +36,31 @@ class AdminEvent implements EventSubscriberInterface
     protected $breweryRequestApiService;
 
     /**
+     * @var CustomerInvoiceService
+     */
+    protected $customerInvoiceService;
+
+    /**
      * FrontEvent constructor.
      *
      * @param EccubeConfig $eccubeConfig
      * @param EntityManagerInterface $entityManager
      * @param CustomerRepository $customerRepository
      * @param BreweryRequestApiService $breweryRequestApiService
+     * @param CustomerInvoiceService $customerInvoiceService
      */
     public function __construct(
         EccubeConfig $eccubeConfig,
         EntityManagerInterface $entityManager,
         CustomerRepository $customerRepository,
-        BreweryRequestApiService $breweryRequestApiService
+        BreweryRequestApiService $breweryRequestApiService,
+        CustomerInvoiceService $customerInvoiceService
     ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->entityManager = $entityManager;
         $this->customerRepository = $customerRepository;
         $this->breweryRequestApiService = $breweryRequestApiService;
+        $this->customerInvoiceService = $customerInvoiceService;
     }
 
     public static function getSubscribedEvents(): array
@@ -68,26 +77,8 @@ class AdminEvent implements EventSubscriberInterface
         $form = $event->getArgument('form');
         $Customer = $event->getArgument('Customer');
 
-        if (null === $Customer->getCustomizeInvoiceParentKey()) {
-            // 請求書まとめ親コードが設定されていなければ発行
-            $key = $this->customerRepository->getUniqueCustomizeInvoiceParentKey();
-            $Customer->setCustomizeInvoiceParentKey($key);
-
-            $this->entityManager->persist($Customer);
-            $this->entityManager->flush();
-        }
-
-        // 請求書親設定
-        $customize_relation_invoice_parent_key = $form['customize_relation_invoice_parent_key']->getData();
-        if (null !== $customize_relation_invoice_parent_key) {
-            $ParentKeyCustomer = $this->customerRepository->findOneBy(['customize_invoice_parent_key' => $form['customize_relation_invoice_parent_key']->getData()]);
-            $Customer->setInvoiceParent($ParentKeyCustomer);
-        } else {
-            $Customer->setInvoiceParent(null);
-        }
-
-        $this->entityManager->persist($Customer);
-        $this->entityManager->flush();
+        $this->customerInvoiceService->createInvoiceParentCodeKey($Customer);
+        $this->customerInvoiceService->applyInvoiceParent($Customer, $form);
     }
 
     public function onAdminProductEditComplete(EventArgs $event)
