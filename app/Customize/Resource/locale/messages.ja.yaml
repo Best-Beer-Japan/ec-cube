@@ -17,13 +17,15 @@ admin.common.company_and_customize_store_name: 会社・店舗名
 
 admin.customer.multi_search_label: 会員ID・メールアドレス・お名前・会社名・店舗名
 admin.customer.customer_info_warning_message: 会社名、住所、電話番号は<span class="text-danger">「ご請求先」</span>のデータを入力ください。
-customize.admin.customer.invoice_parent_key: 親コード
-customize.common.self_eq_invoice_parent_key: 自身の親コードは設定できません。
-customize.common.not_invoice_children: 子会員が存在するため、親コードを設定できません。
-customize.common.invoice_parent_eq_children: 子会員の為、親コードを設定できません。
-customize.common.none_invoice_parent_key: 親コードが存在しません。
+customize.admin.customer.invoice_parent_key: 請求書コード
+customize.admin.customer.relation_invoice_parent_key: まとめ先請求書コード
+customize.common.self_eq_invoice_parent_key: 自身の請求書コードは設定できません。
+customize.common.not_invoice_children: まとめ先請求書コードの会員に子会員が存在するため、まとめ先請求書コードを設定できません。
+customize.common.invoice_parent_eq_children: まとめ先請求書コードの会員が子会員の為、まとめ先請求書コードを設定できません。
+customize.common.none_invoice_parent_key: 請求書コードが存在しません。
 
-customize.tooltip.customer.invoice_parent_key: 親コードが設定されていない会員は編集をすると設定されます。
+customize.tooltip.customer.invoice_parent_key: 請求書コードが設定されていない会員は、編集をすると請求書コードが発行されます。
+customize.tooltip.customer.relation_invoice_parent_key: 請求書をまとめる会員の、請求書コードを入力してください。
 
 admin.order.multi_search_label: 注文番号・お名前・会社名・店舗名・メールアドレス・電話番号
 admin.order.change_billing_date: 請求月の設定
