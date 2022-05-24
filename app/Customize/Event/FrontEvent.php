@@ -106,10 +106,12 @@ class FrontEvent implements EventSubscriberInterface
         if (null !== $customize_relation_invoice_parent_key) {
             $ParentKeyCustomer = $this->customerRepository->findOneBy(['customize_invoice_parent_key' => $form['customize_relation_invoice_parent_key']->getData()]);
             $Customer->setInvoiceParent($ParentKeyCustomer);
-
-            $this->entityManager->persist($Customer);
-            $this->entityManager->flush();
+        } else {
+            $Customer->setInvoiceParent(null);
         }
+
+        $this->entityManager->persist($Customer);
+        $this->entityManager->flush();
     }
 
     public function onFrontShoppingCompleteInitialize(EventArgs $event)

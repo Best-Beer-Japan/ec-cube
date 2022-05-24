@@ -66,7 +66,6 @@ class FrontEntityTypeExtension extends AbstractTypeExtension
                 $form->add('customize_relation_invoice_parent_key', TextType::class, [
                     'mapped' => false,
                     'constraints' => [
-                        new Assert\NotBlank(),
                         new Assert\Length([
                             'max' => $this->eccubeConfig['eccube_stext_len'],
                         ]),
