@@ -175,9 +175,8 @@ class InvoiceMasterType extends AbstractType
                 ],
             ])
             ->add('registration_number', TextType::class, [
-                'required' => true,
+                'required' => false,
                 'constraints' => [
-                    new Assert\NotBlank(),
                     new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
                     ]),
