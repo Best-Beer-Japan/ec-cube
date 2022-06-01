@@ -4,35 +4,32 @@ monolog:
             type: fingers_crossed
             action_level: error
             passthru_level: info
-            handler: main_rotating_file
-        main_rotating_file:
-            type: rotating_file
-            max_files: 60
-            path: '%kernel.logs_dir%/%kernel.environment%/site.log'
+            handler: main_stream
+        main_stream:
+            type: stream
+            path: "php://stderr"
             formatter: eccube.log.formatter.line
             level: debug
         front:
             type: fingers_crossed
             action_level: error
             passthru_level: info
-            handler: front_rotating_file
+            handler: front_stream
             channels: ['front', 'app', 'php']
-        front_rotating_file:
-            type: rotating_file
-            max_files: 60
-            path: '%kernel.logs_dir%/%kernel.environment%/front.log'
+        front_stream:
+            type: stream
+            path: "php://stderr"
             formatter: eccube.log.formatter.line
             level: debug
         admin:
             type: fingers_crossed
             action_level: error
             passthru_level: info
-            handler: admin_rotating_file
+            handler: admin_stream
             channels: ['admin', 'app', 'php']
-        admin_rotating_file:
-            type: rotating_file
-            max_files: 60
-            path: '%kernel.logs_dir%/%kernel.environment%/admin.log'
+        admin_stream:
+            type: stream
+            path: "php://stderr"
             formatter: eccube.log.formatter.line
             level: debug
         console:

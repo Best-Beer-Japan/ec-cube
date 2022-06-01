@@ -177,11 +177,16 @@ services:
         # autoconfigureはfalseにし, CompilerPassで追加する.
         autoconfigure: false
 
-    native_file_session_handler:
-        class: Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler
+    #native_file_session_handler:
+    #    class: Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler
+    #    arguments:
+    #        - '%session.save_path%'
+    db_session_handler:
+        class: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        public: false
         arguments:
-            - '%session.save_path%'
+          - '%env(DATABASE_URL)%'
 
     Eccube\Session\Storage\Handler\SameSiteNoneCompatSessionHandler:
         arguments:
-            - '@native_file_session_handler'
+            - '@db_session_handler'
