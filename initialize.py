@@ -127,15 +127,16 @@ def setup_b2j():
                         ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin")
 
             # change EC site basic info
-            cur.execute("UPDATE dtb_base_info SET "
-                        "shop_name = %s, "
-                        "email01 = %s, "
-                        "email02 = email01, "
-                        "email03 = email01, "
-                        "email04 = email01, "
-                        "update_date = NOW() "
-                        "WHERE id = %s",
-                        (config["shop"]["name"], config["shop"]["email"], 1))
+            if "shop" in config:
+                cur.execute("UPDATE dtb_base_info SET "
+                            "shop_name = %s, "
+                            "email01 = %s, "
+                            "email02 = email01, "
+                            "email03 = email01, "
+                            "email04 = email01, "
+                            "update_date = NOW() "
+                            "WHERE id = %s",
+                            (config["shop"]["name"], config["shop"]["email"], 1))
             # disable option_product_tax_rule, delivery_fee_excention_enabled
             cur.execute("UPDATE dtb_base_info SET "
                         "option_product_tax_rule = %s, "
@@ -143,47 +144,49 @@ def setup_b2j():
                         "WHERE id = %s",
                         (0, 0, 1))
             # create best beer japan user
-            username = config["b2j"]["admin"]["username"]
-            password, salt = encode_password(
-                config["b2j"]["admin"]["password"])
-            cur.execute("UPDATE dtb_member SET "
-                        "name = %s, "
-                        "login_id = %s, "
-                        "password = %s, "
-                        "salt = %s, "
-                        "update_date = NOW() "
-                        "WHERE id = %s",
-                        ("B2J管理者", username, password, salt, 1))
+            if "b2j" in config and "admin" in config["b2j"]:
+                username = config["b2j"]["admin"]["username"]
+                password, salt = encode_password(
+                    config["b2j"]["admin"]["password"])
+                cur.execute("UPDATE dtb_member SET "
+                            "name = %s, "
+                            "login_id = %s, "
+                            "password = %s, "
+                            "salt = %s, "
+                            "update_date = NOW() "
+                            "WHERE id = %s",
+                            ("B2J管理者", username, password, salt, 1))
             # create brewery user
-            username = config["shop"]["admin"]["username"]
-            password, salt = encode_password(
-                config["shop"]["admin"]["password"])
-            cur.execute("INSERT INTO dtb_member ("
-                        "work_id,"
-                        "authority_id,"
-                        "creator_id,"
-                        "name,"
-                        "login_id,"
-                        "password,"
-                        "salt,"
-                        "sort_no,"
-                        "discriminator_type,"
-                        "create_date,"
-                        "update_date"
-                        ") VALUES ("
-                        "1,"
-                        "1,"
-                        "1,"
-                        "%s,"
-                        "%s,"
-                        "%s,"
-                        "%s,"
-                        "2,"
-                        "%s,"
-                        "NOW(),"
-                        "NOW()"
-                        ")",
-                        ("管理者", username, password, salt, "member"))
+            if "shop" in config and "admin" in config["shop"]:
+                username = config["shop"]["admin"]["username"]
+                password, salt = encode_password(
+                    config["shop"]["admin"]["password"])
+                cur.execute("INSERT INTO dtb_member ("
+                            "work_id,"
+                            "authority_id,"
+                            "creator_id,"
+                            "name,"
+                            "login_id,"
+                            "password,"
+                            "salt,"
+                            "sort_no,"
+                            "discriminator_type,"
+                            "create_date,"
+                            "update_date"
+                            ") VALUES ("
+                            "1,"
+                            "1,"
+                            "1,"
+                            "%s,"
+                            "%s,"
+                            "%s,"
+                            "%s,"
+                            "2,"
+                            "%s,"
+                            "NOW(),"
+                            "NOW()"
+                            ")",
+                            ("管理者", username, password, salt, "member"))
             conn.commit()
     except Exception:
         conn.rollback()

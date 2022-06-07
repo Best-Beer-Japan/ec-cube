@@ -23,19 +23,22 @@ shop_conf_root = pathlib.Path(shop_conf_root)
 config_path = os.getenv("CONFIG_PATH", None)
 if config_path is None:
     raise Exception("no CONFIG_PATH set.")
-with open(config_path) as f:
-    config = load(f, Loader=Loader)
+config_path = pathlib.Path(config_path)
 
-plugins = config.get("plugins", [])
-for plugin in plugins:
-    src_global = plugin_root / plugin["name"]
-    src_local = shop_conf_root / "plugins" / plugin["name"]
-    dst = document_root / "app" / "Plugin" / plugin["name"]
-    if src_local.exists():
-        src = src_local
-    else:
-        src = src_global
-    if src.exists():
-        if dst.exists():
-            shutil.rmtree(dst)
-        os.symlink(src, dst, target_is_directory=True)
+if config_path.exists():
+    with open(config_path) as f:
+        config = load(f, Loader=Loader)
+
+    plugins = config.get("plugins", [])
+    for plugin in plugins:
+        src_global = plugin_root / plugin["name"]
+        src_local = shop_conf_root / "plugins" / plugin["name"]
+        dst = document_root / "app" / "Plugin" / plugin["name"]
+        if src_local.exists():
+            src = src_local
+        else:
+            src = src_global
+        if src.exists():
+            if dst.exists():
+                shutil.rmtree(dst)
+            os.symlink(src, dst, target_is_directory=True)

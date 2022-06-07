@@ -27,6 +27,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   libzip-dev \
   locales \
   ssl-cert \
+  tzdata \
   unzip \
   zlib1g-dev \
   python3 \
@@ -36,6 +37,10 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   && echo "en_US.UTF-8 UTF-8" >/etc/locale.gen \
   && locale-gen \
   ;
+
+# timezone
+ENV TZ Asia/Tokyo
+RUN cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
 RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
   && docker-php-ext-install -j$(nproc) zip gd mysqli pdo_mysql opcache intl pgsql pdo_pgsql \
