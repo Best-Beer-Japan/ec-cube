@@ -5,7 +5,7 @@ username=`echo ${DB_INFO} | jq -r ".username"`
 host=`echo ${DB_INFO} | jq -r ".host"`
 auth_magic=`echo ${EC_SECRETS} | jq -r ".auth_magic"`
 admin_route=`echo ${EC_SECRETS} | jq -r ".admin_route"`
-docurain_api_token=`echo ${EC_SECRETS} | jq -r ".docurain_api_tokaen"`
+docurain_api_token=`echo ${EC_SECRETS} | jq -r ".docurain_api_token"`
 mail_url=`echo ${MAIL_INFO} | jq -r ".url"`
 shop_name=`echo ${SHOP_NAME}`
 
