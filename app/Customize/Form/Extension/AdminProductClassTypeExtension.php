@@ -15,9 +15,6 @@ class AdminProductClassTypeExtension extends AbstractTypeExtension
         $builder
             ->add('bbj_price', PriceType::class, [
                 'required' => false,
-                'constraints' => [
-                    new Assert\NotBlank(),
-                ],
             ]);
     }
 
