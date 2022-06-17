@@ -27,9 +27,10 @@ file that was distributed with this source code.
                         <img src="{{ asset('assets/icon/exclamation-pale.svg') }}" alt="">
                     </div>
                 </div>
-                <p class="ec-404Role__title ec-reportHeading">{{ error_title }}</p>
-                <p class="ec-404Role__description ec-reportDescription">{{ error_message }}</p>
-                <p class="ec-404Role__description ec-reportDescription">この画面が表示された時間・直前に行った操作をお伝えください。</p>
+                <p class="ec-404Role__title ec-reportHeading">サイトが混み合っています</p>
+                <p class="ec-404Role__description ec-reportDescription">現在サイトへのアクセスが集中しており、繋がりづらい状態が続いています。</p>
+                <p class="ec-404Role__description ec-reportDescription">お手数ですが少々お待ちいただいてからブラウザの再読み込みをお試しください。</p>
+                <p class="ec-404Role__description ec-reportDescription">数分しても回復しない場合は管理者にご連絡ください。</p>
                 <a class="ec-blockBtn--cancel" href="{{ url('homepage') }}">{{ 'common.go_to_top'|trans }}</a>
             </div>
         </div>
