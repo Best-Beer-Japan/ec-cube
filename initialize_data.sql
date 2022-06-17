@@ -96,4 +96,41 @@ ALTER TABLE dtb_class_category AUTO_INCREMENT = 1;
 ALTER TABLE dtb_class_name AUTO_INCREMENT = 1;
 ALTER TABLE dtb_tag AUTO_INCREMENT = 1;
 
+-- mtb_order_status
+UPDATE `mtb_order_status` SET `name` = '入金済み(一般顧客)' WHERE `id` = '6';
+INSERT INTO `mtb_order_status` (`id`, `display_order_count`, `name`, `sort_no`, `discriminator_type`) VALUES
+(10, 1, '請求済み', 8, 'orderstatus'),(11, 0, '入金済み(BtoB)', 9, 'orderstatus');
+INSERT INTO `mtb_order_status_color` (`id`, `name`, `sort_no`, `discriminator_type`) VALUES
+(10, '#cd69a7', 8, 'orderstatuscolor'),(11, '#a3a3a3', 9, 'orderstatuscolor');
+INSERT INTO `mtb_customer_order_status` (`id`, `name`, `sort_no`, `discriminator_type`) VALUES
+('10', '請求書処理中', '8', 'customerorderstatus'),('11', '支払済み', '9', 'customerorderstatus');
+
+-- レイアウト修正
+TRUNCATE dtb_block_position;
+INSERT INTO `dtb_block_position` (`section`, `block_id`, `layout_id`, `block_row`, `discriminator_type`)
+VALUES
+(3, 3, 2, 3, 'blockposition'),
+(3, 7, 1, 0, 'blockposition'),
+(3, 7, 2, 1, 'blockposition'),
+(3, 10, 1, 1, 'blockposition'),
+(3, 10, 2, 2, 'blockposition'),
+(7, 2, 1, 2, 'blockposition'),
+(7, 3, 1, 1, 'blockposition'),
+(7, 12, 1, 0, 'blockposition'),
+(10, 6, 1, 0, 'blockposition'),
+(10, 6, 2, 1, 'blockposition'),
+(11, 4, 1, 1, 'blockposition'),
+(11, 4, 2, 2, 'blockposition'),
+(11, 9, 1, 2, 'blockposition'),
+(11, 9, 2, 3, 'blockposition'),
+(11, 13, 1, 0, 'blockposition'),
+(11, 13, 2, 1, 'blockposition');
+
+-- カテゴリ修正
+INSERT INTO dtb_category (category_name, hierarchy, sort_no, create_date, update_date, parent_category_id, creator_id, discriminator_type) 
+VALUES
+("定番商品", 1, 3, NOW(), NOW(), null, 1, "category"),
+("季節商品", 1, 2, NOW(), NOW(), null, 1, "category"),
+("その他", 1, 1, NOW(), NOW(), null, 1, "category");
+
 set foreign_key_checks = 1;

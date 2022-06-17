@@ -33,4 +33,9 @@ DOMAIN=${shop_name}.bestbeerjapan.com
 DOCURAIN_API_TOKEN=${docurain_api_token}
 EOF
 
-python3 /tmp/link.py && php bin/console cache:warmup && exec docker-php-entrypoint apache2-foreground
+python3 /tmp/link.py
+php bin/console eccube:generate:proxies
+php bin/console eccube:schema:update --force
+php bin/console doctrine:migrations:migrate --no-interaction
+php -d memory_limit=256M bin/console cache:clear
+exec docker-php-entrypoint apache2-foreground

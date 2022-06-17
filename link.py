@@ -41,4 +41,4 @@ if config_path.exists():
         if src.exists():
             if dst.exists():
                 shutil.rmtree(dst)
-            os.symlink(src, dst, target_is_directory=True)
+            shutil.copytree(src, dst)
