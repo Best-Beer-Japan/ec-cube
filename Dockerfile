@@ -129,6 +129,7 @@ RUN mkdir -p ${EFS_SHOP_CONF_ROOT}
 RUN mkdir -p ${EFS_PLUGINS_ROOT}
 COPY link.py /tmp/
 COPY initialize.py /tmp/
+COPY start_init.py /tmp/
 COPY initialize_data.sql /tmp/
 RUN python3 -m pip install --upgrade pip && python3 -m pip install \
     PyMySQL \

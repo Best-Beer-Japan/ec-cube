@@ -98,11 +98,11 @@ ALTER TABLE dtb_tag AUTO_INCREMENT = 1;
 
 -- mtb_order_status
 UPDATE `mtb_order_status` SET `name` = '入金済み(一般顧客)' WHERE `id` = '6';
-INSERT INTO `mtb_order_status` (`id`, `display_order_count`, `name`, `sort_no`, `discriminator_type`) VALUES
+INSERT IGNORE INTO `mtb_order_status` (`id`, `display_order_count`, `name`, `sort_no`, `discriminator_type`) VALUES
 (10, 1, '請求済み', 8, 'orderstatus'),(11, 0, '入金済み(BtoB)', 9, 'orderstatus');
-INSERT INTO `mtb_order_status_color` (`id`, `name`, `sort_no`, `discriminator_type`) VALUES
+INSERT IGNORE INTO `mtb_order_status_color` (`id`, `name`, `sort_no`, `discriminator_type`) VALUES
 (10, '#cd69a7', 8, 'orderstatuscolor'),(11, '#a3a3a3', 9, 'orderstatuscolor');
-INSERT INTO `mtb_customer_order_status` (`id`, `name`, `sort_no`, `discriminator_type`) VALUES
+INSERT IGNORE INTO `mtb_customer_order_status` (`id`, `name`, `sort_no`, `discriminator_type`) VALUES
 ('10', '請求書処理中', '8', 'customerorderstatus'),('11', '支払済み', '9', 'customerorderstatus');
 
 -- レイアウト修正
