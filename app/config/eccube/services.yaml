@@ -196,7 +196,7 @@ services:
         public: false
         arguments: ['%env(SHOP_NAME)%']
         calls:
-            - [ addServer, [ 'ec-sessions.sr6sk1.0001.apne1.cache.amazonaws.com', '11211' ]]
+            - [ addServer, [ '%env(SESSION_DB_HOST)%', '%env(SESSION_DB_PORT)%' ]]
   
     memcached_session_handler:
         class: Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcachedSessionHandler
