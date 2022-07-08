@@ -187,6 +187,22 @@ services:
         arguments:
           - '%env(DATABASE_URL)%'
 
+    #Eccube\Session\Storage\Handler\SameSiteNoneCompatSessionHandler:
+    #    arguments:
+    #        - '@db_session_handler'
+
+    memcached:
+        class: Memcached
+        public: false
+        arguments: ['%env{SHOP_NAME}']
+        calls:
+            - [ addServer, [ 'ec-sessions.sr6sk1.0001.apne1.cache.amazonaws.com', '11211' ]]
+  
+    memcached_session_handler:
+        class: Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcachedSessionHandler
+        public: false
+        arguments: [ '@memcached', { prefix: '%env{SHOP_NAME}', expiretime: '3600' }]
+  
     Eccube\Session\Storage\Handler\SameSiteNoneCompatSessionHandler:
         arguments:
-            - '@db_session_handler'
+            - '@memcached_session_handler'
