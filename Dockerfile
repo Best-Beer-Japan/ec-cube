@@ -25,6 +25,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   libpng-dev \
   libpq-dev \
   libzip-dev \
+  libmemcached-dev \
   locales \
   ssl-cert \
   tzdata \
@@ -37,6 +38,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   && echo "en_US.UTF-8 UTF-8" >/etc/locale.gen \
   && locale-gen \
   ;
+
+RUN pecl install memcached
 
 # timezone
 ENV TZ Asia/Tokyo

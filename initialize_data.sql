@@ -126,6 +126,30 @@ VALUES
 (11, 13, 1, 0, 'blockposition'),
 (11, 13, 2, 1, 'blockposition');
 
+-- 権限設定
+TRUNCATE dtb_authority_role;
+INSERT INTO `dtb_authority_role` (`authority_id`, `creator_id`, `deny_url`, `create_date`, `update_date`, `discriminator_type`)
+VALUES
+(1, 1, '/content/block', NOW(), NOW(), 'authorityrole'),
+(1, 1, '/content/cache', NOW(), NOW(), 'authorityrole'),
+(1, 1, '/content/css', NOW(), NOW(), 'authorityrole'),
+(1, 1, '/content/js', NOW(), NOW(), 'authorityrole'),
+(1, 1, '/content/layout', NOW(), NOW(), 'authorityrole'),
+(1, 1, '/content/page', NOW(), NOW(), 'authorityrole'),
+(1, 1, '/content/page/19/edit', NOW(), NOW(), 'authorityrole'),
+(1, 1, '/content/page/21/edit', NOW(), NOW(), 'authorityrole'),
+(1, 1, '/setting/shop/mail', NOW(), NOW(), 'authorityrole'),
+(1, 1, '/setting/system/authority', NOW(), NOW(), 'authorityrole'),
+(1, 1, '/setting/system/log', NOW(), NOW(), 'authorityrole'),
+(1, 1, '/setting/system/masterdata', NOW(), NOW(), 'authorityrole'),
+(1, 1, '/setting/system/member', NOW(), NOW(), 'authorityrole'),
+(1, 1, '/setting/system/security', NOW(), NOW(), 'authorityrole'),
+(1, 1, '/setting/system/system', NOW(), NOW(), 'authorityrole'),
+(1, 1, '/store', NOW(), NOW(), 'authorityrole');
+
+-- base_info修正
+UPDATE dtb_base_info SET option_point = 0;
+
 -- カテゴリ修正
 INSERT INTO dtb_category (category_name, hierarchy, sort_no, create_date, update_date, parent_category_id, creator_id, discriminator_type) 
 VALUES

@@ -155,9 +155,10 @@ def setup_b2j():
                             "salt = %s, "
                             "update_date = NOW() "
                             "WHERE id = %s",
-                            ("B2J管理者", username, password, salt, 1))
+                            ("管理者", username, password, salt, 1))
             # create brewery user
             if "shop" in config and "admin" in config["shop"]:
+                shopname = config["shop"]["name"]
                 username = config["shop"]["admin"]["username"]
                 password, salt = encode_password(
                     config["shop"]["admin"]["password"])
@@ -186,7 +187,7 @@ def setup_b2j():
                             "NOW(),"
                             "NOW()"
                             ")",
-                            ("管理者", username, password, salt, "member"))
+                            (shopname, username, password, salt, "member"))
             conn.commit()
     except Exception:
         conn.rollback()
