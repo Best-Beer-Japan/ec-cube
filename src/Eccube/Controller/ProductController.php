@@ -149,6 +149,7 @@ class ProductController extends AbstractController
         // paginator
         $searchData = $searchForm->getData();
         $qb = $this->productRepository->getQueryBuilderBySearchData($searchData);
+        $qb->andWhere('p.list_open_flag = 1');
 
         $event = new EventArgs(
             [
