@@ -31,6 +31,8 @@ ECCUBE_CURRENCY=JPY
 DOMAIN=${shop_name}.bestbeerjapan.com
 
 DOCURAIN_API_TOKEN=${docurain_api_token}
+
+ECCUBE_MAINTENANCE_FILE_PATH=/mnt/shop_conf/.maintenance
 EOF
 
 python3 /tmp/start_init.py && \

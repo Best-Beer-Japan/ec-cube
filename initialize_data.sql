@@ -126,6 +126,14 @@ VALUES
 (11, 13, 1, 0, 'blockposition'),
 (11, 13, 2, 1, 'blockposition');
 
+-- 並び順初期化
+TRUNCATE mtb_product_list_order_by;
+INSERT INTO `mtb_product_list_order_by` (`name`, `snort_no`, `discriminator_type`)
+VALUES
+('価格が低い順', 1, 'productlistorderby'),
+('新着順', 0, 'productlistorderby'),
+('価格が高い順', 2, 'productlistorderby');
+
 -- 権限設定
 TRUNCATE dtb_authority_role;
 INSERT INTO `dtb_authority_role` (`authority_id`, `creator_id`, `deny_url`, `create_date`, `update_date`, `discriminator_type`)
