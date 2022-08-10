@@ -52,6 +52,7 @@ RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
 RUN pecl install apcu && echo "extension=apcu.so" > /usr/local/etc/php/conf.d/apc.ini
 
 COPY apacheconfig/000-default.conf /etc/apache2/sites-available/
+COPY apacheconfig/mpm_prefork.conf /etc/apache2/mods-available/
 RUN mkdir -p ${APACHE_DOCUMENT_ROOT} \
   && sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf \
   && sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf \

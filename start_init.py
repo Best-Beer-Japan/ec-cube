@@ -1,11 +1,7 @@
-import json
 import logging
 import os
 import pathlib
 import subprocess
-
-import pymysql
-import pymysql.cursors
 
 
 logging.basicConfig(level=logging.INFO)
@@ -13,35 +9,14 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 
-def initialize_eccube():
-    # load environments
-    database = os.getenv("DATABASE", None)
-    if database is None:
-        raise Exception("no DATABASE set.")
-    db_info = os.getenv("DB_INFO", None)
-    if db_info is None:
-        raise Exception("no DB_INFO set.")
-    db_info = json.loads(db_info)
-    conn = pymysql.connect(
-        host=db_info["host"],
-        port=db_info["port"],
-        user=db_info["username"],
-        password=db_info["password"],
-        db=database,
-        charset="utf8mb4"
-    )
-    with conn.cursor() as cur:
-        try:
-            cur.execute("select count(*) from migration_versions")
-            for row in cur:
-                count = int(row[0])
-                break
-            if count <= 0:
-                raise Exception("no migrations ?")
-        except Exception:
-            logger.info("maybe not initialized...")
-            return
+WAIT_INITIALIZE_FLAG_FILE = pathlib.Path("/mnt/shop_conf/.wait_initialize")
+UPDATE_FLAG_FILE = pathlib.Path("/mnt/shop_conf/.db_update")
 
+
+def initialize_eccube():
+    if WAIT_INITIALIZE_FLAG_FILE.exists():
+        logger.info("system not initialized...skip")
+        return
     cwd = os.getcwd()
     try:
         apache_root = os.getenv("APACHE_DOCUMENT_ROOT")
@@ -49,14 +24,30 @@ def initialize_eccube():
         os.chdir(apache_root)
 
         logger.info("eccube:generate:proxies")
-        subprocess.run("bin/console eccube:generate:proxies",
-                       shell=True, check=True, capture_output=True)
-        logger.info("eccube:schema:update")
-        subprocess.run("bin/console eccube:schema:update --force",
-                       shell=True, check=True, capture_output=True)
-        logger.info("doctrine:migrations:migrate")
-        subprocess.run("bin/console doctrine:migrations:migrate --no-interaction",
-                       shell=True, check=True, capture_output=True)
+        ret = subprocess.run("bin/console eccube:generate:proxies",
+                             shell=True, capture_output=True)
+        if ret.returncode != 0:
+            stdout = ret.stdout.decode("utf-8")
+            stderr = ret.stderr.decode("utf-8")
+            message = f"{stdout}\n{stderr}"
+            raise Exception(message)
+        if UPDATE_FLAG_FILE.exists():
+            logger.info("eccube:schema:update")
+            ret = subprocess.run("bin/console eccube:schema:update --force",
+                                 shell=True, capture_output=True)
+            if ret.returncode != 0:
+                stdout = ret.stdout.decode("utf-8")
+                stderr = ret.stderr.decode("utf-8")
+                message = f"{stdout}\n{stderr}"
+                raise Exception(message)
+            logger.info("doctrine:migrations:migrate")
+            ret = subprocess.run("bin/console doctrine:migrations:migrate --no-interaction",
+                                 shell=True, capture_output=True)
+            if ret.returncode != 0:
+                stdout = ret.stdout.decode("utf-8")
+                stderr = ret.stderr.decode("utf-8")
+                message = f"{stdout}\n{stderr}"
+                raise Exception(message)
     finally:
         os.chdir(cwd)
 

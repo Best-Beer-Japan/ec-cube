@@ -31,8 +31,10 @@ ECCUBE_CURRENCY=JPY
 DOMAIN=${shop_name}.bestbeerjapan.com
 
 DOCURAIN_API_TOKEN=${docurain_api_token}
+
+ECCUBE_MAINTENANCE_FILE_PATH=/mnt/shop_conf/.maintenance
 EOF
 
-python3 /tmp/link.py && python3 /tmp/start_init.py
-php -d memory_limit=256M bin/console cache:clear
+python3 /tmp/start_init.py && \
+php -d memory_limit=256M bin/console cache:clear && \
 exec docker-php-entrypoint apache2-foreground
