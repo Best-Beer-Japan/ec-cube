@@ -128,11 +128,11 @@ VALUES
 
 -- 並び順初期化
 TRUNCATE mtb_product_list_order_by;
-INSERT INTO `mtb_product_list_order_by` (`name`, `snort_no`, `discriminator_type`)
+INSERT INTO `mtb_product_list_order_by` (`id`, `name`, `sort_no`, `discriminator_type`)
 VALUES
-('価格が低い順', 1, 'productlistorderby'),
-('新着順', 0, 'productlistorderby'),
-('価格が高い順', 2, 'productlistorderby');
+(1, '価格が低い順', 1, 'productlistorderby'),
+(2, '新着順', 0, 'productlistorderby'),
+(3, '価格が高い順', 2, 'productlistorderby');
 
 -- 権限設定
 TRUNCATE dtb_authority_role;
