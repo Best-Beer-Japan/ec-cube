@@ -4,11 +4,13 @@ namespace Customize\Event;
 
 use Customize\Entity\ProductBeerContainer;
 use Customize\Service\BreweryRequestApiService;
+use Customize\Service\CustomerInvoiceService;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Repository\CustomerRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class AdminEvent implements EventSubscriberInterface
@@ -24,32 +26,59 @@ class AdminEvent implements EventSubscriberInterface
     protected $entityManager;
 
     /**
+     * @var CustomerRepository
+     */
+    protected $customerRepository;
+
+    /**
      * @var BreweryRequestApiService
      */
     protected $breweryRequestApiService;
 
     /**
+     * @var CustomerInvoiceService
+     */
+    protected $customerInvoiceService;
+
+    /**
      * FrontEvent constructor.
      *
      * @param EccubeConfig $eccubeConfig
+     * @param EntityManagerInterface $entityManager
+     * @param CustomerRepository $customerRepository
      * @param BreweryRequestApiService $breweryRequestApiService
+     * @param CustomerInvoiceService $customerInvoiceService
      */
     public function __construct(
         EccubeConfig $eccubeConfig,
         EntityManagerInterface $entityManager,
-        BreweryRequestApiService $breweryRequestApiService
+        CustomerRepository $customerRepository,
+        BreweryRequestApiService $breweryRequestApiService,
+        CustomerInvoiceService $customerInvoiceService
     ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->entityManager = $entityManager;
+        $this->customerRepository = $customerRepository;
         $this->breweryRequestApiService = $breweryRequestApiService;
+        $this->customerInvoiceService = $customerInvoiceService;
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
+            EccubeEvents::ADMIN_CUSTOMER_EDIT_INDEX_COMPLETE => ['onAdminCustomerEditIndexComplete', 999999],
             EccubeEvents::ADMIN_PRODUCT_EDIT_COMPLETE => ['onAdminProductEditComplete', 999999],
             EccubeEvents::ADMIN_ORDER_CSV_EXPORT_ORDER => ['onAdminOrderCsvExportOrder', 999999],
         ];
+    }
+
+    public function onAdminCustomerEditIndexComplete(EventArgs $event)
+    {
+        $form = $event->getArgument('form');
+        $Customer = $event->getArgument('Customer');
+
+        $this->customerInvoiceService->createInvoiceParentCodeKey($Customer);
+        $this->customerInvoiceService->applyInvoiceParent($Customer, $form);
     }
 
     public function onAdminProductEditComplete(EventArgs $event)

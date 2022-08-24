@@ -154,9 +154,10 @@ class InviceController extends AbstractController
                 ->andWhere('c.id = :multi')
                 ->setParameter('multi', $multi);
         }
-        // 購入処理中, 決済処理中は検索対象から除外
+
+        // 注文取消し・決済処理中・購入処理中・返品は検索対象から除外
         $qb->andWhere($qb->expr()->notIn('o.OrderStatus', ':status'))
-            ->setParameter('status', [OrderStatus::PROCESSING, OrderStatus::PENDING]);
+            ->setParameter('status', [OrderStatus::CANCEL, OrderStatus::PROCESSING, OrderStatus::PENDING, OrderStatus::RETURNED]);
 
         $qb
             ->andWhere('o.customize_billing_month_date = :customize_billing_month_date')
