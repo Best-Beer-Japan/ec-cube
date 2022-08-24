@@ -35,6 +35,18 @@ file that was distributed with this source code.
                     <div class="ec-borderedDefs">
                         <dl>
                             <dt>
+                                <label class="ec-label">{{ 'customize.admin.customer.relation_invoice_parent_key'|trans }}</label>
+                            </dt>
+                            <dd>
+                                <div class="ec-input{{ has_errors(form.customize_relation_invoice_parent_key) ? ' error' }}">
+                                    {{ form_widget(form.customize_relation_invoice_parent_key) }}
+                                    {{ form_errors(form.customize_relation_invoice_parent_key) }}
+                                </div>
+                                <p>{{ 'customize.tooltip.customer.relation_invoice_parent_key'|trans }}</p>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>
                                 {{ form_label(form.name, 'common.name', { 'label_attr': { 'class': 'ec-label' }}) }}
                             </dt>
                             <dd>

@@ -1,3 +1,8 @@
+services:
+  Customize\Repository\CustomerRepository:
+    autowire: true
+    decorates: Eccube\Repository\CustomerRepository
+
 parameters:
   corpse_tag_mixpack_group_no: 1 #ミックスパック
   corpse_tag_container_group_no: 2 #容器
