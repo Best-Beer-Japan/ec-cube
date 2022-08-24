@@ -342,7 +342,6 @@ file that was distributed with this source code.
                                     {{ form_errors(form.Shippings[idx].Delivery) }}
                                 </div>
                                 {{ include('@DeliveryFeeExtension/Shopping/delivery_caution.twig', ignore_missing=true) }}
-                                {{ include('@DeliveryFeeExtension/Shopping/delivery_caution_info.twig', ignore_missing=true) }}
                                 <div class="ec-select ec-select__delivery">
                                     <label>{{ 'front.shopping.delivery_date'|trans }}</label>
                                     {{ form_widget(form.Shippings[idx].shipping_delivery_date, {'attr': {'class': 'form-control'}}) }}
