@@ -75,7 +75,7 @@ customize.admin.setting.invice: 請求書設定
 customize.admin.setting.invice.invoice_setting: 基本設定
 customize.admin.setting.invice.financial_info: 振込先設定
 customize.admin.setting.invice.image: 画像設定
-customize.admin.setting.invice.invoice_billing: 請求一覧
+customize.admin.setting.invice.invoice_billing: 受注一覧（請求月検索）
 
 customize.admin.setting.invice.invoice.registration_number: 登録番号
 customize.admin.setting.invice.invoice.brewery_name: 醸造所名
