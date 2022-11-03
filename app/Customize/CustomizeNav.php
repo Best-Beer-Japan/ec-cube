@@ -12,6 +12,14 @@ class CustomizeNav implements EccubeNav
     public static function getNav()
     {
         return [
+            'customer' => [
+                'children' => [
+                    'customize_agreement' => [
+                        'name' => 'customize.admin.customer.agreement_registration',
+                        'url' => 'customize_admin_customer_agreement',
+                    ],
+                ],
+            ],
             'order' => [
                 'children' => [
                     'customize_invoice_billing' => [
