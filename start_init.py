@@ -3,6 +3,8 @@ import os
 import pathlib
 import subprocess
 
+from yaml import load, Loader
+
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
@@ -10,7 +12,9 @@ logger.setLevel(logging.INFO)
 
 
 WAIT_INITIALIZE_FLAG_FILE = pathlib.Path("/mnt/shop_conf/.wait_initialize")
-UPDATE_FLAG_FILE = pathlib.Path("/mnt/shop_conf/.db_update")
+DB_UPDATE_FLAG_FILE = pathlib.Path("/mnt/shop_conf/.db_update")
+PLUGIN_UPDATE_FLAG_FILE = pathlib.Path("/mnt/shop_conf/.plugin_update")
+CONFIG_FILE = pathlib.Path("/mnt/shop_conf/config.yml")
 
 
 def initialize_eccube():
@@ -31,7 +35,7 @@ def initialize_eccube():
             stderr = ret.stderr.decode("utf-8")
             message = f"{stdout}\n{stderr}"
             raise Exception(message)
-        if UPDATE_FLAG_FILE.exists():
+        if DB_UPDATE_FLAG_FILE.exists():
             logger.info("eccube:schema:update")
             ret = subprocess.run("bin/console eccube:schema:update --force",
                                  shell=True, capture_output=True)
@@ -48,6 +52,20 @@ def initialize_eccube():
                 stderr = ret.stderr.decode("utf-8")
                 message = f"{stdout}\n{stderr}"
                 raise Exception(message)
+        if PLUGIN_UPDATE_FLAG_FILE.exists():
+            with open(CONFIG_FILE) as f:
+                config = load(f, Loader=Loader)
+            plugins = set([plugin["name"]
+                          for plugin in config.get("plugins", [])])
+            for plugin in plugins:
+                logger.info(f"eccube:plugin:update {plugin}")
+                ret = subprocess.run(f"bin/console eccube:schema:update {plugin}",
+                                     shell=True, capture_output=True)
+                if ret.returncode != 0:
+                    stdout = ret.stdout.decode("utf-8")
+                    stderr = ret.stderr.decode("utf-8")
+                    message = f"{stdout}\n{stderr}"
+                    raise Exception(message)
     finally:
         os.chdir(cwd)
 
