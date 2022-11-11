@@ -59,7 +59,7 @@ def initialize_eccube():
                           for plugin in config.get("plugins", [])])
             for plugin in plugins:
                 logger.info(f"eccube:plugin:update {plugin}")
-                ret = subprocess.run(f"bin/console eccube:schema:update {plugin}",
+                ret = subprocess.run(f"bin/console eccube:plugin:update {plugin}",
                                      shell=True, capture_output=True)
                 if ret.returncode != 0:
                     stdout = ret.stdout.decode("utf-8")
