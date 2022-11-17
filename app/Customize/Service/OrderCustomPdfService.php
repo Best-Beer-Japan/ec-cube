@@ -274,18 +274,6 @@ class OrderCustomPdfService extends TcpdfFpdi
 
             // 備考を描画する
             $this->renderEtcData($formData);
-
-            // ファイル名を決定する
-            if ($this->PageNo() == 1) {
-                // 会員ID_会社名_店舗名_注文番号_出荷番号.pdf
-                $this->downloadFileName = implode('_', [
-                    $Order->getCustomer()->getId(),
-                    $Shipping->getCompanyName(),
-                    $Shipping->getCompanyName(),
-                    $Shipping->getCustomizeStoreName(),
-                    '注文番号'.$Order->getOrderNo(),
-                    '(出荷ID'.$Shipping->getId().')']).'.pdf';
-            }
         }
 
         return true;
@@ -477,7 +465,6 @@ class OrderCustomPdfService extends TcpdfFpdi
 
         // 購入者氏名
         $text = $Shipping->getName01().'　'.$Shipping->getName02().'　様';
-        // $this->lfText(27, 68, $text, 9);
         $this->lfText(27, 73, $text, 9);
 
         // =========================================
