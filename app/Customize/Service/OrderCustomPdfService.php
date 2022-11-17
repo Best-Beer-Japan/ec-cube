@@ -375,9 +375,9 @@ class OrderCustomPdfService extends TcpdfFpdi
      */
     protected function renderMessageData(array $formData)
     {
-        $this->lfText(27, 75, $formData['message1'], 8); //メッセージ1
-        $this->lfText(27, 79, $formData['message2'], 8); //メッセージ2
-        $this->lfText(27, 83, $formData['message3'], 8); //メッセージ3
+        $this->lfText(27, 80, $formData['message1'], 8); //メッセージ1
+        $this->lfText(27, 84, $formData['message2'], 8); //メッセージ2
+        $this->lfText(27, 88, $formData['message3'], 8); //メッセージ3
     }
 
     /**
@@ -460,11 +460,12 @@ class OrderCustomPdfService extends TcpdfFpdi
 
         // protected function lfText($x, $y, $text, $size = 0, $style = '')
         // 会社名
-        $this->lfText(27, 63, $Shipping->getCompanyName().' '.$Shipping->getCustomizeStoreName(), 10);
+        $this->lfText(27, 63, $Shipping->getCompanyName(), 10);
+        $this->lfText(27, 68, $Shipping->getCustomizeStoreName(), 10);
 
         // 購入者氏名
         $text = $Shipping->getName01().'　'.$Shipping->getName02().'　様';
-        $this->lfText(27, 68, $text, 9);
+        $this->lfText(27, 73, $text, 9);
 
         // =========================================
         // お買い上げ明細部
