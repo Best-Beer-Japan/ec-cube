@@ -2,6 +2,7 @@
 
 namespace Customize\Event;
 
+use Customize\Repository\AgreementRepository;
 use Customize\Service\CorpseRequestApiService;
 use Customize\Service\CustomerInvoiceService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -10,12 +11,16 @@ use Eccube\Event\EventArgs;
 use Eccube\Event\TemplateEvent;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\TagRepository;
-use Eccube\Util\StringUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class FrontEvent implements EventSubscriberInterface
 {
+    /**
+     * @var AgreementRepository
+     */
+    protected $agreementRepository;
+
     /**
      * @var CorpseRequestApiService
      */
@@ -49,6 +54,7 @@ class FrontEvent implements EventSubscriberInterface
     /**
      * FrontEvent constructor.
      *
+     * @param AgreementRepository $agreementRepository
      * @param CorpseRequestApiService $corpseRequestApiService
      * @param SessionInterface $session
      * @param EntityManagerInterface $entityManager
@@ -57,6 +63,7 @@ class FrontEvent implements EventSubscriberInterface
      * @param CustomerInvoiceService $customerInvoiceService
      */
     public function __construct(
+        AgreementRepository $agreementRepository,
         CorpseRequestApiService $corpseRequestApiService,
         SessionInterface $session,
         EntityManagerInterface $entityManager,
@@ -64,6 +71,7 @@ class FrontEvent implements EventSubscriberInterface
         TagRepository $tagRepository,
         CustomerInvoiceService $customerInvoiceService
     ) {
+        $this->agreementRepository = $agreementRepository;
         $this->corpseRequestApiService = $corpseRequestApiService;
         $this->session = $session;
         $this->entityManager = $entityManager;
@@ -78,6 +86,7 @@ class FrontEvent implements EventSubscriberInterface
             EccubeEvents::FRONT_ENTRY_INDEX_COMPLETE => ['onFrontEntryIndexComplete', 999999],
             EccubeEvents::FRONT_MYPAGE_CHANGE_INDEX_COMPLETE => ['onFrontMypageChangeIndexComplete', 999999],
             EccubeEvents::FRONT_SHOPPING_COMPLETE_INITIALIZE => ['onFrontShoppingCompleteInitialize', 999999],
+            'Entry/index.twig' => ['onTemplateFrontEntryIndex', 999999],
             'Product/list.twig' => ['onTemplateFrontProductList', 999999],
         ];
     }
@@ -112,6 +121,18 @@ class FrontEvent implements EventSubscriberInterface
                     $this->corpseRequestApiService->requestApi($url, true);
                 }
             }
+        }
+    }
+
+    public function onTemplateFrontEntryIndex(TemplateEvent $event)
+    {
+        $Agreement = $this->agreementRepository->get();
+
+        $twig = '/Entry/agreement.twig';
+
+        if (null !== $Agreement->getAgreementDetail()) {
+            $event->setParameter('agreementDetail', $Agreement->getAgreementDetail());
+            $event->addSnippet($twig);
         }
     }
 

@@ -1,0 +1,14 @@
+<script>
+    $(function () {
+        $('#addAgreementDetail').insertAfter($('div.ec-borderedDefs > dl:last-child'));
+    });
+</script>
+
+<dl id="addAgreementDetail">
+    <dt>
+        <label class="ec-label required">{{ 'customize.admin.common.agreement'|trans }}</label>
+    </dt>
+    <dd>
+        <p>{{ agreementDetail|nl2br }}</p>
+    </dd>
+</dl>
