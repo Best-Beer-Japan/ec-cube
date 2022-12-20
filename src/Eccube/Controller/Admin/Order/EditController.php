@@ -315,7 +315,6 @@ class EditController extends AbstractController
                                 'OriginOrder' => $OriginOrder,
                                 'TargetOrder' => $TargetOrder,
                                 'Customer' => $Customer,
-                                'PurchaseContext' => $purchaseContext,
                             ],
                             $request
                         );
