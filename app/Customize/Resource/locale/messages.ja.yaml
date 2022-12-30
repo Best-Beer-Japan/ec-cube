@@ -106,3 +106,8 @@ customize.admin.common.agreement: 同意事項
 
 customize.admin.customer.agreement_registration: '会員登録 同意事項登録'
 customize.admin.customer.customer_agreement: 同意事項設定
+
+#------------------------------------------------------------------------------------
+# Form Error
+#------------------------------------------------------------------------------------
+form.error.product.alcohol_percentage.invalid_required: 入力されていません。
