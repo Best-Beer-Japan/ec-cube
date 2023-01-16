@@ -12,10 +12,12 @@ class AdminProductClassTypeExtension extends AbstractTypeExtension
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        /*
         $builder
             ->add('bbj_price', PriceType::class, [
                 'required' => false,
             ]);
+        */
     }
 
     /**

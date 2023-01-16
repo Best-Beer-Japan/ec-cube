@@ -260,7 +260,7 @@ file that was distributed with this source code.
                                     <th class="pt-2 pb-2">{{ 'admin.product.sale_limit'|trans }}</th>
                                     <th class="pt-2 pb-2">{{ 'admin.product.normal_price'|trans }}</th>
                                     <th class="pt-2 pb-2">{{ 'admin.product.sale_price'|trans }}</th>
-                                    <th class="pt-2 pb-2">{{ 'admin.product.bbj_price'|trans }}</th>
+                                    {# <th class="pt-2 pb-2">{{ 'admin.product.bbj_price'|trans }}</th> #}
                                     {% if BaseInfo.option_product_delivery_fee %}
                                         <th class="pt-2 pb-2">{{ 'admin.product.delivery_fee'|trans }}</th>
                                     {% endif %}
@@ -327,10 +327,12 @@ file that was distributed with this source code.
                                                 {{ form_widget(product_class_form.price02) }}
                                                 {{ form_errors(product_class_form.price02) }}
                                             </td>
+                                            {#
                                             <td class="align-middle">
                                                 {{ form_widget(product_class_form.bbj_price) }}
                                                 {{ form_errors(product_class_form.bbj_price) }}
                                             </td>
+                                            #}
                                             {% if BaseInfo.option_product_delivery_fee %}
                                                 <td class="align-middle">
                                                     {{ form_widget(product_class_form.delivery_fee) }}
