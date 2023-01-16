@@ -92,10 +92,10 @@ class OrderCustomPdfService extends TcpdfFpdi
     private $widthCell = [];
 
     /** 最後に処理した注文番号 @var string */
-    private $lastOrderId = null;
+    private $lastShippingId = null
 
     /** 最後に処理した出荷番号 @var string */
-    private $currentOrderId = null;
+    private $lastOrderId = null;
 
     // --------------------------------------
     // Font情報のバックアップデータ
@@ -214,7 +214,7 @@ class OrderCustomPdfService extends TcpdfFpdi
         }
 
         foreach ($ids as $id) {
-            $this->lastOrderId = $id; // orderと言いつつ、これはShippingのId
+            $this->lastShippingId = $id;
 
             // 出荷番号から出荷情報を取得する
             /** @var Shipping $Shipping */
@@ -226,7 +226,7 @@ class OrderCustomPdfService extends TcpdfFpdi
 
             // テンプレートファイルを読み込む
             $Order = $Shipping->getOrder();
-            $this->currentOrderId = $Order->getId();
+            $this->lastOrderId = $Order->getId();
 
             if (null !== $Order->getOriginalId()) {
                 $this->price_visible = false;
@@ -307,7 +307,7 @@ class OrderCustomPdfService extends TcpdfFpdi
         $this->downloadFileName = self::DEFAULT_PDF_FILE_NAME;
         if ($this->PageNo() == 1) {
             // example: nouhinsyo-order-No555-ship-No558.pdf
-            $this->downloadFileName = 'nouhinsyo-order-No'.$this->currentOrderId.'-ship-No'.$this->lastOrderId.'.pdf';
+            $this->downloadFileName = 'nouhinsyo-order-No'.$this->lastOrderId.'-ship-No'.$this->lastShippingId.'.pdf';
         }
 
         return $this->downloadFileName;
