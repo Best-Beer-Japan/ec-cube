@@ -551,6 +551,7 @@ class EditController extends AbstractController
                 'email' => $Customer->getEmail(),
                 'phone_number' => $Customer->getPhoneNumber(),
                 'company_name' => $Customer->getCompanyName(),
+                'customize_store_name' => $Customer->getCustomizeStoreName(),
             ];
 
             $event = new EventArgs(
