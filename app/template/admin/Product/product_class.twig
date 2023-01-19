@@ -268,7 +268,8 @@ file that was distributed with this source code.
                                         <th class="pt-2 pb-2">{{ 'admin.product.tax_rate'|trans }}</th>
                                     {% endif %}
                                     <th class="pt-2 pb-2">{{ 'admin.product.delivery_duration'|trans }}</th>
-                                    <th class="pt-2 pb-2 pr-3">{{ 'admin.product.sale_type'|trans }}</th>
+                                    <th class="pt-2 pb-2">{{ 'admin.product.sale_type'|trans }}</th>
+                                    <th class="pt-2 pb-2 pr-3">{{ 'admin.product.beer_container_capacity'|trans }}</th>
 
                                     {# エンティティ拡張の自動出力 #}
                                     {% for product_class_form in form.product_classes %}
@@ -300,24 +301,18 @@ file that was distributed with this source code.
                                             </td>
                                             <td class="align-middle">
                                                 <div class="form-row">
-                                                    <div class="col-5">
+                                                    <div class="col-xl-5 col-lg-12">
                                                         {{ form_widget(product_class_form.stock) }}
                                                         {{ form_errors(product_class_form.stock) }}
                                                     </div>
                                                     <div class="col-auto">
-                                                        <div class="form-check form-check-inline">
-                                                            {{ form_widget(product_class_form.stock_unlimited) }}
-                                                        </div>
+                                                        {{ form_widget(product_class_form.stock_unlimited) }}
                                                     </div>
                                                 </div>
                                             </td>
                                             <td class="align-middle">
-                                                <div class="form-row">
-                                                    <div class="col-6">
-                                                        {{ form_widget(product_class_form.sale_limit) }}
-                                                        {{ form_errors(product_class_form.sale_limit) }}
-                                                    </div>
-                                                </div>
+                                                {{ form_widget(product_class_form.sale_limit) }}
+                                                {{ form_errors(product_class_form.sale_limit) }}
                                             </td>
                                             <td class="align-middle">
                                                 {{ form_widget(product_class_form.price01) }}
@@ -352,6 +347,10 @@ file that was distributed with this source code.
                                             <td class="align-middle pr-3">
                                                 {{ form_widget(product_class_form.sale_type) }}
                                                 {{ form_errors(product_class_form.sale_type) }}
+                                            </td>
+                                            <td class="align-middle pr-3">
+                                                {{ form_widget(product_class_form.BeerContainerCapacity) }}
+                                                {{ form_errors(product_class_form.BeerContainerCapacity) }}
                                             </td>
                                             {# エンティティ拡張の自動出力 #}
                                             {% for f in product_class_form if f.vars.eccube_form_options.auto_render %}
