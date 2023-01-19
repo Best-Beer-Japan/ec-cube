@@ -92,7 +92,7 @@ class OrderCustomPdfService extends TcpdfFpdi
     private $widthCell = [];
 
     /** 最後に処理した注文番号 @var string */
-    private $lastShippingId = null
+    private $lastShippingId = null;
 
     /** 最後に処理した出荷番号 @var string */
     private $lastOrderId = null;
