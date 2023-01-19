@@ -13,9 +13,11 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductTypePublishDateExtension extends AbstractTypeExtension
 {
@@ -25,15 +27,22 @@ class ProductTypePublishDateExtension extends AbstractTypeExtension
     protected $entityManager;
 
     /**
+     * @var ValidatorInterface
+     */
+    protected $validator;
+
+    /**
      * @var BeerContainerRepository
      */
     protected $beerContainerRepository;
 
     public function __construct(
         EntityManagerInterface $entityManager,
+        ValidatorInterface $validator,
         BeerContainerRepository $beerContainerRepository
     ) {
         $this->entityManager = $entityManager;
+        $this->validator = $validator;
         $this->beerContainerRepository = $beerContainerRepository;
     }
 
@@ -77,6 +86,7 @@ class ProductTypePublishDateExtension extends AbstractTypeExtension
                 ],
             ])
             ->add('alcohol_percentage', NumberType::class, [
+                'required' => true,
                 'attr' => [
                     'min' => 0,
                     'max' => 999.99,
@@ -105,6 +115,21 @@ class ProductTypePublishDateExtension extends AbstractTypeExtension
                 $BeerContainers[] = $ProductBeerContainer->getBeerContainer();
             }
             $form['BeerContainer']->setData($BeerContainers);
+        });
+
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            $form = $event->getForm();
+            $Product = $event->getData();
+
+            if (false === $Product['mixpack_flag']) {
+                $errors = $this->validator->validate($Product['alcohol_percentage'], [
+                        new Assert\NotBlank(),
+                    ]
+                );
+                if ($errors->count() != 0) {
+                    $form['alcohol_percentage']->addError(new FormError(trans('form.error.product.alcohol_percentage.invalid_required')));
+                }
+            }
         });
     }
 

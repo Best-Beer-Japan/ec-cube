@@ -320,6 +320,10 @@ class EditController extends AbstractController
                         );
                         $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_COMPLETE, $event);
 
+                        if ($event->hasResponse()) {
+                            return $event->getResponse();
+                        }
+
                         $this->addSuccess('admin.common.save_complete', 'admin');
 
                         log_info('受注登録完了', [$TargetOrder->getId()]);
@@ -547,6 +551,7 @@ class EditController extends AbstractController
                 'email' => $Customer->getEmail(),
                 'phone_number' => $Customer->getPhoneNumber(),
                 'company_name' => $Customer->getCompanyName(),
+                'customize_store_name' => $Customer->getCustomizeStoreName(),
             ];
 
             $event = new EventArgs(
