@@ -403,6 +403,21 @@ file that was distributed with this source code.
                                         {{ form_errors(form.BeerContainer) }}
                                     </div>
                                 </div>
+                                {% if has_class == false %}
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <div class="d-inline-block">
+                                                <span>{{ 'admin.product.beer_container_capacity'|trans }}</span>
+                                                <span class="badge badge-primary ml-1">
+                                                    {{ 'admin.common.required'|trans }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col mb-2">
+                                            {{ form_widget(form.class.BeerContainerCapacity) }}
+                                        </div>
+                                    </div>
+                                {% endif %}
                                 <div class="row">
                                     <div class="col-3">
                                         <div class="d-inline-block" data-tooltip="true" data-placement="top"
