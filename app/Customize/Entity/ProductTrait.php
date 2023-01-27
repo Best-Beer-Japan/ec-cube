@@ -26,6 +26,13 @@ trait ProductTrait
     private $publish_date;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="terms_and_conditions", type="text", nullable=true)
+     */
+    private $terms_and_conditions;
+
+    /**
      * @var BeerStyle
      *
      * @ORM\ManyToOne(targetEntity="Customize\Entity\Master\BeerStyle")
@@ -98,6 +105,30 @@ trait ProductTrait
         $this->publish_date = $publish_date;
 
         return $this;
+    }
+
+    /**
+     * Set terms_and_conditions.
+     *
+     * @param string|null $terms_and_conditions
+     *
+     * @return self
+     */
+    public function setTermsAndConditions(?string $terms_and_conditions): self
+    {
+        $this->terms_and_conditions = $terms_and_conditions;
+
+        return $this;
+    }
+
+    /**
+     * Get terms_and_conditions.
+     *
+     * @return string|null
+     */
+    public function getTermsAndConditions(): ?string
+    {
+        return $this->terms_and_conditions;
     }
 
     /**
