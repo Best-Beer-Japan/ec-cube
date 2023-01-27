@@ -59,6 +59,9 @@ admin.product.beer_style: ビアスタイル
 admin.product.product_csv.beer_style_col: ビアスタイル
 admin.product.product_csv.beer_style_description: ''
 
+admin.product.terms_and_conditions: 取引条件
+admin.product.terms_and_conditions.placeholder: 購入に必要な設備の指示、購入制限等に関する説明はこちらにご記入ください。
+
 front.product.beer_style: ビアスタイル
 front.product.alcohol_percentage: アルコール度数
 
