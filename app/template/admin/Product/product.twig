@@ -457,6 +457,17 @@ file that was distributed with this source code.
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-3">
+                                        <div class="d-inline-block">
+                                            <span>{{ 'admin.product.terms_and_conditions'|trans }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col mb-2">
+                                        {{ form_widget(form.terms_and_conditions, { attr : { rows : "8", 'placeholder': 'admin.product.terms_and_conditions.placeholder'} }) }}
+                                        {{ form_errors(form.terms_and_conditions) }}
+                                    </div>
+                                </div>
                                 {% if has_class == false %}
                                     <div class="row">
                                         <div class="col-3">
