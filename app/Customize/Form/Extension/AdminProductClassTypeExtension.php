@@ -2,6 +2,7 @@
 
 namespace Customize\Form\Extension;
 
+use Doctrine\ORM\EntityRepository;
 use Eccube\Form\Type\Admin\ProductClassType;
 use Eccube\Form\Type\PriceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -21,6 +22,11 @@ class AdminProductClassTypeExtension extends AbstractTypeExtension
             'constraints' => [
                 new Assert\NotBlank(),
             ],
+            'query_builder' => function (EntityRepository $er) {
+                return $er
+                    ->createQueryBuilder('dt')
+                    ->orderBy('dt.sort_no', 'ASC');
+            },
         ]);
         /*
             ->add('bbj_price', PriceType::class, [
