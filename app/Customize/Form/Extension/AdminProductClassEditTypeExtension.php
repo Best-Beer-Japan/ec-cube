@@ -2,6 +2,7 @@
 
 namespace Customize\Form\Extension;
 
+use Doctrine\ORM\EntityRepository;
 use Eccube\Form\Type\Admin\ProductClassEditType;
 use Eccube\Form\Type\PriceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -38,6 +39,11 @@ class AdminProductClassEditTypeExtension extends AbstractTypeExtension
             'label' => 'admin.product.beer_container_capacity',
             'class' => 'Customize\Entity\BeerContainerCapacity',
             'placeholder' => 'admin.common.select',
+            'query_builder' => function (EntityRepository $er) {
+                return $er
+                    ->createQueryBuilder('dt')
+                    ->orderBy('dt.sort_no', 'ASC');
+            },
         ]);
         /*
             ->add('bbj_price', PriceType::class, [
