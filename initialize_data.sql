@@ -668,7 +668,7 @@ VALUES
 ALTER TABLE plg_delivery_fee_extension_dtb_delivery_size AUTO_INCREMENT = 8;
 
 TRUNCATE plg_delivery_fee_extension_dtb_delivery_size_area_fee;
-ALTER TABLE plg_delivery_fee_extension_dtb_delivery_size_area AUTO_INCREMENT = 1;
+ALTER TABLE plg_delivery_fee_extension_dtb_delivery_size_area_fee AUTO_INCREMENT = 1;
 
 TRUNCATE plg_delivery_fee_extension_dtb_product_delivery_product_size;
 INSERT INTO `plg_delivery_fee_extension_dtb_product_delivery_product_size` (`product_class_id`, `delivery_id`, `product_size_id`, `visible`, `discriminator_type`)
