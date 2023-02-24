@@ -429,8 +429,7 @@ VALUES
 ALTER TABLE dtb_delivery_time AUTO_INCREMENT = 22;
 
 TRUNCATE dtb_payment;
-INSERT INTO `dtb_payment` (`id`, `creator_id`, `payment_method`, `charge`, `rule_max`, `sort_no`, `fixed`, `payment_image`, `rule_min`, `method_class`, `visible`, `create_date`, `update_date`, `discriminator_typ
-e`)
+INSERT INTO `dtb_payment` (`id`, `creator_id`, `payment_method`, `charge`, `rule_max`, `sort_no`, `fixed`, `payment_image`, `rule_min`, `method_class`, `visible`, `create_date`, `update_date`, `discriminator_type`)
 VALUES
 (1,2,'郵便振替',0.00,NULL,7,1,NULL,0.00,'Eccube\\Service\\Payment\\Method\\Cash',0,'2017-03-07 10:14:52','2022-11-05 13:54:57','payment'),
 (2,2,'現金書留',0.00,NULL,6,1,NULL,0.00,'Eccube\\Service\\Payment\\Method\\Cash',0,'2017-03-07 10:14:52','2022-11-05 13:55:01','payment'),
