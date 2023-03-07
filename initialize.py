@@ -136,7 +136,7 @@ def setup_b2j():
                             "email04 = email01, "
                             "update_date = NOW() "
                             "WHERE id = %s",
-                            (config["shop"]["name"], config["shop"]["email"], 1))
+                            (config["shop"]["name"], config["shop"].get("email", None), 1))
             # disable option_product_tax_rule, delivery_fee_excention_enabled
             cur.execute("UPDATE dtb_base_info SET "
                         "option_product_tax_rule = %s, "
