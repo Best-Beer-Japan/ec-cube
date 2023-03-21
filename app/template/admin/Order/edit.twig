@@ -60,7 +60,8 @@ file that was distributed with this source code.
                     dataType: 'html',
                     data: {
                         'id': $('#admin_search_product_id').val(),
-                        'category_id': $('#admin_search_product_category_id').val()
+                        'category_id': $('#admin_search_product_category_id').val(),
+                        'customer_id': $('#order_Customer').val()
                     }
                 }).done(function(data) {
                     $('#searchProductModalList').html(data);
