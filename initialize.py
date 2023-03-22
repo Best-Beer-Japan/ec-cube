@@ -209,7 +209,7 @@ def setup_initial_data():
     db_info = json.loads(db_info)
 
     with open("/tmp/initialize_data.sql") as f:
-        raw_sqls = [x.strip() for x in f.read().split(";")]
+        raw_sqls = [x.strip() for x in f.read().split(";\n")]
     sqls = []
     for raw in raw_sqls:
         ls = raw.splitlines()
