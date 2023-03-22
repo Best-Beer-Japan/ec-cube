@@ -29,7 +29,7 @@ final class Version20230321233336 extends AbstractMigration
 
             // データ挿入
             $this->addSql("INSERT INTO dtb_csv (csv_type_id, entity_name, field_name, disp_name, sort_no, enabled, create_date, update_date, discriminator_type) VALUES
-            (3, 'Eccube\\\\Entity\\\\Order', 'customize_store_name', '店舗名', ?, true, ?, ?, 'csv')",
+            (4, 'Eccube\\\\Entity\\\\Order', 'customize_store_name', '店舗名', ?, true, ?, ?, 'csv')",
                 [
                     $sortNo + 1,
                     $date,
@@ -53,7 +53,7 @@ final class Version20230321233336 extends AbstractMigration
 
             // データ挿入
             $this->addSql("INSERT INTO dtb_csv (csv_type_id, entity_name, field_name, disp_name, sort_no, enabled, create_date, update_date, discriminator_type) VALUES
-            (3, 'Eccube\\\\Entity\\\\Order', 'customize_store_name', '配送先_店舗名', ?, true, ?, ?, 'csv')",
+            (4, 'Eccube\\\\Entity\\\\Shipping', 'customize_store_name', '配送先_店舗名', ?, true, ?, ?, 'csv')",
                 [
                     $sortNo + 1,
                     $date,
