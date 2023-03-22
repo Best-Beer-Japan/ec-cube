@@ -915,10 +915,10 @@ VALUES
 	(1, 1, 1, '樽10L1本', 1, 1, now(), now(), 'deliverysize'),
 	(2, 2, 1, '樽15L1本', 1, 3, now(), now(), 'deliverysize'),
 	(5, 3, 1, '樽20L1本', 1, 5, now(), now(), 'deliverysize'),
-	(8, 8, 1, '瓶・缶1ケース (24本)', 1, 9, now(), now(), 'deliverysize'),
+	(8, 4, 1, '瓶・缶1ケース (24本)', 1, 9, now(), now(), 'deliverysize'),
 	(9, 1, 1, '樽10L結束', 2, 2, now(), now(), 'deliverysize'),
 	(10, 2, 1, '樽15L結束', 2, 4, now(), now(), 'deliverysize'),
-	(11, 8, 1, '瓶・缶結束 (48本)', 2, 10, now(), now(), 'deliverysize');
+	(11, 4, 1, '瓶・缶結束 (48本)', 2, 10, now(), now(), 'deliverysize');
 ALTER TABLE plg_delivery_fee_extension_dtb_delivery_size AUTO_INCREMENT = 12;
 
 TRUNCATE plg_delivery_fee_extension_dtb_delivery_size_area_fee;
@@ -1347,12 +1347,12 @@ VALUES
 	(6, '会員管理でグループ追加', 1, 0, 'customergroup');
 ALTER TABLE plg_customer_group AUTO_INCREMENT = 7;
 
+TRUNCATE TABLE plg_customer_group_membership;
 INSERT INTO `plg_customer_group_membership` (`id`, `group_id`, `customer_id`, `discriminator_type`)
 VALUES
 	(1, 4, 1, 'customergroupmembership'),
 	(2, 1, 2, 'customergroupmembership'),
 	(3, 1, 3, 'customergroupmembership');
-TRUNCATE TABLE plg_customer_group_membership;
 ALTER TABLE plg_customer_group_membership AUTO_INCREMENT = 4;
 
 INSERT INTO `plg_delivery_fee_extension_dtb_customer_delivery` (`customer_id`, `delivery_id`, `discriminator_type`)
