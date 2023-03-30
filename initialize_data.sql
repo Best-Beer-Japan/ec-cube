@@ -684,7 +684,7 @@ ALTER TABLE plg_mixpack_product_class AUTO_INCREMENT = 11;
 TRUNCATE dtb_order;
 INSERT INTO `dtb_order` (`id`, `customer_id`, `country_id`, `pref_id`, `sex_id`, `job_id`, `payment_id`, `device_type_id`, `pre_order_id`, `order_no`, `message`, `name01`, `name02`, `kana01`, `kana02`, `company_name`, `email`, `phone_number`, `postal_code`, `addr01`, `addr02`, `birth`, `subtotal`, `discount`, `delivery_fee_total`, `charge`, `tax`, `total`, `payment_total`, `payment_method`, `note`, `create_date`, `update_date`, `order_date`, `payment_date`, `currency_code`, `complete_message`, `complete_mail_message`, `add_point`, `use_point`, `order_status_id`, `discriminator_type`, `customize_store_name`, `original_id`, `customize_order_no_section`, `customize_billing_month_date`)
 VALUES
-	(1, 2, NULL, 11, NULL, NULL, 5, 10, 'd7970ebced7dccdf9e97a03f6b6149e7a4c9ade9', '3', NULL, 'テスト購入', '専用会員', 'テスト', 'テスト', '貴社用のテスト会社', 'support+testkaiin@bestbeerjapan.com', '0123456789', '3510011', '朝霞市本町', '1-1-1', NULL, 16500.00, 0.00, 0.00, 0.00, 1500.00, 16500.00, 16500.00, '請求書払い（月末締め翌月払い）', '請求書を発行したい時は受注に☑を入れて、「請求月を決定」を押してください。\r\n会員一覧にいないお客様の請求書は発行ができませんのでご注意ください。\r\nこのお客様は問屋ですので問屋のグループ価格が反映されます。（会員のグループ変更は会員管理 > 会員一覧 > 詳細 > グループ設定）\r\n注文詳細ページの下にある「ショップ用メモ欄」でこのメモを編集できます。', now(), now(), now(), NULL, 'JPY', NULL, NULL, 0, 0, 1, 'order', 'テスト購入専用会員', NULL, NULL, DATE_SUB(DATE_FORMAT(now(), '%Y-%m-01 15:00:00'), INTERVAL 1 DAY);
+	(1, 2, NULL, 11, NULL, NULL, 2, 10, 'd7970ebced7dccdf9e97a03f6b6149e7a4c9ade9', '3', NULL, 'テスト購入', '専用会員', 'テスト', 'テスト', '貴社用のテスト会社', 'support+testkaiin@bestbeerjapan.com', '0123456789', '3510011', '朝霞市本町', '1-1-1', NULL, 16500.00, 0.00, 0.00, 0.00, 1500.00, 16500.00, 16500.00, '請求書払い（月末締め翌月払い）', '請求書を発行したい時は受注に☑を入れて、「請求月を決定」を押してください。\r\n会員一覧にいないお客様の請求書は発行ができませんのでご注意ください。\r\nこのお客様は問屋ですので問屋のグループ価格が反映されます。（会員のグループ変更は会員管理 > 会員一覧 > 詳細 > グループ設定）\r\n注文詳細ページの下にある「ショップ用メモ欄」でこのメモを編集できます。', now(), now(), now(), NULL, 'JPY', NULL, NULL, 0, 0, 1, 'order', 'テスト購入専用会員', NULL, NULL, DATE_SUB(DATE_FORMAT(now(), '%Y-%m-01 15:00:00'), INTERVAL 1 DAY));
 ALTER TABLE dtb_order AUTO_INCREMENT = 2;
 
 TRUNCATE dtb_order_item;
@@ -1531,7 +1531,7 @@ VALUES
 ALTER TABLE dtb_customer AUTO_INCREMENT = 4;
 
 TRUNCATE TABLE plg_customer_group_product_class;
-ALTER TABINSERT INTO `plg_customer_group_product_class` (`id`, `group_id`, `product_class_id`, `price`, `show_product`, `discriminator_type`)
+INSERT INTO `plg_customer_group_product_class` (`id`, `group_id`, `product_class_id`, `price`, `show_product`, `discriminator_type`)
 VALUES
 	(1, 1, 22, NULL, 1, 'customergroupproductclass'),
 	(2, 2, 22, NULL, 1, 'customergroupproductclass'),
@@ -1539,7 +1539,7 @@ VALUES
 	(4, 4, 22, 8800, 1, 'customergroupproductclass'),
 	(5, 5, 22, NULL, 1, 'customergroupproductclass'),
 	(6, 6, 22, NULL, 1, 'customergroupproductclass');
-ALTER plg_customer_group_product_class AUTO_INCREMENT = 7;
+ALTER TABLE plg_customer_group_product_class AUTO_INCREMENT = 7;
 
 TRUNCATE TABLE plg_price_rule;
 INSERT INTO `plg_price_rule` (`id`, `rule_type`, `rate`, `discriminator_type`)
