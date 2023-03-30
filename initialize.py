@@ -134,8 +134,7 @@ def setup_b2j():
                             "email02 = email01, "
                             "email03 = email01, "
                             "email04 = email01, "
-                            "update_date = NOW(), "
-                            "delivery_fee_extension_enabled = 1 "
+                            "update_date = NOW() "
                             "WHERE id = %s",
                             (config["shop"]["name"], config["shop"].get("email", None), 1))
             # disable option_product_tax_rule, delivery_fee_excention_enabled

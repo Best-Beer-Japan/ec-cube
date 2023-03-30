@@ -144,13 +144,7 @@ VALUES
 (1, 1, '/store', NOW(), NOW(), 'authorityrole');
 
 -- base_info修正
-UPDATE dtb_base_info SET option_point = 0;
-
-TRUNCATE customize_dtb_product_beer_container;
-INSERT INTO `customize_dtb_product_beer_container` (`product_id`, `beer_container_id`, `discriminator_type`)
-VALUES
-(1,1,'productbeercontainer'),
-(2,2,'productbeercontainer');
+UPDATE dtb_base_info SET option_point = 0, delivery_fee_extension_enabled = 1;
 
 TRUNCATE dtb_category;
 INSERT INTO `dtb_category` (`id`, `parent_category_id`, `creator_id`, `category_name`, `hierarchy`, `sort_no`, `create_date`, `update_date`, `discriminator_type`)
@@ -546,25 +540,166 @@ VALUES
 	(6, 2, 'paymentoption');
 
 TRUNCATE dtb_product;
-INSERT INTO `dtb_product` (`id`, `creator_id`, `product_status_id`, `beer_style_id`, `beer_type_id`, `name`, `note`, `description_list`, `description_detail`, `search_word`, `free_area`, `create_date`, `update_date`, `alcohol_percentage`, `publish_date`, `mixpack_flag`, `list_open_flag`, `discriminator_type`)
+INSERT INTO `dtb_product` (`id`, `creator_id`, `product_status_id`, `name`, `note`, `description_list`, `description_detail`, `search_word`, `free_area`, `create_date`, `update_date`, `discriminator_type`, `beer_style_id`, `beer_type_id`, `alcohol_percentage`, `publish_date`, `terms_and_conditions`, `mixpack_flag`, `list_open_flag`)
 VALUES
-(1,2,1,1,1,'【サンプル】Best Beer-15L',NULL,NULL,'Best Beer Japanの定番ビールです。\r\n麦の旨味がぎゅっと詰まったピルスナーです。',NULL,NULL,now(),now(),5.00,NULL,0,1,'product'),
-(2,2,1,4,1,'【サンプル】Best IPA',NULL,NULL,NULL,NULL,NULL,now(),now(),7.00,NULL,0,1,'product');
-ALTER TABLE dtb_product AUTO_INCREMENT = 3;
+	(1, 2, 1, '【樽10L・15L・20L規格選択サンプル】Best Beer Pilsner', '規格がある場合は配送関連とグループ価格の設定は「この商品の規格を確認」ページで設定してください。\r\n\r\n商品登録のマニュアルページ\r\nhttps://bestbeerjapan.notion.site/713f7353730e47dfaaf7b64224b93a4f', NULL, 'Best Beer Japanの定番ビールです。\r\n麦の旨味がぎゅっと詰まったピルスナーです。\r\n\r\n商品説明にHTMLタグが使えます。※絵文字はNG\r\nHTMLが分からない方は下記のツールを使ってみてください。\r\nhttps://onlinehtmleditor.dev/\r\n\r\n下記はHTML\r\n<p>HTMLを使いますと<span style=\"color:#e74c3c\">説明文の色</span>や<span style=\"font-size:40px\">文字のサイズ</span>など変えられます。</p>\r\n<p>&nbsp;</p>\r\n上記はHTML\r\n\r\n右上の商品の確認ブタンを押すと商品はECのフロント(表)にどのように表示されているか確認ができます。', 'サイト内検索はフリーワードになっているので説明文に入っているなら別で設定する必要がないです。', 'フリーエリアの文字はここで表示されます。', now(), now(), 'product', 1, 1, 5.00, NULL, '取引条件は商品の詳細ページで登録ができます。\r\nこちらの条件はBest Beer Japanプラットフォームにも連携されます。\r\n例：\r\n・1事業者様1樽まで\r\n・先週購入の方は購入できません', 0, 1),
+	(2, 2, 1, '【瓶・缶 24本単一銘柄セットver.】Best IPA 24本パック', '同じ銘柄でもミックスパック機能でセット商品を作るのはおすすめします。\r\n単一銘柄セットのマニュアルは下記です：\r\nhttps://bestbeerjapan.notion.site/8db4043550c64285a57fd5cee4fc83b6#89f5c40b3f6f4a53a7994f67a83a4dca\r\n\r\nミックスパック機能を使いますと下記のメリットがあります：\r\n\r\n● 注文単位を固定できる (例：最低ロット24本)\r\n● 一本単位で在庫管理ができる\r\n● Best Beer Japanの樽・瓶・缶管理アプリとの連携がよりスムーズになる\r\n\r\nECと瓶・缶の管理アプリの連携の詳しくは下記です：\r\nhttps://bestbeerjapan.notion.site/EC-559f23d1ba1d49069c09118ce8f6948c\r\n\r\n※ ミックスパック機能を使わず、商品名●本セットを作るとセットの在庫が減るけどシステムは中の商品の一本単位レベルまで在庫管理ができなくなります。\r\n\r\n例：\r\nIPA 24本セット (ミックスパック機能使わず)が販売された\r\nセットの在庫は1個減るけど、ミックスパック機能を使わないと中にIPA 1本単位の商品 x 24本がセットに入っているかシステムが判断できません。中身の在庫まで管理したい場合はミックスパック機能を使ってください。\r\n\r\n他のミックスパックと同じように販売価格が0円の場合は価格が中身の合計になります。\r\n\r\n※ ECサイトのフロント(表)に表示される価格は一本単位の税込価格です。\r\n商品 (税込) x 本数で一銘柄セットの希望価格が作れない場合は販売価格を直接単一銘柄セット商品にご記入ください。\r\n\r\n貴社の会計ソフトを内税に設定しないと納品書・請求書・商品金額のズレが出る可能性があります。詳しくは下記でご確認ください。\r\nhttps://bestbeerjapan.notion.site/58dd3d2bcfa7405f9b6b00418abc69e6', '単一銘柄セットでもミックスパック機能で作ってください。(この文字は商品説明の下にある商品説明(一覧)で変更できます。商品説明の下にある➕ボタンを押してください。 )', '同じ銘柄でもミックスパック機能でセット商品を作るのはおすすめします。\r\n単一銘柄セットのマニュアルは下記です：\r\nhttps://bestbeerjapan.notion.site/8db4043550c64285a57fd5cee4fc83b6#89f5c40b3f6f4a53a7994f67a83a4dca\r\n\r\nミックスパック機能を使いますと下記のメリットがあります：\r\n\r\n● 注文単位を固定できる (例：最低ロット24本)\r\n● 一本単位で在庫管理ができる\r\n● Best Beer Japanの樽・瓶・缶管理アプリとの連携がよりスムーズになる\r\n\r\nECと瓶・缶の管理アプリの連携の詳しくは下記です：\r\nhttps://bestbeerjapan.notion.site/EC-559f23d1ba1d49069c09118ce8f6948c\r\n\r\n※ ミックスパック機能を使わず、商品名●本セットを作るとセットの在庫が減るけどシステムは中の商品の一本単位レベルまで在庫管理ができなくなります。\r\n\r\n例：\r\nIPA 24本セット (ミックスパック機能使わず)が販売された\r\nセットの在庫は1個減るけど、ミックスパック機能を使わないと中にIPA 1本単位の商品 x 24本がセットに入っているかシステムが判断できません。中身の在庫まで管理したい場合はミックスパック機能を使ってください。\r\n\r\n他のミックスパックと同じように販売価格が0円の場合は価格が中身の合計になります。\r\n\r\n※ ECサイトのフロント(表)に表示される価格は一本単位の税込価格です。\r\n商品 (税込) x 本数で単一銘柄セットの希望価格が作れない場合は販売価格を直接単一銘柄セット商品にご記入ください。\r\n\r\n貴社の会計ソフトを内税に設定しないと納品書・請求書・商品金額のズレが出る可能性があります。詳しくは下記でご確認ください。\r\nhttps://bestbeerjapan.notion.site/58dd3d2bcfa7405f9b6b00418abc69e6', NULL, NULL, now(), now(), 'product', 4, 7, NULL, NULL, NULL, 1, 1),
+	(3, 1, 1, '【樽15Lサンプル】Best Beer Pilsner-15L', '商品登録のマニュアルページ\r\nhttps://bestbeerjapan.notion.site/713f7353730e47dfaaf7b64224b93a4f', NULL, 'Best Beer Japanの定番ビールです。\r\n麦の旨味がぎゅっと詰まったピルスナーです。\r\n\r\n商品説明にHTMLタグが使えます。※絵文字はNG\r\nHTMLが分からない方は下記のツールを使ってみてください。\r\nhttps://onlinehtmleditor.dev/\r\n\r\n下記はHTML\r\n<p>HTMLを使いますと<span style=\"color:#e74c3c\">説明文の色</span>や<span style=\"font-size:40px\">文字のサイズ</span>など変えられます。</p>\r\n<p>&nbsp;</p>\r\n上記はHTML\r\n\r\n右上の商品の確認ブタンを押すと商品はECのフロント(表)にどのように表示されているか確認ができます。', 'サイト内検索はフリーワードになっているので説明文に入っているなら別で設定する必要がないです。', 'フリーエリアの文字はここで表示されます。', now(), now(), 'product', 1, 1, 5.00, NULL, '取引条件は商品の詳細ページで登録ができます。\r\nこちらの条件はBest Beer Japanプラットフォームにも連携されます。\r\n例：\r\n・1事業者様1樽まで\r\n・先週購入の方は購入できません', 0, 1),
+	(4, 2, 1, '【樽10Lサンプル】Best Beer Pilsner-10L', '商品登録のマニュアルページ\r\nhttps://bestbeerjapan.notion.site/713f7353730e47dfaaf7b64224b93a4f', 'ここの文字は商品の詳細ページ「商品説明」の下にある➕ボタンを押すと編集ができます。商品の魅力を一言で伝えられます。', 'Best Beer Japanの定番ビールです。\r\n麦の旨味がぎゅっと詰まったピルスナーです。\r\n\r\n商品説明にHTMLタグが使えます。※絵文字はNG\r\nHTMLが分からない方は下記のツールを使ってみてください。\r\nhttps://onlinehtmleditor.dev/\r\n\r\n下記はHTML\r\n<p>HTMLを使いますと<span style=\"color:#e74c3c\">説明文の色</span>や<span style=\"font-size:40px\">文字のサイズ</span>など変えられます。</p>\r\n<p>&nbsp;</p>\r\n上記はHTML\r\n\r\n右上の商品の確認ブタンを押すと商品はECのフロント(表)にどのように表示されているか確認ができます。', 'サイト内検索はフリーワードになっているので説明文に入っているなら別で設定する必要がないです。', 'フリーエリアの文字はここで表示されます。', now(), now(), 'product', 1, 1, 5.00, NULL, '取引条件は商品の詳細ページで登録ができます。\r\nこちらの条件はBest Beer Japanプラットフォームにも連携されます。\r\n例：\r\n・1事業者様1樽まで\r\n・先週購入の方は購入できません', 0, 1),
+	(5, 2, 1, '【缶350mlサンプル 1本単位】Best IPA (ミックスパック専用、一覧非表示)', 'この商品はミックスパック専用として使われてので「商品一覧表示」を無効にしています。\r\nECのフロント側(表)の「缶・瓶」のカテゴリに行っても表示されません。ご確認ください。\r\n\r\n瓶・缶は1本単位で販売する予定がなければ「商品一覧表示」を無効にしてミックスパック商品を別で作って、そのミックスパック商品の中身の商品に追加してください。\r\n\r\n※ 一覧非表示にしても直接商品のリンクを知っている方は購入が可能です。\r\nお得意様限定の秘密の商品として使えます。\r\n詳しくはマニュアルでご確認ください。\r\nhttps://bestbeerjapan.notion.site/985c88780b3f4aff9d29b4cc62678c92', NULL, 'この商品はミックスパック専用として使われてので「商品一覧表示」を無効にしています。\r\nECのフロント側(表)の「缶・瓶」のカテゴリに行っても表示されません。ご確認ください。\r\n\r\n瓶・缶は1本単位で販売する予定がなければ「商品一覧表示」を無効にしてミックスパック商品を別で作って、そのミックスパック商品の中身の商品に追加してください。\r\n\r\n※ 一覧非表示にしても直接商品のリンクを知っている方は購入が可能です。\r\nお得意様限定の秘密の商品として使えます。\r\n詳しくはマニュアルでご確認ください。\r\nhttps://bestbeerjapan.notion.site/985c88780b3f4aff9d29b4cc62678c92', NULL, NULL, now(), now(), 'product', 4, 1, 5.00, NULL, NULL, 0, 0),
+	(6, 2, 1, '【混載（ミックスパック）サンプル】貴社が中身を決めるver　24本パック (Best IPA 12本、Best Weizen 12本)', 'ミックスパックの販売価格を0円として設定する場合は中の商品の合計金額になります。\r\nミックスパックに追加した中の商品の説明がミックスパックの詳細ページに自動で表示されます。\r\n\r\n中の商品の金額を無視してミックスパックの専用価格を固定したい場合は販売価格を直接ミックスパック商品にご記入ください。\r\n\r\n混載（ミックスパック）のマニュアル\r\nhttps://bestbeerjapan.notion.site/8db4043550c64285a57fd5cee4fc83b6', NULL, 'ミックスパックの販売価格を0円として設定する場合は中の商品の合計金額になります。\r\nミックスパックに追加した中の商品の説明がミックスパックの詳細ページに自動で表示されます。\r\n\r\n中の商品の金額を無視してミックスパックの専用価格を固定したい場合は販売価格を直接ミックスパック商品にご記入ください。\r\n\r\n混載（ミックスパック）のマニュアル\r\nhttps://bestbeerjapan.notion.site/8db4043550c64285a57fd5cee4fc83b6', NULL, NULL, now(), now(), 'product', 8, 7, NULL, NULL, NULL, 1, 1),
+	(7, 2, 1, '【混載（ミックスパック）サンプル】お客様が中身を自由にチョイスver.　24本パック', 'ミックスパックの販売価格を0円として設定する場合は中の商品の合計金額になります。\r\nミックスパックに追加した中の商品の説明がミックスパックの詳細ページに自動で表示されます。\r\n\r\n中の商品の金額を無視してミックスパックの専用価格を固定したい場合は販売価格を直接ミックスパック商品にご記入ください。\r\n\r\n混載（ミックスパックのマニュアル\r\nhttps://bestbeerjapan.notion.site/8db4043550c64285a57fd5cee4fc83b6', NULL, 'ミックスパックの販売価格を0円として設定する場合は中の商品の合計金額になります。\r\nミックスパックに追加した中の商品の説明がミックスパックの詳細ページに自動で表示されます。\r\n\r\n中の商品の金額を無視してミックスパックの専用価格を固定したい場合は販売価格を直接ミックスパック商品にご記入ください。\r\n\r\n混載（ミックスパック）のマニュアル\r\nhttps://bestbeerjapan.notion.site/8db4043550c64285a57fd5cee4fc83b6', NULL, NULL, now(), now(), 'product', 8, 7, NULL, NULL, NULL, 1, 1),
+	(8, 2, 1, '【混載（ミックスパック）サンプル】ハイブリッドver.（お客様が中身を自由にチョイス＋貴社が中身を決める）　24本パック', 'ミックスパックの販売価格を0円として設定する場合は中の商品の合計金額になります。\r\nミックスパックに追加した中の商品の説明がミックスパックの詳細ページに自動で表示されます。\r\n\r\n中の商品の金額を無視してミックスパックの専用価格を固定したい場合は販売価格を直接ミックスパック商品にご記入ください。\r\n\r\n混載（ミックスパック）のマニュアル\r\nhttps://bestbeerjapan.notion.site/8db4043550c64285a57fd5cee4fc83b6', NULL, 'ミックスパックの販売価格を0円として設定する場合は中の商品の合計金額になります。\r\nミックスパックに追加した中の商品の説明がミックスパックの詳細ページに自動で表示されます。\r\n\r\n中の商品の金額を無視してミックスパックの専用価格を固定したい場合は販売価格を直接ミックスパック商品にご記入ください。\r\n\r\n混載（ミックスパック）のマニュアル\r\nhttps://bestbeerjapan.notion.site/8db4043550c64285a57fd5cee4fc83b6', NULL, NULL, now(), now(), 'product', 8, 7, NULL, NULL, NULL, 1, 1),
+	(9, 2, 1, '【缶350mlサンプル 1本単位】Best Weizen', 'この商品は一覧に表示されているので誰で見れて、購入ができます。\r\n業務用取引はあまり1本単位で瓶・缶を販売しません。システムの配送設定が複雑になるのでBest Beer Japanは瓶・缶の1本単位の販売をおすすめしません。\r\n\r\n缶・瓶の注文単位を固定したい場合（例：最低ロット24本）はミックスパック機能を使ってください。\r\n単一銘柄セットも作れますのでミックスパックのマニュアルでご確認ください。\r\nhttps://bestbeerjapan.notion.site/8db4043550c64285a57fd5cee4fc83b6#89f5c40b3f6f4a53a7994f67a83a4dca', '1本単位で瓶・缶を販売することはおすすめしません。ミックスパック機能で「単一銘柄セット」を作ることをご検討ください。', 'この商品は一覧に表示されているので誰で見れて、購入ができます。\r\n業務用取引はあまり1本単位で瓶・缶を販売しません。システムの配送設定が複雑になるのでBest Beer Japanは瓶・缶の1本単位の販売をおすすめしません。\r\n\r\n缶・瓶の注文単位を固定したい場合（例：最低ロット24本）はミックスパック機能を使ってください。\r\n単一銘柄セットも作れますのでミックスパックのマニュアルでご確認ください。\r\nhttps://bestbeerjapan.notion.site/8db4043550c64285a57fd5cee4fc83b6#89f5c40b3f6f4a53a7994f67a83a4dca', NULL, NULL, now(), now(), 'product', 2, 1, 5.00, NULL, NULL, 0, 1),
+	(10, 2, 1, '【缶350mlサンプル 1本単位】Best Hazy', 'この商品は一覧に表示されているので誰で見れて、購入ができます。\r\n業務用取引はあまり1本単位で瓶・缶を販売しません。システムの配送設定が複雑になるのでBest Beer Japanは瓶・缶の1本単位の販売をおすすめしません。\r\n\r\n缶・瓶の注文単位を固定したい場合（例：最低ロット24本）はミックスパック機能を使ってください。\r\n単一銘柄セットも作れますのでミックスパックのマニュアルでご確認ください。\r\nhttps://bestbeerjapan.notion.site/8db4043550c64285a57fd5cee4fc83b6#89f5c40b3f6f4a53a7994f67a83a4dca', '1本単位で瓶・缶を販売することはおすすめしません。ミックスパック機能で「単一銘柄セット」を作ることをご検討ください。', 'この商品は一覧に表示されているので誰で見れて、購入ができます。\r\n業務用取引はあまり1本単位で瓶・缶を販売しません。システムの配送設定が複雑になるのでBest Beer Japanは瓶・缶の1本単位の販売をおすすめしません。\r\n\r\n缶・瓶の注文単位を固定したい場合（例：最低ロット24本）はミックスパック機能を使ってください。\r\n単一銘柄セットも作れますのでミックスパックのマニュアルでご確認ください。\r\nhttps://bestbeerjapan.notion.site/8db4043550c64285a57fd5cee4fc83b6#89f5c40b3f6f4a53a7994f67a83a4dca', NULL, NULL, now(), now(), 'product', 10, 1, 5.00, NULL, NULL, 0, 1),
+	(11, 2, 1, '【樽10Lサンプル】Best Beer Pilsner-10L (問屋グループ価格適用)', 'グループ別価格表示ルール設定の詳しくは下記から\r\nhttps://bestbeerjapan.notion.site/bcf19c0b1edd4f14b9850592f60ba381\r\n\r\n問屋の会員としてログインしてみてください。\r\n他の商品が問屋の割引率によって価格が表示されます。\r\nこちらの商品は下にある「グループ関連設定」に直接問屋の価格が入力されているので割引率より優先されます。\r\n\r\n例：\r\n問屋はいつも15%OFFにしているけど今回の商品にたくさんのホップを入れて原価が高いので15%OFFではなく12%OFF, 8,800 (税抜)にしたいです。\r\n(割引率より高い格の設定も可能です。)', NULL, 'グループ別価格表示ルール設定の詳しくは下記から\r\nhttps://bestbeerjapan.notion.site/bcf19c0b1edd4f14b9850592f60ba381\r\n\r\n問屋の会員としてログインしてみてください。\r\n他の商品が問屋の割引率によって価格が表示されます。\r\nこちらの商品は下にある「グループ関連設定」に直接問屋の価格が入力されているので割引率より優先されます。\r\n\r\n例：\r\n問屋はいつも15%OFFにしているけど今回の商品にたくさんのホップを入れて原価が高いので15%OFFではなく12%OFF, 8,800 (税抜)にしたいです。\r\n(割引率より高い価格の設定も可能です。)', 'サイト内検索はフリーワードになっているので説明文に入っているなら別で設定する必要がないです。', 'フリーエリアの文字はここで表示されます。', now(), now(), 'product', 1, 1, 5.00, NULL, NULL, 0, 1);
+ALTER TABLE dtb_product AUTO_INCREMENT = 12;
+
+TRUNCATE dtb_product_image;
+INSERT INTO `dtb_product_image` (`id`, `product_id`, `creator_id`, `file_name`, `sort_no`, `create_date`, `discriminator_type`)
+VALUES
+	(1, 5, 2, '0311003708_640b4ea4dbab6.png', 1, now(), 'productimage'),
+	(2, 10, 2, '0311005343_640b5287c6488.png', 1, now(), 'productimage'),
+	(3, 9, 2, '0311005355_640b5293e7254.png', 1, now(), 'productimage'),
+	(4, 11, 2, '0311015301_640b606d3e0d4.png', 1, now(), 'productimage'),
+	(5, 1, 2, '0311015315_640b607b24b02.png', 1, now(), 'productimage'),
+	(6, 3, 1, '0311015326_640b60861a1fb.png', 1, now(), 'productimage'),
+	(7, 4, 2, '0311015335_640b608fa7c78.png', 1, now(), 'productimage'),
+	(8, 2, 2, '0311015348_640b609c0b37c.png', 1, now(), 'productimage'),
+	(9, 6, 2, '0311015408_640b60b09dc97.png', 1, now(), 'productimage'),
+	(10, 7, 2, '0311015423_640b60bf3d5b8.png', 1, now(), 'productimage'),
+	(11, 8, 2, '0311015435_640b60cb09db5.png', 1, now(), 'productimage');
+ALTER TABLE dtb_product_image AUTO_INCREMENT = 12;
 
 TRUNCATE dtb_product_class;
-INSERT INTO `dtb_product_class` (`id`, `product_id`, `sale_type_id`, `class_category_id1`, `class_category_id2`, `delivery_duration_id`, `creator_id`, `product_code`, `stock`, `stock_unlimited`, `sale_limit`, `price01`, `price02`, `delivery_fee`, `visible`, `create_date`, `update_date`, `currency_code`, `point_rate`, `discriminator_type`)
+INSERT INTO `dtb_product_class` (`id`, `product_id`, `sale_type_id`, `class_category_id1`, `class_category_id2`, `delivery_duration_id`, `creator_id`, `product_code`, `stock`, `stock_unlimited`, `sale_limit`, `price01`, `price02`, `delivery_fee`, `visible`, `create_date`, `update_date`, `currency_code`, `point_rate`, `discriminator_type`, `beer_container_capacity_id`)
 VALUES
-(1,1,1,NULL,NULL,NULL,2,NULL,NULL,1,NULL,NULL,50000.00,NULL,1,now(),now(),'JPY',NULL,'productclass'),
-(2,2,1,NULL,NULL,NULL,2,NULL,NULL,1,NULL,NULL,1000.00,NULL,1,now(),now(),'JPY',NULL,'productclass');
-ALTER TABLE dtb_product_class AUTO_INCREMENT = 3;
+	(1, 1, 1, NULL, NULL, NULL, 1, NULL, NULL, 1, NULL, NULL, 50000.00, NULL, 0, now(), now(), 'JPY', NULL, 'productclass', 3),
+	(2, 2, 1, NULL, NULL, NULL, 2, NULL, NULL, 1, NULL, NULL, 10000.00, NULL, 1, now(), now(), 'JPY', NULL, 'productclass', 3),
+	(3, 2, 1, 5, NULL, 1, 1, NULL, NULL, 1, NULL, NULL, 15000.00, NULL, 0, now(), now(), 'JPY', NULL, 'productclass', 8),
+	(4, 2, 1, 4, NULL, 1, 1, NULL, NULL, 1, NULL, NULL, 10000.00, NULL, 0, now(), now(), 'JPY', NULL, 'productclass', 1),
+	(5, 3, 1, NULL, NULL, NULL, 1, NULL, 0, 0, NULL, NULL, 15000.00, NULL, 1, now(), now(), 'JPY', NULL, 'productclass', 14),
+	(6, 1, 1, 3, NULL, NULL, 2, NULL, NULL, 1, NULL, NULL, 20000.00, NULL, 1, now(), now(), 'JPY', NULL, 'productclass', 15),
+	(7, 1, 1, 2, NULL, NULL, 2, NULL, NULL, 1, NULL, NULL, 15000.00, NULL, 1, now(), now(), 'JPY', NULL, 'productclass', 14),
+	(8, 1, 1, 1, NULL, NULL, 2, NULL, NULL, 1, NULL, NULL, 10000.00, NULL, 1, now(), now(), 'JPY', NULL, 'productclass', 12),
+	(9, 4, 1, NULL, NULL, NULL, 2, NULL, NULL, 1, NULL, NULL, 10000.00, NULL, 1, now(), now(), 'JPY', NULL, 'productclass', 12),
+	(10, 5, 1, NULL, NULL, NULL, 2, NULL, NULL, 1, NULL, NULL, 500.00, NULL, 1, now(), now(), 'JPY', NULL, 'productclass', 3),
+	(11, 6, 1, NULL, NULL, NULL, 2, NULL, NULL, 1, NULL, NULL, 0.00, NULL, 1, now(), now(), 'JPY', NULL, 'productclass', 3),
+	(12, 6, 1, 5, NULL, 1, 1, NULL, NULL, 1, NULL, NULL, 15000.00, NULL, 0, now(), now(), 'JPY', NULL, 'productclass', 8),
+	(13, 6, 1, 4, NULL, 1, 1, NULL, NULL, 1, NULL, NULL, 10000.00, NULL, 0, now(), now(), 'JPY', NULL, 'productclass', 1),
+	(14, 7, 1, NULL, NULL, NULL, 2, NULL, NULL, 1, NULL, NULL, 0.00, NULL, 1, now(), now(), 'JPY', NULL, 'productclass', 3),
+	(15, 7, 1, 5, NULL, 1, 1, NULL, NULL, 1, NULL, NULL, 15000.00, NULL, 0, now(), now(), 'JPY', NULL, 'productclass', 8),
+	(16, 7, 1, 4, NULL, 1, 1, NULL, NULL, 1, NULL, NULL, 10000.00, NULL, 0, now(), now(), 'JPY', NULL, 'productclass', 1),
+	(17, 8, 1, NULL, NULL, NULL, 2, NULL, NULL, 1, NULL, NULL, 0.00, NULL, 1, now(), now(), 'JPY', NULL, 'productclass', 3),
+	(18, 8, 1, 5, NULL, 1, 1, NULL, NULL, 1, NULL, NULL, 15000.00, NULL, 0, now(), now(), 'JPY', NULL, 'productclass', 8),
+	(19, 8, 1, 4, NULL, 1, 1, NULL, NULL, 1, NULL, NULL, 10000.00, NULL, 0, now(), now(), 'JPY', NULL, 'productclass', 1),
+	(20, 9, 1, NULL, NULL, NULL, 2, NULL, NULL, 1, NULL, NULL, 450.00, NULL, 1, now(), now(), 'JPY', NULL, 'productclass', 3),
+	(21, 10, 1, NULL, NULL, NULL, 2, NULL, NULL, 1, NULL, NULL, 380.00, NULL, 1, now(), now(), 'JPY', NULL, 'productclass', 3),
+	(22, 11, 1, NULL, NULL, NULL, 2, NULL, NULL, 1, NULL, NULL, 10000.00, NULL, 1, now(), now(), 'JPY', NULL, 'productclass', 12);
+ALTER TABLE dtb_product_class AUTO_INCREMENT = 23;
+
+TRUNCATE dtb_product_category;
+INSERT INTO `dtb_product_category` (`product_id`, `category_id`, `discriminator_type`)
+VALUES
+	(1, 1, 'productcategory'),
+	(2, 2, 'productcategory'),
+	(3, 1, 'productcategory'),
+	(4, 1, 'productcategory'),
+	(5, 2, 'productcategory'),
+	(6, 2, 'productcategory'),
+	(7, 2, 'productcategory'),
+	(8, 2, 'productcategory'),
+	(9, 2, 'productcategory'),
+	(10, 2, 'productcategory'),
+	(11, 1, 'productcategory');
 
 TRUNCATE dtb_product_stock;
 INSERT INTO `dtb_product_stock` (`id`, `product_class_id`, `creator_id`, `stock`, `create_date`, `update_date`, `discriminator_type`)
 VALUES
-(1,1,2,NULL,now(),now(),'productstock'),
-(2,2,2,NULL,now(),now(),'productstock');
-ALTER TABLE dtb_product_stock AUTO_INCREMENT = 3;
+	(1, 1, 2, NULL, now(), now(), 'productstock'),
+	(2, 2, 2, NULL, now(), now(), 'productstock'),
+	(3, 3, 1, NULL, now(), now(), 'productstock'),
+	(4, 4, 1, NULL, now(), now(), 'productstock'),
+	(5, 5, 1, 0, now(), now(), 'productstock'),
+	(6, 6, 1, NULL, now(), now(), 'productstock'),
+	(7, 7, 1, NULL, now(), now(), 'productstock'),
+	(8, 8, 1, NULL, now(), now(), 'productstock'),
+	(9, 9, 1, NULL, now(), now(), 'productstock'),
+	(10, 10, 1, NULL, now(), now(), 'productstock'),
+	(11, 11, 1, NULL, now(), now(), 'productstock'),
+	(12, 12, 1, NULL, now(), now(), 'productstock'),
+	(13, 13, 1, NULL, now(), now(), 'productstock'),
+	(14, 14, 1, NULL, now(), now(), 'productstock'),
+	(15, 15, 1, NULL, now(), now(), 'productstock'),
+	(16, 16, 1, NULL, now(), now(), 'productstock'),
+	(17, 17, 1, NULL, now(), now(), 'productstock'),
+	(18, 18, 1, NULL, now(), now(), 'productstock'),
+	(19, 19, 1, NULL, now(), now(), 'productstock'),
+	(20, 20, 2, NULL, now(), now(), 'productstock'),
+	(21, 21, 2, NULL, now(), now(), 'productstock'),
+	(22, 22, 2, NULL, now(), now(), 'productstock');
+ALTER TABLE dtb_product_stock AUTO_INCREMENT = 23;
+
+TRUNCATE customize_dtb_product_beer_container;
+INSERT INTO `customize_dtb_product_beer_container` (`product_id`, `beer_container_id`, `discriminator_type`)
+VALUES
+	(1, 1, 'productbeercontainer'),
+	(2, 3, 'productbeercontainer'),
+	(3, 1, 'productbeercontainer'),
+	(4, 1, 'productbeercontainer'),
+	(5, 3, 'productbeercontainer'),
+	(6, 3, 'productbeercontainer'),
+	(7, 3, 'productbeercontainer'),
+	(8, 3, 'productbeercontainer'),
+	(9, 3, 'productbeercontainer'),
+	(10, 3, 'productbeercontainer'),
+	(11, 1, 'productbeercontainer');
+
+TRUNCATE plg_mixpack;
+INSERT INTO `plg_mixpack` (`id`, `product_id`, `creator_id`, `original_id`, `total_quantity`, `sort_no`, `discriminator_type`)
+VALUES
+	(1, 2, 2, NULL, 24, 1, 'mixpack'),
+	(2, 6, 2, NULL, 12, 1, 'mixpack'),
+	(3, 6, 2, NULL, 12, 2, 'mixpack'),
+	(4, 7, 2, NULL, 24, 1, 'mixpack'),
+	(5, 8, 2, NULL, 12, 1, 'mixpack'),
+	(6, 8, 2, NULL, 12, 2, 'mixpack');
+ALTER TABLE plg_mixpack AUTO_INCREMENT = 7;
+
+TRUNCATE plg_mixpack_product_class;
+INSERT INTO `plg_mixpack_product_class` (`id`, `product_class_id`, `creator_id`, `original_id`, `mixpack_id`, `unit_quantity`, `sort_no`, `discriminator_type`)
+VALUES
+	(1, 10, 2, NULL, 1, 24, 1, 'mixpackproductclass'),
+	(2, 10, 2, NULL, 2, 12, 1, 'mixpackproductclass'),
+	(3, 20, 2, NULL, 3, 0, 1, 'mixpackproductclass'),
+	(4, 10, 2, NULL, 4, 1, 1, 'mixpackproductclass'),
+	(5, 20, 2, NULL, 4, 6, 2, 'mixpackproductclass'),
+	(6, 21, 2, NULL, 4, 12, 3, 'mixpackproductclass'),
+	(7, 10, 2, NULL, 5, 1, 1, 'mixpackproductclass'),
+	(8, 20, 2, NULL, 5, 1, 2, 'mixpackproductclass'),
+	(9, 21, 2, NULL, 5, 1, 3, 'mixpackproductclass'),
+	(10, 10, 2, NULL, 6, 12, 1, 'mixpackproductclass');
+ALTER TABLE plg_mixpack_product_class AUTO_INCREMENT = 11;
+
+TRUNCATE dtb_order;
+INSERT INTO `dtb_order` (`id`, `customer_id`, `country_id`, `pref_id`, `sex_id`, `job_id`, `payment_id`, `device_type_id`, `pre_order_id`, `order_no`, `message`, `name01`, `name02`, `kana01`, `kana02`, `company_name`, `email`, `phone_number`, `postal_code`, `addr01`, `addr02`, `birth`, `subtotal`, `discount`, `delivery_fee_total`, `charge`, `tax`, `total`, `payment_total`, `payment_method`, `note`, `create_date`, `update_date`, `order_date`, `payment_date`, `currency_code`, `complete_message`, `complete_mail_message`, `add_point`, `use_point`, `order_status_id`, `discriminator_type`, `customize_store_name`, `original_id`, `customize_order_no_section`, `customize_billing_month_date`)
+VALUES
+	(1, 2, NULL, 11, NULL, NULL, 5, 10, 'd7970ebced7dccdf9e97a03f6b6149e7a4c9ade9', '3', NULL, 'テスト購入', '専用会員', 'テスト', 'テスト', '貴社用のテスト会社', 'support+testkaiin@bestbeerjapan.com', '0123456789', '3510011', '朝霞市本町', '1-1-1', NULL, 16500.00, 0.00, 0.00, 0.00, 1500.00, 16500.00, 16500.00, '請求書払い（月末締め翌月払い）', '請求書を発行したい時は受注に☑を入れて、「請求月を決定」を押してください。\r\n会員一覧にいないお客様の請求書は発行ができませんのでご注意ください。\r\nこのお客様は問屋ですので問屋のグループ価格が反映されます。（会員のグループ変更は会員管理 > 会員一覧 > 詳細 > グループ設定）\r\n注文詳細ページの下にある「ショップ用メモ欄」でこのメモを編集できます。', now(), now(), now(), NULL, 'JPY', NULL, NULL, 0, 0, 1, 'order', 'テスト購入専用会員', NULL, NULL, DATE_SUB(DATE_FORMAT(now(), '%Y-%m-01 15:00:00'), INTERVAL 1 DAY);
+ALTER TABLE dtb_order AUTO_INCREMENT = 2;
+
+TRUNCATE dtb_order_item;
+INSERT INTO `dtb_order_item` (`id`, `order_id`, `product_id`, `product_class_id`, `shipping_id`, `rounding_type_id`, `tax_type_id`, `tax_display_type_id`, `order_item_type_id`, `product_name`, `product_code`, `class_name1`, `class_name2`, `class_category_name1`, `class_category_name2`, `price`, `quantity`, `tax`, `tax_rate`, `tax_adjust`, `tax_rule_id`, `currency_code`, `processor_name`, `point_rate`, `discriminator_type`, `original_id`, `parent_order_item_id`)
+VALUES
+	(1, 1, 3, 5, 1, 3, 1, 1, 1, '【樽15Lサンプル】Best Beer Pilsner-15L', NULL, NULL, NULL, NULL, NULL, 15000.00, 1, 1500, 10, 0, NULL, 'JPY', NULL, NULL, 'orderitem', NULL, NULL),
+	(2, 1, NULL, NULL, NULL, 3, 1, 2, 3, '手数料', NULL, NULL, NULL, NULL, NULL, 0.00, 1, 0, 10, 0, NULL, 'JPY', 'Eccube\\Service\\PurchaseFlow\\Processor\\PaymentChargePreprocessor', NULL, 'orderitem', NULL, NULL),
+	(3, 1, NULL, NULL, 1, 3, 1, 2, 2, '送料', NULL, NULL, NULL, NULL, NULL, 0.00, 1, 0, 10, 0, NULL, 'JPY', 'Eccube\\Service\\PurchaseFlow\\Processor\\DeliveryFeePreprocessor', NULL, 'orderitem', NULL, NULL);
+ALTER TABLE dtb_order_item AUTO_INCREMENT = 4;
+
+TRUNCATE dtb_shipping;
+INSERT INTO `dtb_shipping` (`id`, `order_id`, `country_id`, `pref_id`, `delivery_id`, `creator_id`, `name01`, `name02`, `kana01`, `kana02`, `company_name`, `phone_number`, `postal_code`, `addr01`, `addr02`, `delivery_name`, `time_id`, `delivery_time`, `delivery_date`, `shipping_date`, `tracking_number`, `note`, `sort_no`, `create_date`, `update_date`, `mail_send_date`, `discriminator_type`, `customize_store_name`)
+VALUES
+	(1, 1, NULL, 11, 6, NULL, 'テスト購入', '専用会員', 'テスト', 'テスト', '貴社用のテスト会社', '0123456789', '3510011', '朝霞市本町', '1-1-1', '直接受取', NULL, NULL, NULL, NULL, NULL, NULL, NULL, now(), now(), NULL, 'shipping', 'テスト購入専用会員');
+ALTER TABLE dtb_shipping AUTO_INCREMENT = 2;
 
 TRUNCATE plg_delivery_fee_extension_dtb_delivery_area;
 INSERT INTO `plg_delivery_fee_extension_dtb_delivery_area` (`id`, `delivery_id`, `name`, `sort_no`, `discriminator_type`)
@@ -1298,12 +1433,84 @@ VALUES
 	(1, 3, NULL, 1, 'productdeliveryproductsize'),
 	(1, 4, NULL, 1, 'productdeliveryproductsize'),
 	(1, 5, NULL, 1, 'productdeliveryproductsize'),
-	(2, 1, 4, 1, 'productdeliveryproductsize'),
-	(2, 2, 4, 1, 'productdeliveryproductsize'),
-	(2, 3, 4, 1, 'productdeliveryproductsize'),
-	(2, 4, 4, 1, 'productdeliveryproductsize'),
-	(2, 5, 4, 1, 'productdeliveryproductsize'),
-	(2, 6, 4, 1, 'productdeliveryproductsize');
+	(2, 1, 8, 1, 'productdeliveryproductsize'),
+	(2, 2, 8, 1, 'productdeliveryproductsize'),
+	(2, 3, 8, 1, 'productdeliveryproductsize'),
+	(2, 4, 8, 1, 'productdeliveryproductsize'),
+	(2, 5, 8, 1, 'productdeliveryproductsize'),
+	(2, 6, 8, 1, 'productdeliveryproductsize'),
+	(5, 1, 2, 1, 'productdeliveryproductsize'),
+	(5, 2, 2, 1, 'productdeliveryproductsize'),
+	(5, 3, 2, 1, 'productdeliveryproductsize'),
+	(5, 4, 2, 1, 'productdeliveryproductsize'),
+	(5, 5, 2, 1, 'productdeliveryproductsize'),
+	(5, 6, 2, 1, 'productdeliveryproductsize'),
+	(6, 1, 3, 1, 'productdeliveryproductsize'),
+	(6, 2, 3, 1, 'productdeliveryproductsize'),
+	(6, 3, 3, 1, 'productdeliveryproductsize'),
+	(6, 4, 3, 1, 'productdeliveryproductsize'),
+	(6, 5, 3, 1, 'productdeliveryproductsize'),
+	(6, 6, 3, 1, 'productdeliveryproductsize'),
+	(7, 1, 2, 1, 'productdeliveryproductsize'),
+	(7, 2, 2, 1, 'productdeliveryproductsize'),
+	(7, 3, 2, 1, 'productdeliveryproductsize'),
+	(7, 4, 2, 1, 'productdeliveryproductsize'),
+	(7, 5, 2, 1, 'productdeliveryproductsize'),
+	(7, 6, 2, 1, 'productdeliveryproductsize'),
+	(8, 1, 1, 1, 'productdeliveryproductsize'),
+	(8, 2, 1, 1, 'productdeliveryproductsize'),
+	(8, 3, 1, 1, 'productdeliveryproductsize'),
+	(8, 4, 1, 1, 'productdeliveryproductsize'),
+	(8, 5, 1, 1, 'productdeliveryproductsize'),
+	(8, 6, 1, 1, 'productdeliveryproductsize'),
+	(9, 1, 1, 1, 'productdeliveryproductsize'),
+	(9, 2, 1, 1, 'productdeliveryproductsize'),
+	(9, 3, 1, 1, 'productdeliveryproductsize'),
+	(9, 4, 1, 1, 'productdeliveryproductsize'),
+	(9, 5, 1, 1, 'productdeliveryproductsize'),
+	(9, 6, 1, 1, 'productdeliveryproductsize'),
+	(10, 1, NULL, 1, 'productdeliveryproductsize'),
+	(10, 2, NULL, 1, 'productdeliveryproductsize'),
+	(10, 3, NULL, 1, 'productdeliveryproductsize'),
+	(10, 4, NULL, 1, 'productdeliveryproductsize'),
+	(10, 5, NULL, 1, 'productdeliveryproductsize'),
+	(10, 6, NULL, 1, 'productdeliveryproductsize'),
+	(11, 1, 8, 1, 'productdeliveryproductsize'),
+	(11, 2, 8, 1, 'productdeliveryproductsize'),
+	(11, 3, 8, 1, 'productdeliveryproductsize'),
+	(11, 4, 8, 1, 'productdeliveryproductsize'),
+	(11, 5, 8, 1, 'productdeliveryproductsize'),
+	(11, 6, 8, 1, 'productdeliveryproductsize'),
+	(14, 1, 8, 1, 'productdeliveryproductsize'),
+	(14, 2, 8, 1, 'productdeliveryproductsize'),
+	(14, 3, 8, 1, 'productdeliveryproductsize'),
+	(14, 4, 8, 1, 'productdeliveryproductsize'),
+	(14, 5, 8, 1, 'productdeliveryproductsize'),
+	(14, 6, 8, 1, 'productdeliveryproductsize'),
+	(17, 1, 8, 1, 'productdeliveryproductsize'),
+	(17, 2, 8, 1, 'productdeliveryproductsize'),
+	(17, 3, 8, 1, 'productdeliveryproductsize'),
+	(17, 4, 8, 1, 'productdeliveryproductsize'),
+	(17, 5, 8, 1, 'productdeliveryproductsize'),
+	(17, 6, 8, 1, 'productdeliveryproductsize'),
+	(20, 1, NULL, 1, 'productdeliveryproductsize'),
+	(20, 2, NULL, 1, 'productdeliveryproductsize'),
+	(20, 3, NULL, 1, 'productdeliveryproductsize'),
+	(20, 4, NULL, 1, 'productdeliveryproductsize'),
+	(20, 5, NULL, 1, 'productdeliveryproductsize'),
+	(20, 6, NULL, 1, 'productdeliveryproductsize'),
+	(21, 1, NULL, 1, 'productdeliveryproductsize'),
+	(21, 2, NULL, 1, 'productdeliveryproductsize'),
+	(21, 3, NULL, 1, 'productdeliveryproductsize'),
+	(21, 4, NULL, 1, 'productdeliveryproductsize'),
+	(21, 5, NULL, 1, 'productdeliveryproductsize'),
+	(21, 6, NULL, 1, 'productdeliveryproductsize'),
+	(22, 1, 1, 1, 'productdeliveryproductsize'),
+	(22, 2, 1, 1, 'productdeliveryproductsize'),
+	(22, 3, 1, 1, 'productdeliveryproductsize'),
+	(22, 4, 1, 1, 'productdeliveryproductsize'),
+	(22, 5, 1, 1, 'productdeliveryproductsize'),
+	(22, 6, 1, 1, 'productdeliveryproductsize');
 
 TRUNCATE plg_delivery_fee_extension_dtb_product_size;
 INSERT INTO `plg_delivery_fee_extension_dtb_product_size` (`id`, `name`, `sort_no`, `create_date`, `update_date`, `discriminator_type`)
@@ -1324,7 +1531,15 @@ VALUES
 ALTER TABLE dtb_customer AUTO_INCREMENT = 4;
 
 TRUNCATE TABLE plg_customer_group_product_class;
-ALTER TABLE plg_customer_group_product_class AUTO_INCREMENT = 1;
+ALTER TABINSERT INTO `plg_customer_group_product_class` (`id`, `group_id`, `product_class_id`, `price`, `show_product`, `discriminator_type`)
+VALUES
+	(1, 1, 22, NULL, 1, 'customergroupproductclass'),
+	(2, 2, 22, NULL, 1, 'customergroupproductclass'),
+	(3, 3, 22, NULL, 1, 'customergroupproductclass'),
+	(4, 4, 22, 8800, 1, 'customergroupproductclass'),
+	(5, 5, 22, NULL, 1, 'customergroupproductclass'),
+	(6, 6, 22, NULL, 1, 'customergroupproductclass');
+ALTER plg_customer_group_product_class AUTO_INCREMENT = 7;
 
 TRUNCATE TABLE plg_price_rule;
 INSERT INTO `plg_price_rule` (`id`, `rule_type`, `rate`, `discriminator_type`)
@@ -1350,15 +1565,13 @@ ALTER TABLE plg_customer_group AUTO_INCREMENT = 7;
 TRUNCATE TABLE plg_customer_group_membership;
 INSERT INTO `plg_customer_group_membership` (`id`, `group_id`, `customer_id`, `discriminator_type`)
 VALUES
-	(1, 4, 1, 'customergroupmembership'),
-	(2, 1, 2, 'customergroupmembership'),
+	(1, 1, 1, 'customergroupmembership'),
+	(2, 4, 2, 'customergroupmembership'),
 	(3, 1, 3, 'customergroupmembership');
 ALTER TABLE plg_customer_group_membership AUTO_INCREMENT = 4;
 
 INSERT INTO `plg_delivery_fee_extension_dtb_customer_delivery` (`customer_id`, `delivery_id`, `discriminator_type`)
 VALUES
-	(1, 4, 'customerdelivery'),
-	(1, 6, 'customerdelivery'),
 	(2, 4, 'customerdelivery'),
 	(2, 6, 'customerdelivery'),
 	(3, 4, 'customerdelivery'),
