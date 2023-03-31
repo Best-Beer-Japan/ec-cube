@@ -139,7 +139,7 @@ class EditController extends AbstractController
                     $session->set('eccube.admin.order.product.search.page_no', $page_no);
                 }
 
-                $customerId = $session->get('eccube.admin.order.product.customer_id');
+                $customerId = $session->get('eccube.admin.order.product.search.customer_id');
             }
 
             // 会員グループID取得
