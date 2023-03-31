@@ -41,7 +41,7 @@ file that was distributed with this source code.
 	<script>
 		$(function () {
 if ($('[type="date"]').prop('type') != 'date') { // input type属性でdateが利用できるかどうか(カレンダー表示できないブラウザ対応)
-$.when($.getScript("{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"), $.getScript("{{ asset('assets/js/vendor/moment-with-locales.min.js', 'admin') }}"), $.getScript("{{ asset('assets/js/vendor/tempusdominus-bootstrap-4.min.js', 'admin') }}")).done(function () {
+$.when($.getScript("{{ asset('assets/js/vendor/tempusdominus-bootstrap-4.min.js', 'admin') }}")).done(function () {
 $('input[id$=_date_start]').datetimepicker({
 locale: '{{ eccube_config.locale }}',
 format: 'YYYY-MM-DD',
