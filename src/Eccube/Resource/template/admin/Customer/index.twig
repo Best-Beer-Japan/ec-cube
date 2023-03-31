@@ -40,8 +40,6 @@ file that was distributed with this source code.
             $('input[type="date"]').attr('type','text');
 
             $.when(
-                $.getScript("{{ asset('assets/js/vendor/moment.min.js', 'admin') }}"),
-                $.getScript("{{ asset('assets/js/vendor/moment-with-locales.min.js', 'admin') }}"),
                 $.getScript("{{ asset('assets/js/vendor/tempusdominus-bootstrap-4.min.js', 'admin') }}")
             ).done(function() {
                 // datetimepicker で value が消えてしまうので data-value に保持しておく
