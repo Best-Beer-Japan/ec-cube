@@ -172,7 +172,7 @@ VALUES
 	(5, 2, 1, '700ml', '700ml', 2, 1, now(), now(), 'classcategory'),
 	(6, 3, 1, '350ml', '350ml', 1, 1, now(), now(), 'classcategory'),
 	(7, 3, 1, '500ml', '500ml', 2, 1, now(), now(), 'classcategory');
-ALTER TABLE dtb_class_category AUTO_INCREMENT = 4;
+ALTER TABLE dtb_class_category AUTO_INCREMENT = 8;
 
 TRUNCATE dtb_delivery;
 INSERT INTO `dtb_delivery` (`id`, `creator_id`, `sale_type_id`, `name`, `service_name`, `description`, `confirm_url`, `sort_no`, `visible`, `create_date`, `update_date`, `discriminator_type`, `delivery_type_id`, `free_area`)
@@ -1519,7 +1519,7 @@ VALUES
 	(2, '樽15L', 2, now(), now(), 'productsize'),
 	(3, '樽20L', 3, now(), now(), 'productsize'),
 	(4, '瓶・缶1ケース (24本)', 4, now(), now(), 'productsize');
-ALTER TABLE plg_delivery_fee_extension_dtb_product_size AUTO_INCREMENT = 4;
+ALTER TABLE plg_delivery_fee_extension_dtb_product_size AUTO_INCREMENT = 5;
 
 -- customers
 TRUNCATE dtb_customer;
