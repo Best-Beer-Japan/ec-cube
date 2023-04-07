@@ -3,10 +3,12 @@
 namespace Customize\Controller\Admin\Order;
 
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Order;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\AddCartType;
 use Eccube\Repository\CategoryRepository;
+use Eccube\Repository\CustomerAddressRepository;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TaxRuleRepository;
@@ -36,6 +38,11 @@ class EditController extends AbstractController
      * @var CustomerRepository
      */
     protected $customerRepository;
+
+    /**
+     * @var CustomerAddressRepository
+     */
+    protected $customerAddressRepository;
 
     /**
      * @var CustomerGroupMembershipRepository
@@ -73,6 +80,7 @@ class EditController extends AbstractController
      * @param ProductRepository $productRepository
      * @param CategoryRepository $categoryRepository
      * @param CustomerRepository $customerRepository
+     * @param CustomerAddressRepository $customerAddressRepository
      * @param CustomerGroupMembershipRepository $customerGroupMembershipRepository
      * @param CustomerGroupRepository $customerGroupRepository
      * @param PriceRuleRepository $priceRuleRepository
@@ -84,6 +92,7 @@ class EditController extends AbstractController
         ProductRepository $productRepository,
         CategoryRepository $categoryRepository,
         CustomerRepository $customerRepository,
+        CustomerAddressRepository $customerAddressRepository,
         CustomerGroupMembershipRepository $customerGroupMembershipRepository,
         CustomerGroupRepository $customerGroupRepository,
         PriceRuleRepository $priceRuleRepository,
@@ -94,6 +103,7 @@ class EditController extends AbstractController
         $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
         $this->customerRepository = $customerRepository;
+        $this->customerAddressRepository = $customerAddressRepository;
         $this->customerGroupMembershipRepository = $customerGroupMembershipRepository;
         $this->customerGroupRepository = $customerGroupRepository;
         $this->priceRuleRepository = $priceRuleRepository;
@@ -139,7 +149,7 @@ class EditController extends AbstractController
                     $session->set('eccube.admin.order.product.search.page_no', $page_no);
                 }
 
-                $customerId = $session->get('eccube.admin.order.product.customer_id');
+                $customerId = $session->get('eccube.admin.order.product.search.customer_id');
             }
 
             // 会員グループID取得
@@ -219,6 +229,189 @@ class EditController extends AbstractController
             return [
                 'forms' => $forms,
                 'Products' => $Products,
+                'pagination' => $pagination,
+            ];
+        }
+    }
+
+    /**
+     * @Route("/%eccube_admin_route%/customize/order/customer/address", name="customize_admin_order_customer_address")
+     * @Route("/%eccube_admin_route%/customize/order/customer/address/page/{page_no}", requirements={"page_no" = "\d+"}, name="customize_admin_order_customer_address_page")
+     * @Template("@admin/Order/customer_address.twig")
+     */
+    public function customerSubAddress(Request $request, $page_no = null, Paginator $paginator)
+    {
+        if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
+            log_debug('customer address start.');
+            $page_count = $this->eccubeConfig['eccube_default_page_count'];
+            $session = $this->session;
+
+            if ('POST' === $request->getMethod()) {
+                $page_no = 1;
+
+                $customerId = $request->get('customer_id');
+
+                $session->set('eccube.customize.admin.order.customer.address.page_no', $page_no);
+                $session->set('eccube.customize.admin.order.customer.address.customer_id', $customerId);
+            } else {
+                if (is_null($page_no)) {
+                    $page_no = intval($session->get('eccube.customize.admin.order.customer.address.page_no'));
+                } else {
+                    $session->set('eccube.customize.admin.order.customer.address.page_no', $page_no);
+                }
+
+                $customerId = $session->get('eccube.customize.admin.order.customer.address.customer_id');
+            }
+
+            $pagination = null;
+            $data = [];
+            if (!empty($customerId)) {
+                $Customer = $this->customerRepository->find($customerId);
+
+                $qb = $this->customerAddressRepository->createQueryBuilder('ca');
+                $qb->andWhere('ca.Customer = :Customer')
+                    ->setParameter('Customer', $Customer);
+
+                /** @var \Knp\Component\Pager\Pagination\SlidingPagination $pagination */
+                $pagination = $paginator->paginate(
+                    $qb,
+                    $page_no,
+                    $page_count,
+                    ['wrap-queries' => true]
+                );
+
+                $CustomerAddresses = $pagination->getItems();
+
+                $formatName = '%s%s(%s%s)';
+                foreach ($CustomerAddresses as $CustomerAddress) {
+                    $data[] = [
+                        'id' => $CustomerAddress->getId(),
+                        'name' => sprintf($formatName, $CustomerAddress->getName01(), $CustomerAddress->getName02(),
+                            $CustomerAddress->getKana01(),
+                            $CustomerAddress->getKana02()),
+                        'phone_number' => $CustomerAddress->getPhoneNumber(),
+                        'address' => $CustomerAddress->getPref()->getName().' '.$CustomerAddress->getAddr01().' '.$CustomerAddress->getAddr02(),
+                    ];
+                }
+            }
+
+            return [
+                'data' => $data,
+                'pagination' => $pagination,
+            ];
+        }
+    }
+
+    /**
+     * 顧客お届け先を検索する.
+     *
+     * @Route("/%eccube_admin_route%/customize/order/search/customer/address/id", name="customize_admin_order_customer_address_by_id", methods={"POST"})
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function searchCustomerById(Request $request)
+    {
+        if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
+            log_debug('customer address by id start.');
+
+            $CustomerAddress = $this->customerAddressRepository
+                ->find($request->get('id'));
+
+            if (is_null($CustomerAddress)) {
+                log_debug('customer address by id not found.');
+
+                return $this->json([], 404);
+            }
+
+            log_debug('customer address by id found.');
+
+            $data = [
+                'name01' => $CustomerAddress->getName01(),
+                'name02' => $CustomerAddress->getName02(),
+                'kana01' => $CustomerAddress->getKana01(),
+                'kana02' => $CustomerAddress->getKana02(),
+                'postal_code' => $CustomerAddress->getPostalCode(),
+                'pref' => is_null($CustomerAddress->getPref()) ? null : $CustomerAddress->getPref()->getId(),
+                'addr01' => $CustomerAddress->getAddr01(),
+                'addr02' => $CustomerAddress->getAddr02(),
+                'phone_number' => $CustomerAddress->getPhoneNumber(),
+                'company_name' => $CustomerAddress->getCompanyName(),
+                'customize_store_name' => $CustomerAddress->getCustomizeStoreName(),
+            ];
+
+            return $this->json($data);
+        }
+    }
+
+    /**
+     * @Route("/%eccube_admin_route%/customize/order/shipping/customer/address/{id}", requirements={"id" = "\d+"}, name="customize_admin_order_shipping_customer_address")
+     * @Route("/%eccube_admin_route%/customize/order/shipping/customer/address/page/{page_no}", requirements={"page_no" = "\d+"}, name="customize_admin_order_shipping_customer_address_page")
+     * @Template("@admin/Order/shipping_customer_address.twig")
+     */
+    public function shippingCustomerSubAddress(Request $request, Order $Order, $page_no = null, Paginator $paginator)
+    {
+        if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
+            log_debug('shipping customer address start.');
+            $page_count = $this->eccubeConfig['eccube_default_page_count'];
+            $session = $this->session;
+
+            if ('POST' === $request->getMethod()) {
+                $page_no = 1;
+
+                $itemIndex = $request->get('item_index');
+                $customerId = $Order->getCustomer() ? $Order->getCustomer()->getId() : null;
+
+                $session->set('eccube.customize.admin.order.customer.address.page_no', $page_no);
+                $session->set('eccube.customize.admin.order.customer.address.item_index', $itemIndex);
+                $session->set('eccube.customize.admin.order.customer.address.customer_id', $customerId);
+            } else {
+                if (is_null($page_no)) {
+                    $page_no = intval($session->get('eccube.customize.admin.order.customer.address.page_no'));
+                } else {
+                    $session->set('eccube.customize.admin.order.customer.address.page_no', $page_no);
+                }
+
+                $itemIndex = $session->get('eccube.customize.admin.order.customer.address.item_index');
+                $customerId = $session->get('eccube.customize.admin.order.customer.address.customer_id');
+            }
+
+            $pagination = null;
+            $data = [];
+            if (!empty($customerId)) {
+                $Customer = $this->customerRepository->find($customerId);
+
+                $qb = $this->customerAddressRepository->createQueryBuilder('ca');
+                $qb->andWhere('ca.Customer = :Customer')
+                    ->setParameter('Customer', $Customer);
+
+                /** @var \Knp\Component\Pager\Pagination\SlidingPagination $pagination */
+                $pagination = $paginator->paginate(
+                    $qb,
+                    $page_no,
+                    $page_count,
+                    ['wrap-queries' => true]
+                );
+
+                $CustomerAddresses = $pagination->getItems();
+
+                $formatName = '%s%s(%s%s)';
+                foreach ($CustomerAddresses as $CustomerAddress) {
+                    $data[] = [
+                        'id' => $CustomerAddress->getId(),
+                        'name' => sprintf($formatName, $CustomerAddress->getName01(), $CustomerAddress->getName02(),
+                            $CustomerAddress->getKana01(),
+                            $CustomerAddress->getKana02()),
+                        'phone_number' => $CustomerAddress->getPhoneNumber(),
+                        'address' => $CustomerAddress->getPref()->getName().' '.$CustomerAddress->getAddr01().' '.$CustomerAddress->getAddr02(),
+                    ];
+                }
+            }
+
+            return [
+                'item_index' => $itemIndex,
+                'data' => $data,
                 'pagination' => $pagination,
             ];
         }

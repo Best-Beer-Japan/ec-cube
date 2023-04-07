@@ -70,6 +70,25 @@ file that was distributed with this source code.
                 });
             });
 
+            // 会員お届け先住所
+            $('#customerAddressModal').on('show.bs.modal', function(e) {
+                var list = $('#customerAddressModalList');
+                list.children().remove();
+
+                $.ajax({
+                    url: '{{ url('customize_admin_order_customer_address') }}',
+                    type: 'POST',
+                    dataType: 'html',
+                    data: {
+                        'customer_id': $('#order_Customer').val()
+                    }
+                }).done(function(data) {
+                    $('#customerAddressModalList').html(data);
+                }).fail(function(data) {
+                    alert('customer address failed.');
+                });
+            });
+
             // その他明細
             $('#addOrderItemType').on('show.bs.modal', function(e) {
                 var list = $('#searchOrderItemTypeList');
@@ -368,29 +387,32 @@ file that was distributed with this source code.
                         <div class="collapse {{ id ? '' : 'show' }} ec-cardCollapse h-adr" id="ordererInfo">
                             <span class="p-country-name" style="display:none;">Japan</span>
                             <div class="card-body">
-                                {% if Order.id is empty %}
-                                    <div class="row mb-3">
-                                        <div class="col-auto">
-                                            <a class="btn btn-ec-regular px-3" data-toggle="modal" data-target="#searchCustomerModal">{{ 'admin.order.search_from_customer'|trans }}</a>
+                                <div class="row">
+                                    {% if Order.id is empty %}
+                                        <div class="mb-3">
+                                            <div class="col-auto">
+                                                <a class="btn btn-ec-regular px-3" data-toggle="modal" data-target="#searchCustomerModal">{{ 'admin.order.search_from_customer'|trans }}</a>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <!-- 会員検索モーダル -->
-                                    <div class="modal fade" id="searchCustomerModal" tabindex="-1" role="dialog" aria-labelledby="searchCustomerModal" aria-hidden="true">
-                                        <div class="modal-dialog modal-lg" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title font-weight-bold">{{ 'admin.order.search_customer_title'|trans }}</h5>
-                                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    {{ form_widget(searchCustomerModalForm.multi, { attr : {'class': 'mb-2searchCustomerModal', placeholder : 'admin.customer.multi_search_label' }}) }}
-                                                    <button type="button" id="searchCustomerModalButton" class="btn btn-ec-conversion px-5 mb-4 mt-2">{{ 'admin.common.search'|trans }}</button>
-                                                    <div class="form-group" id="searchCustomerModalList"></div>
+                                        <!-- 会員検索モーダル -->
+                                        <div class="modal fade" id="searchCustomerModal" tabindex="-1" role="dialog" aria-labelledby="searchCustomerModal" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title font-weight-bold">{{ 'admin.order.search_customer_title'|trans }}</h5>
+                                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        {{ form_widget(searchCustomerModalForm.multi, { attr : {'class': 'mb-2searchCustomerModal', placeholder : 'admin.customer.multi_search_label' }}) }}
+                                                        <button type="button" id="searchCustomerModalButton" class="btn btn-ec-conversion px-5 mb-4 mt-2">{{ 'admin.common.search'|trans }}</button>
+                                                        <div class="form-group" id="searchCustomerModalList"></div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                {% endif %}
+                                    {% endif %}
+
+                                </div>
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="row">
@@ -537,6 +559,21 @@ file that was distributed with this source code.
                                     {# 単数配送の場合は配送先の編集が可能 #}
                                     <div class="row mb-3">
                                         <div class="col-6">
+                                            <a class="btn btn-ec-regular" data-toggle="modal" data-target="#customerAddressModal">お届け先住所を入力</a>
+                                            <!-- お届け先住所検索モーダル -->
+                                            <div class="modal fade" id="customerAddressModal" tabindex="-1" role="dialog" aria-labelledby="customerAddressModal" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title font-weight-bold">お届け先住所</h5>
+                                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="form-group" id="customerAddressModalList"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <button type="button" class="btn btn-ec-regular copy-customer">{{ 'admin.order.copy_orderer'|trans }}</button>
                                             {% if Order.id is not empty %}
                                                 <a class="btn btn-ec-regular pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ Order.Shippings[0].id }}">{{ 'admin.order.output_delivery_note'|trans }}</a>

@@ -58,6 +58,30 @@ file that was distributed with this source code.
             });
         });
 
+        // 会員お届け先住所
+        var item_index = undefined;
+        $('.customer_address_modal_btn').on('click', function() {
+            item_index = $(this).data('item-index');
+        })
+
+        $('#customerAddressModal').on('show.bs.modal', function(e) {
+            var list = $('#customerAddressModalList');
+            list.children().remove();
+
+            $.ajax({
+                url: '{{ url('customize_admin_order_shipping_customer_address', { 'id': Order.id }) }}',
+                type: 'POST',
+                dataType: 'html',
+                data: {
+                    'item_index': item_index
+                }
+            }).done(function(data) {
+                $('#customerAddressModalList').html(data);
+            }).fail(function(data) {
+                alert('customer address failed.');
+            });
+        });
+
         // その他明細
         $('#addOrderItemType').on('show.bs.modal', function(e) {
             var list = $('#searchOrderItemTypeList');
@@ -226,6 +250,20 @@ file that was distributed with this source code.
                 </div>
             </div>
         </div>
+        <!-- お届け先住所検索モーダル -->
+        <div class="modal fade" id="customerAddressModal" tabindex="-1" role="dialog" aria-labelledby="customerAddressModal" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title font-weight-bold">お届け先住所</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group" id="customerAddressModalList"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="c-contentsArea__cols">
             <div class="c-contentsArea__primaryCol">
@@ -294,6 +332,7 @@ file that was distributed with this source code.
                                 <div class="card-body">
                                     <div class="row mb-3">
                                         <div class="col-6">
+                                            <a class="btn btn-ec-regular customer_address_modal_btn" data-toggle="modal" data-target="#customerAddressModal" data-item-index="{{ loop.index0 }}">お届け先住所を入力</a>
                                             {% if shippingForm.vars.value.id %}
                                                 {# ボタンは登録済みの出荷のみ表示する #}
                                                 <!-- 納品書を出力ボタン -->
