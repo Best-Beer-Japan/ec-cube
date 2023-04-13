@@ -84,6 +84,20 @@ class AdminEvent implements EventSubscriberInterface
             if ($Csv->getFieldName() === 'plg_delivery_fee_extension_customer_deliverys') {
                 $CustomerDeliveries = $Customer->getCustomerDeliveries();
 
+                $isDelivery = 'あり';
+                if ($CustomerDeliveries->isEmpty()) {
+                    $isDelivery = 'なし';
+                }
+
+                $ExportCsvRow->setData($isDelivery);
+
+                return;
+            }
+
+            // 自社配送名
+            if ($Csv->getFieldName() === 'plg_delivery_fee_extension_customer_delivery_names') {
+                $CustomerDeliveries = $Customer->getCustomerDeliveries();
+
                 $DeliveryNames = [];
                 if ($CustomerDeliveries->isEmpty()) {
                     return;
@@ -94,6 +108,8 @@ class AdminEvent implements EventSubscriberInterface
                 }
 
                 $ExportCsvRow->setData(implode($this->eccubeConfig['eccube_csv_export_multidata_separator'], $DeliveryNames));
+
+                return;
             }
         }
     }
