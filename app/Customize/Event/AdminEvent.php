@@ -66,10 +66,36 @@ class AdminEvent implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
+            EccubeEvents::ADMIN_CUSTOMER_CSV_EXPORT => ['onAdminCustomerCsvExport', 999999],
             EccubeEvents::ADMIN_CUSTOMER_EDIT_INDEX_COMPLETE => ['onAdminCustomerEditIndexComplete', 999999],
             EccubeEvents::ADMIN_PRODUCT_EDIT_COMPLETE => ['onAdminProductEditComplete', 999999],
             EccubeEvents::ADMIN_ORDER_CSV_EXPORT_ORDER => ['onAdminOrderCsvExportOrder', 999999],
         ];
+    }
+
+    public function onAdminCustomerCsvExport(EventArgs $event)
+    {
+        $Csv = $event->getArgument('Csv');
+        $ExportCsvRow = $event->getArgument('ExportCsvRow');
+        $Customer = $event->getArgument('Customer');
+
+        if ($Csv->getCsvType()->getId() === 2) {
+            // 自社配送
+            if ($Csv->getFieldName() === 'plg_delivery_fee_extension_customer_deliverys') {
+                $CustomerDeliveries = $Customer->getCustomerDeliveries();
+
+                $DeliveryNames = [];
+                if ($CustomerDeliveries->isEmpty()) {
+                    return;
+                }
+
+                foreach ($CustomerDeliveries as $CustomerDelivery) {
+                    $DeliveryNames[] = $CustomerDelivery->getDelivery()->getName();
+                }
+
+                $ExportCsvRow->setData(implode($this->eccubeConfig['eccube_csv_export_multidata_separator'], $DeliveryNames));
+            }
+        }
     }
 
     public function onAdminCustomerEditIndexComplete(EventArgs $event)
