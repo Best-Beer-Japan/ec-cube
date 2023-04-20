@@ -11,6 +11,8 @@ use Eccube\Entity\Master\OrderItemType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Repository\CustomerRepository;
+use Plugin\Mixpack\Repository\CustomerGroupMembershipRepository;
+use Plugin\Mixpack\Repository\CustomerGroupRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class AdminEvent implements EventSubscriberInterface
@@ -31,6 +33,16 @@ class AdminEvent implements EventSubscriberInterface
     protected $customerRepository;
 
     /**
+     * @var CustomerGroupRepository
+     */
+    protected $customerGroupRepository;
+
+    /**
+     * @var CustomerGroupMembershipRepository
+     */
+    protected $customerGroupMembershipRepository;
+
+    /**
      * @var BreweryRequestApiService
      */
     protected $breweryRequestApiService;
@@ -39,6 +51,8 @@ class AdminEvent implements EventSubscriberInterface
      * @var CustomerInvoiceService
      */
     protected $customerInvoiceService;
+
+    protected $customerGroups = [];
 
     /**
      * FrontEvent constructor.
@@ -53,12 +67,16 @@ class AdminEvent implements EventSubscriberInterface
         EccubeConfig $eccubeConfig,
         EntityManagerInterface $entityManager,
         CustomerRepository $customerRepository,
+        CustomerGroupRepository $customerGroupRepository,
+        CustomerGroupMembershipRepository $customerGroupMembershipRepository,
         BreweryRequestApiService $breweryRequestApiService,
         CustomerInvoiceService $customerInvoiceService
     ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->entityManager = $entityManager;
         $this->customerRepository = $customerRepository;
+        $this->customerGroupRepository = $customerGroupRepository;
+        $this->customerGroupMembershipRepository = $customerGroupMembershipRepository;
         $this->breweryRequestApiService = $breweryRequestApiService;
         $this->customerInvoiceService = $customerInvoiceService;
     }
@@ -146,6 +164,29 @@ class AdminEvent implements EventSubscriberInterface
 
                     return;
                 }
+            }
+
+            //会員グループ
+            if ($Csv->getFieldName() === 'plg_mixpack_customer_group_name' && $OrderItem->getOrderItemType()->getId() === OrderItemType::PRODUCT) {
+                if (empty($this->customerGroups)) {
+                    $groups = $this->customerGroupRepository->findAll();
+
+                    foreach($groups as $group){
+                        $this->customerGroups[$group->getId()] = $group->getName();
+                    }
+                }
+
+                $groupId = 1; // デフォルトグループ：ゲスト
+                $Order = $OrderItem->getOrder();
+                if (null !== $Customer = $Order->getCustomer()) {
+                    // 会員グループID取得
+                    $CustomerGroupMemberShip = $this->customerGroupMembershipRepository->findCustomerGroupMembership($Customer->getId());
+                    if(!empty($CustomerGroupMemberShip)){
+                        $groupId = $CustomerGroupMemberShip->getGroupId();
+                    }
+                }
+
+                $ExportCsvRow->setData($this->customerGroups[$groupId]);
             }
         }
     }
