@@ -69,10 +69,10 @@ ALTER TABLE dtb_payment_option AUTO_INCREMENT = 1;
 
 -- 税率ルール
 TRUNCATE TABLE dtb_tax_rule;
-ALTER TABLE dtb_tax_rule AUTO_INCREMENT = 1;
 INSERT INTO dtb_tax_rule (id, product_class_id, creator_id, country_id, pref_id, product_id, rounding_type_id, tax_rate, tax_adjust, apply_date, create_date, update_date, discriminator_type)
 VALUES
 (1, NULL, 2, NULL, NULL, NULL, 3, 10, 0, '2017-03-07 10:14:52', '2017-03-07 10:14:52', '2021-07-30 10:12:15', 'taxrule');
+ALTER TABLE dtb_tax_rule AUTO_INCREMENT = 2;
 
 -- 規格やカテゴリの初期化
 TRUNCATE TABLE dtb_category;

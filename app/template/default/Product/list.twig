@@ -224,6 +224,9 @@ file that was distributed with this source code.
                                         {% else %}
                                             {{ Product.getPrice02IncTaxMin|price }}
                                         {% endif %}
+                                        {% if Product.getPrice02IncTaxMax > 0 %}
+                                            <span style="font-size: 0.77em;">{{ 'common.tax_include'|trans }}</span>
+                                        {% endif %}
                                     {% endif %}
                                 </p>
                             </a>
