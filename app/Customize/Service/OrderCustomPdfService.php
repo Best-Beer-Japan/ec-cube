@@ -403,6 +403,11 @@ class OrderCustomPdfService extends TcpdfFpdi
         $this->SetFont(self::FONT_SJIS, '', 8);
 
         $this->Ln();
+
+        $this->MultiCell(0, 4, 'この納品書はインボイスには該当いたしません', '', 2, 'L', 0, '');
+        $this->Ln();
+        $this->Ln();
+
         // rtrimを行う
         $text = preg_replace('/\s+$/us', '', $formData['note1']."\n".$formData['note2']."\n".$formData['note3']);
         if (null !== $formData['note4']) {
