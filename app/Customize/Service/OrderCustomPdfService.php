@@ -319,6 +319,7 @@ class OrderCustomPdfService extends TcpdfFpdi
     public function Footer()
     {
         $this->Cell(0, 0, $this->issueDate, 0, 0, 'R');
+        $this->Cell(0, 12, '醸造所管理ソフト by Best Beer Japan', 0, 0, 'R');
     }
 
     /**
