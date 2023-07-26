@@ -13,19 +13,22 @@ final class Version20230704223318 extends AbstractMigration
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $csvFieldTaxExist = $this->connection->fetchColumn("SELECT COUNT(*) FROM dtb_csv WHERE csv_type_id = 3 and field_name = 'tax'");
-        if ($csvFieldTaxExist > 0) {
-            $this->addSql("DELETE FROM dtb_csv WHERE csv_type_id = 3 and field_name = 'tax';");
+        $csvTypeId = $this->connection->fetchColumn("SELECT id FROM mtb_csv_type WHERE name = '受注CSV'");
+        $csvFieldTaxExist = $this->connection->fetchColumn("SELECT COUNT(*) FROM dtb_csv WHERE csv_type_id = ? and field_name = 'tax'", [$csvTypeId]);
+        if ($csvFieldTaxExist > 0 && false !== $csvTypeId) {
+            $this->addSql("DELETE FROM dtb_csv WHERE csv_type_id = ? and field_name = 'tax';", [$csvTypeId]);
         }
 
-        $csvFieldTaxExist = $this->connection->fetchColumn("SELECT COUNT(*) FROM dtb_csv WHERE csv_type_id = 4 and field_name = 'tax'");
-        if ($csvFieldTaxExist > 0) {
-            $this->addSql("DELETE FROM dtb_csv WHERE csv_type_id = 4 and field_name = 'tax';");
+        $csvTypeId = $this->connection->fetchColumn("SELECT id FROM mtb_csv_type WHERE name = '配送CSV'");
+        $csvFieldTaxExist = $this->connection->fetchColumn("SELECT COUNT(*) FROM dtb_csv WHERE csv_type_id = ? and field_name = 'tax'", [$csvTypeId]);
+        if ($csvFieldTaxExist > 0 && false !== $csvTypeId) {
+            $this->addSql("DELETE FROM dtb_csv WHERE csv_type_id = ? and field_name = 'tax';", [$csvTypeId]);
         }
 
-        $csvFieldTaxExist = $this->connection->fetchColumn("SELECT COUNT(*) FROM dtb_csv WHERE csv_type_id = 9 and field_name = 'tax'");
-        if ($csvFieldTaxExist > 0) {
-            $this->addSql("DELETE FROM dtb_csv WHERE csv_type_id = 9 and field_name = 'tax';");
+        $csvTypeId = $this->connection->fetchColumn("SELECT id FROM mtb_csv_type WHERE name = '請求CSV'");
+        $csvFieldTaxExist = $this->connection->fetchColumn("SELECT COUNT(*) FROM dtb_csv WHERE csv_type_id = ? and field_name = 'tax'", [$csvTypeId]);
+        if ($csvFieldTaxExist > 0 && false !== $csvTypeId) {
+            $this->addSql("DELETE FROM dtb_csv WHERE csv_type_id = ? and field_name = 'tax';", [$csvTypeId]);
         }
     }
 
@@ -34,40 +37,52 @@ final class Version20230704223318 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $date = (new \DateTime())->format('Y-m-d H:i:s');
 
-        $sort_no = $this->connection->fetchColumn("SELECT max(sort_no) FROM dtb_csv WHERE csv_type_id = 3");
-        $this->addSql("INSERT INTO dtb_csv (
+        $csvTypeId = $this->connection->fetchColumn("SELECT id FROM mtb_csv_type WHERE name = '受注CSV'");
+        if (false !== $csvTypeId) {
+            $sort_no = $this->connection->fetchColumn("SELECT max(sort_no) FROM dtb_csv WHERE csv_type_id = ?", [$csvTypeId]);
+            $this->addSql("INSERT INTO dtb_csv (
                 id, csv_type_id, creator_id, entity_name, field_name, reference_field_name, disp_name, sort_no, enabled, create_date, update_date, discriminator_type
             ) VALUES (
-                NULL, 3, NULL, 'Eccube\\\\Entity\\\\Order', 'tax', NULL, '税金', ?, 1, ?, ?, 'csv'
+                NULL, ?, NULL, 'Eccube\\\\Entity\\\\Order', 'tax', NULL, '税金', ?, 1, ?, ?, 'csv'
             )",
-            [
-                $sort_no + 1,
-                $date,
-                $date
-            ]);
+                [
+                    $csvTypeId,
+                    $sort_no + 1,
+                    $date,
+                    $date
+                ]);
+        }
 
-        $sort_no = $this->connection->fetchColumn("SELECT max(sort_no) FROM dtb_csv WHERE csv_type_id = 4");
-        $this->addSql("INSERT INTO dtb_csv (
+        $csvTypeId = $this->connection->fetchColumn("SELECT id FROM mtb_csv_type WHERE name = '配送CSV'");
+        if (false !== $csvTypeId) {
+            $sort_no = $this->connection->fetchColumn("SELECT max(sort_no) FROM dtb_csv WHERE csv_type_id = ?", [$csvTypeId]);
+            $this->addSql("INSERT INTO dtb_csv (
                 id, csv_type_id, creator_id, entity_name, field_name, reference_field_name, disp_name, sort_no, enabled, create_date, update_date, discriminator_type
             ) VALUES (
-                NULL, 4, NULL, 'Eccube\\\\Entity\\\\Order', 'tax', NULL, '税金', ?, 1, ?, ?, 'csv'
+                NULL, ?, NULL, 'Eccube\\\\Entity\\\\Order', 'tax', NULL, '税金', ?, 1, ?, ?, 'csv'
             )",
-            [
-                $sort_no + 1,
-                $date,
-                $date
-            ]);
+                [
+                    $csvTypeId,
+                    $sort_no + 1,
+                    $date,
+                    $date
+                ]);
+        }
 
-        $sort_no = $this->connection->fetchColumn("SELECT max(sort_no) FROM dtb_csv WHERE csv_type_id = 9");
-        $this->addSql("INSERT INTO dtb_csv (
+        $csvTypeId = $this->connection->fetchColumn("SELECT id FROM mtb_csv_type WHERE name = '請求CSV'");
+        if (false !== $csvTypeId) {
+            $sort_no = $this->connection->fetchColumn("SELECT max(sort_no) FROM dtb_csv WHERE csv_type_id = ?", [$csvTypeId]);
+            $this->addSql("INSERT INTO dtb_csv (
                 id, csv_type_id, creator_id, entity_name, field_name, reference_field_name, disp_name, sort_no, enabled, create_date, update_date, discriminator_type
             ) VALUES (
-                NULL, 9, NULL, 'Eccube\\\\Entity\\\\Order', 'tax', NULL, '税金', ?, 1, ?, ?, 'csv'
+                NULL, ?, NULL, 'Eccube\\\\Entity\\\\Order', 'tax', NULL, '税金', ?, 1, ?, ?, 'csv'
             )",
-            [
-                $sort_no + 1,
-                $date,
-                $date
-            ]);
+                [
+                    $csvTypeId,
+                    $sort_no + 1,
+                    $date,
+                    $date
+                ]);
+        }
     }
 }
