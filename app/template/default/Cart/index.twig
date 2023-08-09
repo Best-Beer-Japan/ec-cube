@@ -126,6 +126,11 @@ file that was distributed with this source code.
                             {% for CartItem in Cart.CartItems %}
                                 {% set ProductClass = CartItem.ProductClass %}
                                 {% set Product = ProductClass.Product %}
+                                {% if CartItem.isMixPackItem %}
+                                    {% if CartItem.isMixPackParentItem %}
+                                        {% set ParentProductPrice = CartItem.price %}
+                                    {% endif %}
+                                {% endif %}
                                 <ul class="ec-cartRow">
                                     <li class="ec-cartRow__delColumn">
                                         <a href="{{ url('cart_handle_item', {'operation': 'remove', 'productClassId': ProductClass.id }) }}" {{ csrf_token_for_anchor() }} class="ec-icon" data-method="put" data-message="カートから商品を削除してもよろしいですか?">
@@ -158,8 +163,13 @@ file that was distributed with this source code.
                                                     <br>{{ ProductClass.ClassCategory2.ClassName.name }}：{{ ProductClass.ClassCategory2 }}
                                                 {% endif %}
                                             </div>
-                                            <div class="ec-cartRow__unitPrice">{{ CartItem.price|price }}</div>
-                                            <div class="ec-cartRow__sutbtotalSP">{{ 'common.subtotal__with_separator'|trans }}{{ CartItem.total_price|price }}</div>
+                                            {% if CartItem.isMixPackItem %}
+                                                <div class="ec-cartRow__unitPrice">{% if (CartItem.isMixPackParentItem and ParentProductPrice > 0) or (CartItem.isMixPackChildItem and ParentProductPrice < 1) %}{{ CartItem.price|price }}{% endif %}</div>
+                                                <div class="ec-cartRow__sutbtotalSP">{% if (CartItem.isMixPackParentItem and ParentProductPrice > 0) or (CartItem.isMixPackChildItem and ParentProductPrice < 1) %}{{ 'common.subtotal__with_separator'|trans }}{{ CartItem.total_price|price }}{% endif %}</div>
+                                            {% else %}
+                                                <div class="ec-cartRow__unitPrice">{{ CartItem.price|price }}</div>
+                                                <div class="ec-cartRow__sutbtotalSP">{{ 'common.subtotal__with_separator'|trans }}{{ CartItem.total_price|price }}</div>
+                                            {% endif %}
                                         </div>
                                     </li>
                                     <li class="ec-cartRow__amountColumn">
@@ -181,7 +191,11 @@ file that was distributed with this source code.
                                         </div>
                                     </li>
                                     <li class="ec-cartRow__subtotalColumn">
-                                        <div class="ec-cartRow__sutbtotal">{{ CartItem.total_price|price }}</div>
+                                        {% if CartItem.isMixPackItem %}
+                                            <div class="ec-cartRow__sutbtotal">{% if (CartItem.isMixPackParentItem and ParentProductPrice > 0) or (CartItem.isMixPackChildItem and ParentProductPrice < 1) %}{{ CartItem.total_price|price }}{% endif %}</div>
+                                        {% else %}
+                                            <div class="ec-cartRow__sutbtotal">{{ CartItem.total_price|price }}</div>
+                                        {% endif %}
                                     </li>
                                 </ul>
                             {% endfor %}
