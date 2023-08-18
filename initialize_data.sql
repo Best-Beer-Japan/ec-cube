@@ -684,22 +684,27 @@ ALTER TABLE plg_mixpack_product_class AUTO_INCREMENT = 11;
 TRUNCATE dtb_order;
 INSERT INTO `dtb_order` (`id`, `customer_id`, `country_id`, `pref_id`, `sex_id`, `job_id`, `payment_id`, `device_type_id`, `pre_order_id`, `order_no`, `message`, `name01`, `name02`, `kana01`, `kana02`, `company_name`, `email`, `phone_number`, `postal_code`, `addr01`, `addr02`, `birth`, `subtotal`, `discount`, `delivery_fee_total`, `charge`, `tax`, `total`, `payment_total`, `payment_method`, `note`, `create_date`, `update_date`, `order_date`, `payment_date`, `currency_code`, `complete_message`, `complete_mail_message`, `add_point`, `use_point`, `order_status_id`, `discriminator_type`, `customize_store_name`, `original_id`, `customize_order_no_section`, `customize_billing_month_date`)
 VALUES
-	(1, 2, NULL, 11, NULL, NULL, 2, 10, 'd7970ebced7dccdf9e97a03f6b6149e7a4c9ade9', '3', NULL, 'テスト購入', '専用会員', 'テスト', 'テスト', '貴社用のテスト会社', 'support+testkaiin@bestbeerjapan.com', '0123456789', '3510011', '朝霞市本町', '1-1-1', NULL, 16500.00, 0.00, 0.00, 0.00, 1500.00, 16500.00, 16500.00, '請求書払い（月末締め翌月払い）', '請求書を発行したい時は受注に☑を入れて、「請求月を決定」を押してください。\r\n会員一覧にいないお客様の請求書は発行ができませんのでご注意ください。\r\nこのお客様は問屋ですので問屋のグループ価格が反映されます。（会員のグループ変更は会員管理 > 会員一覧 > 詳細 > グループ設定）\r\n注文詳細ページの下にある「ショップ用メモ欄」でこのメモを編集できます。', now(), now(), now(), NULL, 'JPY', NULL, NULL, 0, 0, 1, 'order', 'テスト購入専用会員', NULL, NULL, DATE_SUB(DATE_FORMAT(now(), '%Y-%m-01 15:00:00'), INTERVAL 1 DAY));
-ALTER TABLE dtb_order AUTO_INCREMENT = 2;
+	(1, 2, NULL, 11, NULL, NULL, 2, 10, 'd7970ebced7dccdf9e97a03f6b6149e7a4c9ade9', '1', NULL, 'テスト購入', '専用会員', 'テスト', 'テスト', '貴社用のテスト会社', 'support+testkaiin@bestbeerjapan.com', '0123456789', '3510011', '朝霞市本町', '1-1-1', NULL, 16500.00, 0.00, 0.00, 0.00, 1500.00, 16500.00, 16500.00, '請求書払い（月末締め翌月払い）', '請求書を発行したい時は受注に☑を入れて、「請求月を決定」を押してください。\r\n会員一覧にいないお客様の請求書は発行ができませんのでご注意ください。\r\nこのお客様は問屋ですので問屋のグループ価格が反映されます。（会員のグループ変更は会員管理 > 会員一覧 > 詳細 > グループ設定）\r\n注文詳細ページの下にある「ショップ用メモ欄」でこのメモを編集できます。', now(), now(), now(), NULL, 'JPY', NULL, NULL, 0, 0, 1, 'order', 'テスト購入専用会員', NULL, NULL, DATE_SUB(DATE_FORMAT(now(), '%Y-%m-01 15:00:00'), INTERVAL 1 DAY)),
+	(2, 1, NULL, 11, NULL, NULL, 1, 10, NULL, '2', 'BBJ-PF 問い合わせ番号: 111111_20220810_1840', 'テスト購入', '専用会員', 'テスト', 'テスト', '[BBJプラットフォーム経由]', 'support+testkaiin@bestbeerjapan.com', '0123456789', '3510011', 'BBJ', 'プラットフォーム経由', NULL, 16500.00, 0.00, 0.00, 0.00, 1500.00, 16500.00, 16500.00, '請求書払い BBJプラットフォーム専用 【削除不可能】', NULL, now(), now(), now(), NULL, 'JPY', NULL, NULL, 0, 0, 3, 'order', 'テスト購入専用会員', NULL, NULL, DATE_SUB(DATE_FORMAT(now(), '%Y-%m-01 15:00:00'), INTERVAL 1 DAY));
+ALTER TABLE dtb_order AUTO_INCREMENT = 3;
 
 TRUNCATE dtb_order_item;
 INSERT INTO `dtb_order_item` (`id`, `order_id`, `product_id`, `product_class_id`, `shipping_id`, `rounding_type_id`, `tax_type_id`, `tax_display_type_id`, `order_item_type_id`, `product_name`, `product_code`, `class_name1`, `class_name2`, `class_category_name1`, `class_category_name2`, `price`, `quantity`, `tax`, `tax_rate`, `tax_adjust`, `tax_rule_id`, `currency_code`, `processor_name`, `point_rate`, `discriminator_type`, `original_id`, `parent_order_item_id`)
 VALUES
 	(1, 1, 3, 5, 1, 3, 1, 1, 1, '【樽15Lサンプル】Best Beer Pilsner-15L', NULL, NULL, NULL, NULL, NULL, 15000.00, 1, 1500, 10, 0, NULL, 'JPY', NULL, NULL, 'orderitem', NULL, NULL),
 	(2, 1, NULL, NULL, NULL, 3, 1, 2, 3, '手数料', NULL, NULL, NULL, NULL, NULL, 0.00, 1, 0, 10, 0, NULL, 'JPY', 'Eccube\\Service\\PurchaseFlow\\Processor\\PaymentChargePreprocessor', NULL, 'orderitem', NULL, NULL),
-	(3, 1, NULL, NULL, 1, 3, 1, 2, 2, '送料', NULL, NULL, NULL, NULL, NULL, 0.00, 1, 0, 10, 0, NULL, 'JPY', 'Eccube\\Service\\PurchaseFlow\\Processor\\DeliveryFeePreprocessor', NULL, 'orderitem', NULL, NULL);
-ALTER TABLE dtb_order_item AUTO_INCREMENT = 4;
+	(3, 1, NULL, NULL, 1, 3, 1, 2, 2, '送料', NULL, NULL, NULL, NULL, NULL, 0.00, 1, 0, 10, 0, NULL, 'JPY', 'Eccube\\Service\\PurchaseFlow\\Processor\\DeliveryFeePreprocessor', NULL, 'orderitem', NULL, NULL),
+	(4, 2, 3, 5, 1, 3, 1, 1, 1, '【樽15Lサンプル】Best Beer Pilsner-15L', NULL, NULL, NULL, NULL, NULL, 15000.00, 1, 1500, 10, 0, NULL, 'JPY', NULL, NULL, 'orderitem', NULL, NULL),
+	(5, 2, NULL, NULL, NULL, 3, 1, 2, 3, '手数料', NULL, NULL, NULL, NULL, NULL, 0.00, 1, 0, 10, 0, NULL, 'JPY', 'Eccube\\Service\\PurchaseFlow\\Processor\\PaymentChargePreprocessor', NULL, 'orderitem', NULL, NULL),
+	(6, 2, NULL, NULL, 1, 3, 1, 2, 2, '送料', NULL, NULL, NULL, NULL, NULL, 0.00, 1, 0, 10, 0, NULL, 'JPY', 'Eccube\\Service\\PurchaseFlow\\Processor\\DeliveryFeePreprocessor', NULL, 'orderitem', NULL, NULL);
+ALTER TABLE dtb_order_item AUTO_INCREMENT = 7;
 
 TRUNCATE dtb_shipping;
 INSERT INTO `dtb_shipping` (`id`, `order_id`, `country_id`, `pref_id`, `delivery_id`, `creator_id`, `name01`, `name02`, `kana01`, `kana02`, `company_name`, `phone_number`, `postal_code`, `addr01`, `addr02`, `delivery_name`, `time_id`, `delivery_time`, `delivery_date`, `shipping_date`, `tracking_number`, `note`, `sort_no`, `create_date`, `update_date`, `mail_send_date`, `discriminator_type`, `customize_store_name`)
 VALUES
-	(1, 1, NULL, 11, 6, NULL, 'テスト購入', '専用会員', 'テスト', 'テスト', '貴社用のテスト会社', '0123456789', '3510011', '朝霞市本町', '1-1-1', '直接受取', NULL, NULL, NULL, NULL, NULL, NULL, NULL, now(), now(), NULL, 'shipping', 'テスト購入専用会員');
-ALTER TABLE dtb_shipping AUTO_INCREMENT = 2;
+	(1, 1, NULL, 11, 6, NULL, 'テスト購入', '専用会員', 'テスト', 'テスト', '貴社用のテスト会社', '0123456789', '3510011', '朝霞市本町', '1-1-1', '直接受取', NULL, NULL, NULL, NULL, NULL, NULL, NULL, now(), now(), NULL, 'shipping', 'テスト購入専用会員'),
+	(2, 2, NULL, 11, 6, NULL, 'テスト購入', '専用会員', 'テスト', 'テスト', '貴社用のテスト会社', '0123456789', '3510011', '朝霞市本町', '1-1-1', '直接受取', NULL, NULL, NULL, NULL, NULL, NULL, NULL, now(), now(), NULL, 'shipping', 'テスト購入専用会員');
+ALTER TABLE dtb_shipping AUTO_INCREMENT = 3;
 
 TRUNCATE plg_delivery_fee_extension_dtb_delivery_area;
 INSERT INTO `plg_delivery_fee_extension_dtb_delivery_area` (`id`, `delivery_id`, `name`, `sort_no`, `discriminator_type`)
