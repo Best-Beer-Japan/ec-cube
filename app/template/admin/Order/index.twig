@@ -645,7 +645,7 @@ file that was distributed with this source code.
                                                     {% if Order.customize_billing_month_date is not empty %}<br>{{ Order.customize_billing_month_date|date('Y年m月') }}{% endif %}
                                                 </td>
                                                 <td class="align-middle text-right">
-                                                    {{ Order.payment_total|price }}<br>
+                                                    {{ Order.payment_total|price }}<br>({{ 'common.tax_include'|trans }})<br>
                                                     {{ Order.payment_date ? Order.payment_date|date_day : 'admin.order.not_payment'|trans }}
                                                 </td>
                                                 <td class="align-middle text-center">

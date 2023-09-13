@@ -847,7 +847,7 @@ file that was distributed with this source code.
                                                     {% else %}
                                                         {{ form_widget(orderItemForm.price) }}
                                                     {% endif %}
-                                                    <div class="text-right small">({{ OrderItem.TaxDisplayType }})</div>
+                                                    <div class="text-right small">{% if OrderItem.TaxDisplayType.id == constant('\\Eccube\\Entity\\Master\\TaxDisplayType::EXCLUDED') %}<span class="text-danger">({{ OrderItem.TaxDisplayType }})</span>{% else %}({{ OrderItem.TaxDisplayType }}){% endif %}</div>
                                                     {{ form_errors(orderItemForm.price) }}
                                                 </div>
                                             </td>
