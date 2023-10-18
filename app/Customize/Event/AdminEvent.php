@@ -230,6 +230,11 @@ class AdminEvent implements EventSubscriberInterface
 
                 $ExportCsvRow->setData($this->customerGroups[$groupId]);
             }
+
+            //価格（税込計算）
+            if ($Csv->getFieldName() === 'price') {
+                $ExportCsvRow->setData(round($OrderItem->getPriceIncTax()));
+            }
         }
     }
 }
