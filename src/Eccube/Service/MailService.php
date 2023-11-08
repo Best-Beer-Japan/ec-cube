@@ -13,6 +13,7 @@
 
 namespace Eccube\Service;
 
+use Customize\Service\OrderCustomPdfService as OrderPdfService;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
@@ -26,6 +27,8 @@ use Eccube\Event\EventArgs;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\MailHistoryRepository;
 use Eccube\Repository\MailTemplateRepository;
+use phpDocumentor\Reflection\Types\Boolean;
+use Swift_Attachment;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -637,7 +640,7 @@ class MailService
      *
      * @throws \Twig_Error
      */
-    public function sendShippingNotifyMail(Shipping $Shipping)
+    public function sendShippingNotifyMail(Shipping $Shipping, OrderPdfService $orderPdfService, bool $status)
     {
         log_info('出荷通知メール送信処理開始', ['id' => $Shipping->getId()]);
 
@@ -668,7 +671,16 @@ class MailService
             $message->setBody($body);
         }
 
-        $this->mailer->send($message);
+        $cloneMessage = clone $message;
+        if ($status) {
+            // PDF
+            $pdf_as_string = $orderPdfService->outputPdf();
+            $attachment = new Swift_Attachment($pdf_as_string, $orderPdfService->getPdfFileName(), 'application/pdf');
+
+            $cloneMessage->attach($attachment);
+        }
+
+        $this->mailer->send($cloneMessage);
 
         $MailHistory = new MailHistory();
         $MailHistory->setMailSubject($message->getSubject())
