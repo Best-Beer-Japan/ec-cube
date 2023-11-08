@@ -229,6 +229,26 @@ class AdminEvent implements EventSubscriberInterface
                 }
 
                 $ExportCsvRow->setData($this->customerGroups[$groupId]);
+
+                return;
+            }
+
+            //請求月
+            if ($Csv->getFieldName() === 'customize_billing_month_date') {
+                $Order = $OrderItem->getOrder();
+
+                if (null === $Order->getCustomizeBillingMonthDate()) {
+                    return;
+                }
+
+                $ExportCsvRow->setData($Order->getCustomizeBillingMonthDate()->format('Y年m月'));
+
+                return;
+            }
+
+            //価格（税込計算）
+            if ($Csv->getFieldName() === 'price') {
+                $ExportCsvRow->setData(round($OrderItem->getPriceIncTax()));
             }
         }
     }
