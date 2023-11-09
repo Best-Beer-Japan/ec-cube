@@ -108,6 +108,11 @@ class OrderStateMachine implements EventSubscriberInterface
             'workflow.order.transition.ship' => [['commitAddPoint']],
             'workflow.order.transition.return' => [['rollbackUsePoint'], ['rollbackAddPoint']],
             'workflow.order.transition.cancel_return' => [['commitUsePoint'], ['commitAddPoint']],
+            'workflow.order.transition.packing' => [['removeShippingDate']],
+            'workflow.order.transition.back_to_new' => [['removeShippingDate']],
+            'workflow.order.transition.btob_to_cancel' => [['removePaymentDate']],
+            'workflow.order.transition.btob_to_ship' => [['removePaymentDate']],
+            'workflow.order.transition.btob_to_claim' => [['removePaymentDate']],
         ];
     }
 
@@ -125,6 +130,32 @@ class OrderStateMachine implements EventSubscriberInterface
         /* @var Order $Order */
         $Order = $event->getSubject()->getOrder();
         $Order->setPaymentDate(new \DateTime());
+    }
+
+    /**
+     * 入金日をNULLへ更新する.
+     *
+     * @param Event $event
+     */
+    public function removePaymentDate(Event $event)
+    {
+        /* @var Order $Order */
+        $Order = $event->getSubject()->getOrder();
+        $Order->setPaymentDate();
+    }
+
+    /**
+     * 出荷日をNULLへ更新する.
+     *
+     * @param Event $event
+     */
+    public function removeShippingDate(Event $event)
+    {
+        /* @var Order $Order */
+        $Order = $event->getSubject()->getOrder();
+        foreach ($Order->getShippings() as $Shipping) {
+            $Shipping->setShippingDate();
+        }
     }
 
     /**
