@@ -363,7 +363,6 @@ class ShippingController extends AbstractController
 
         // 異常終了した場合の処理
         if (!$status) {
-            $this->addError('admin.order.export.pdf.download.failure', 'admin');
             log_info('Unable to create pdf files! Process have problems!');
         }
 

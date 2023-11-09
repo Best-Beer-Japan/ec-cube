@@ -13,6 +13,7 @@
 
 namespace Eccube\Controller\Admin\Order;
 
+use Carbon\Carbon;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\ExportCsvRow;
@@ -483,7 +484,7 @@ class OrderController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function updateOrderStatus(Request $request, Shipping $Shipping)
+    public function updateOrderStatus(Request $request, Shipping $Shipping, OrderPdfService $orderPdfService)
     {
         if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
             return $this->json(['status' => 'NG'], 400);
@@ -522,7 +523,45 @@ class OrderController extends AbstractController
                     }
 
                     if ($request->get('notificationMail')) { // for SimpleStatusUpdate
-                        $this->mailService->sendShippingNotifyMail($Shipping);
+                        /** @var OrderPdf $OrderPdf */
+                        $OrderPdf = $this->orderPdfRepository->find($this->getUser());
+
+                        if (null !== $OrderPdf) {
+                            $arrData = [
+                                'ids' => $Shipping->getId(),
+                                'issue_date' => Carbon::now(),
+                                'title' => $OrderPdf->getTitle(),
+                                'message1' => $OrderPdf->getMessage1(),
+                                'message2' => $OrderPdf->getMessage2(),
+                                'message3' => $OrderPdf->getMessage3(),
+                                'note1' => $OrderPdf->getNote1(),
+                                'note2' => $OrderPdf->getNote2(),
+                                'note3' => $OrderPdf->getNote3(),
+                                'default' => false
+                            ];
+                        } else {
+                            $arrData = [
+                                'ids' => $Shipping->getId(),
+                                'issue_date' => Carbon::now(),
+                                'title' => 'お買上げ明細書(納品書)',
+                                'message1' => 'このたびはお買上げいただきありがとうございます。',
+                                'message2' => '下記の内容にて納品させていただきます。',
+                                'message3' => 'ご確認くださいますよう、お願いいたします。',
+                                'note1' => null,
+                                'note2' => null,
+                                'note3' => null,
+                                'default' => false
+                            ];
+                        }
+
+                        $status = $orderPdfService->makePdf($arrData);
+
+                        // 異常終了した場合の処理
+                        if (!$status) {
+                            log_info('Unable to create pdf files! Process have problems!');
+                        }
+
+                        $this->mailService->sendShippingNotifyMail($Shipping, $orderPdfService, $status);
                         $Shipping->setMailSendDate(new \DateTime());
                         $result['mail'] = true;
                     } else {
