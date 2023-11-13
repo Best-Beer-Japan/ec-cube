@@ -39,12 +39,16 @@ $container->loadFromExtension('framework', [
                 11, // 入金済（BtoB）
             ],
             'transitions' => [
+                'back_to_new' => [
+                    'from' => [(string) Status::IN_PROGRESS, (string) Status::DELIVERED],
+                    'to' => (string) Status::NEW,
+                ],
                 'pay' => [
                     'from' => (string) Status::NEW,
                     'to' => (string) Status::PAID,
                 ],
                 'packing' => [
-                    'from' => [(string) Status::NEW, (string) Status::PAID],
+                    'from' => [(string) Status::NEW, (string) Status::PAID, (string) Status::DELIVERED],
                     'to' => (string) Status::IN_PROGRESS,
                 ],
                 'cancel' => [
@@ -74,6 +78,18 @@ $container->loadFromExtension('framework', [
                 'paid_btob' => [
                     'from' => [(string) Status::NEW, (string) Status::IN_PROGRESS, (string) Status::DELIVERED, (string) Status::PAID, '10'],
                     'to' => '11',
+                ],
+                'btob_to_cancel' => [
+                    'from' => '11',
+                    'to' => (string) Status::CANCEL,
+                ],
+                'btob_to_ship' => [
+                    'from' => '11',
+                    'to' => (string) Status::DELIVERED,
+                ],
+                'btob_to_claim' => [
+                    'from' => '11',
+                    'to' => '10',
                 ],
             ],
         ],
