@@ -13,6 +13,8 @@
 
 namespace Eccube\Controller\Admin\Order;
 
+use Carbon\Carbon;
+use Customize\Service\OrderCustomPdfService as OrderPdfService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Order;
@@ -23,6 +25,7 @@ use Eccube\Form\Type\Admin\ShippingType;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\OrderItemRepository;
+use Eccube\Repository\OrderPdfRepository;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Service\MailService;
 use Eccube\Service\OrderStateMachine;
@@ -87,6 +90,9 @@ class ShippingController extends AbstractController
      */
     protected $purchaseFlow;
 
+    /** @var OrderPdfRepository */
+    protected $orderPdfRepository;
+
     /**
      * EditController constructor.
      *
@@ -109,7 +115,8 @@ class ShippingController extends AbstractController
         ShippingRepository $shippingRepository,
         SerializerInterface $serializer,
         OrderStateMachine $orderStateMachine,
-        PurchaseFlow $orderPurchaseFlow
+        PurchaseFlow $orderPurchaseFlow,
+        OrderPdfRepository $orderPdfRepository
     ) {
         $this->mailService = $mailService;
         $this->orderItemRepository = $orderItemRepository;
@@ -120,6 +127,7 @@ class ShippingController extends AbstractController
         $this->serializer = $serializer;
         $this->orderStateMachine = $orderStateMachine;
         $this->purchaseFlow = $orderPurchaseFlow;
+        $this->orderPdfRepository = $orderPdfRepository;
     }
 
     /**
@@ -316,11 +324,49 @@ class ShippingController extends AbstractController
      *
      * @throws \Twig_Error
      */
-    public function notifyMail(Shipping $Shipping)
+    public function notifyMail(Shipping $Shipping, OrderPdfService $orderPdfService)
     {
         $this->isTokenValid();
 
-        $this->mailService->sendShippingNotifyMail($Shipping);
+        /** @var OrderPdf $OrderPdf */
+        $OrderPdf = $this->orderPdfRepository->find($this->getUser());
+
+        if (null !== $OrderPdf) {
+            $arrData = [
+                'ids' => $Shipping->getId(),
+                'issue_date' => Carbon::now(),
+                'title' => $OrderPdf->getTitle(),
+                'message1' => $OrderPdf->getMessage1(),
+                'message2' => $OrderPdf->getMessage2(),
+                'message3' => $OrderPdf->getMessage3(),
+                'note1' => $OrderPdf->getNote1(),
+                'note2' => $OrderPdf->getNote2(),
+                'note3' => $OrderPdf->getNote3(),
+                'default' => false
+            ];
+        } else {
+            $arrData = [
+                'ids' => $Shipping->getId(),
+                'issue_date' => Carbon::now(),
+                'title' => 'お買上げ明細書(納品書)',
+                'message1' => 'このたびはお買上げいただきありがとうございます。',
+                'message2' => '下記の内容にて納品させていただきます。',
+                'message3' => 'ご確認くださいますよう、お願いいたします。',
+                'note1' => null,
+                'note2' => null,
+                'note3' => null,
+                'default' => false
+            ];
+        }
+
+        $status = $orderPdfService->makePdf($arrData);
+
+        // 異常終了した場合の処理
+        if (!$status) {
+            log_info('Unable to create pdf files! Process have problems!');
+        }
+
+        $this->mailService->sendShippingNotifyMail($Shipping, $orderPdfService, $status);
 
         $Shipping->setMailSendDate(new \DateTime());
         $this->shippingRepository->save($Shipping);

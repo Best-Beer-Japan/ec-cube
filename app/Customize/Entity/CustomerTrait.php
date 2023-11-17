@@ -2,6 +2,7 @@
 
 namespace Customize\Entity;
 
+use Customize\Entity\PlatformCustomer;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Annotation\EntityExtension;
 use Eccube\Entity\Customer;
@@ -20,6 +21,14 @@ trait CustomerTrait
         }
 
         return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPlatformCustomer(): bool
+    {
+        return null !== $this->getPlatformCustomer();
     }
 
     /**
@@ -59,6 +68,13 @@ trait CustomerTrait
      * })
      */
     private $InvoiceParent;
+
+    /**
+     * @var PlatformCustomer
+     *
+     * @ORM\OneToOne(targetEntity="Customize\Entity\PlatformCustomer", mappedBy="Customer")
+     */
+    private $PlatformCustomer;
 
     /**
      * Set customize_store_name.
@@ -202,5 +218,15 @@ trait CustomerTrait
     public function getInvoiceParent(): ?Customer
     {
         return $this->InvoiceParent;
+    }
+
+    /**
+     * Get PlatformCustomer.
+     *
+     * @return PlatformCustomer|null
+     */
+    public function getPlatformCustomer(): ?PlatformCustomer
+    {
+        return $this->PlatformCustomer;
     }
 }

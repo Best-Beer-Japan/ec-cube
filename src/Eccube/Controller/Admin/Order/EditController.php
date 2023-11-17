@@ -398,6 +398,12 @@ class EditController extends AbstractController
             }
         }
 
+        $isPlatformCustomer = false;
+        $Member = $this->getUser();
+        if ($Member->getAuthority()->getId() != \Eccube\Entity\Master\Authority::ADMIN && null !== $TargetOrder->getCustomer()) {
+            $isPlatformCustomer = $TargetOrder->getCustomer()->isPlatformCustomer();
+        }
+
         return [
             'form' => $form->createView(),
             'searchCustomerModalForm' => $searchCustomerModalForm->createView(),
@@ -405,6 +411,7 @@ class EditController extends AbstractController
             'Order' => $TargetOrder,
             'id' => $id,
             'shippingDeliveryTimes' => $this->serializer->serialize($times, 'json'),
+            'isPlatformCustomer' => $isPlatformCustomer,
         ];
     }
 
