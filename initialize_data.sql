@@ -1429,6 +1429,12 @@ VALUES
 	(3, 2, NULL, NULL, NULL, 11, '岡山', '源輝', 'オカヤマ', 'ゲンキ', 'BestBeerJapan', '3510011', '朝霞市本町', '1-1-1', 'okayama@bestbeerjapan.com', '08022108912', NULL, '', NULL, 'AdFcf80ZrfJHsgDD02ptLZExXPbjmx14', NULL, NULL, 0, 0.00, NULL, NULL, NULL, 0, NOW(), NOW(), 'customer', NULL, NULL, NULL, NULL, NULL);
 ALTER TABLE dtb_customer AUTO_INCREMENT = 4;
 
+-- customize_dtb_platform_customer
+TRUNCATE customize_dtb_platform_customer;
+INSERT INTO `customize_dtb_platform_customer` (`customer_id`, `discriminator_type`)
+VALUES
+    (1, 'platformcustomer');
+
 TRUNCATE TABLE plg_customer_group_product_class;
 INSERT INTO `plg_customer_group_product_class` (`id`, `group_id`, `product_class_id`, `price`, `show_product`, `discriminator_type`)
 VALUES
