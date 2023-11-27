@@ -703,7 +703,7 @@ TRUNCATE dtb_shipping;
 INSERT INTO `dtb_shipping` (`id`, `order_id`, `country_id`, `pref_id`, `delivery_id`, `creator_id`, `name01`, `name02`, `kana01`, `kana02`, `company_name`, `phone_number`, `postal_code`, `addr01`, `addr02`, `delivery_name`, `time_id`, `delivery_time`, `delivery_date`, `shipping_date`, `tracking_number`, `note`, `sort_no`, `create_date`, `update_date`, `mail_send_date`, `discriminator_type`, `customize_store_name`)
 VALUES
 	(1, 1, NULL, 11, 6, NULL, 'テスト購入', '専用会員', 'テスト', 'テスト', '貴社用のテスト会社', '0123456789', '3510011', '朝霞市本町', '1-1-1', '直接受取', NULL, NULL, NULL, NULL, NULL, NULL, NULL, now(), now(), NULL, 'shipping', 'テスト購入専用会員'),
-	(2, 2, NULL, 11, 6, NULL, 'テスト購入', '専用会員', 'テスト', 'テスト', '貴社用のテスト会社', '0123456789', '3510011', '朝霞市本町', '1-1-1', '直接受取', NULL, NULL, NULL, NULL, NULL, NULL, NULL, now(), now(), NULL, 'shipping', 'テスト購入専用会員');
+	(2, 2, NULL, 11, 5, NULL, 'テスト購入', '専用会員', 'テスト', 'テスト', '貴社用のテスト会社', '0123456789', '3510011', '朝霞市本町', '1-1-1', '直接受取', NULL, NULL, NULL, NULL, NULL, NULL, NULL, now(), now(), NULL, 'shipping', 'テスト購入専用会員');
 ALTER TABLE dtb_shipping AUTO_INCREMENT = 3;
 
 TRUNCATE plg_delivery_fee_extension_dtb_delivery_area;
