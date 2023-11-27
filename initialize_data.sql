@@ -703,7 +703,7 @@ TRUNCATE dtb_shipping;
 INSERT INTO `dtb_shipping` (`id`, `order_id`, `country_id`, `pref_id`, `delivery_id`, `creator_id`, `name01`, `name02`, `kana01`, `kana02`, `company_name`, `phone_number`, `postal_code`, `addr01`, `addr02`, `delivery_name`, `time_id`, `delivery_time`, `delivery_date`, `shipping_date`, `tracking_number`, `note`, `sort_no`, `create_date`, `update_date`, `mail_send_date`, `discriminator_type`, `customize_store_name`)
 VALUES
 	(1, 1, NULL, 11, 6, NULL, 'テスト購入', '専用会員', 'テスト', 'テスト', '貴社用のテスト会社', '0123456789', '3510011', '朝霞市本町', '1-1-1', '直接受取', NULL, NULL, NULL, NULL, NULL, NULL, NULL, now(), now(), NULL, 'shipping', 'テスト購入専用会員'),
-	(2, 2, NULL, 11, 6, NULL, 'テスト購入', '専用会員', 'テスト', 'テスト', '貴社用のテスト会社', '0123456789', '3510011', '朝霞市本町', '1-1-1', '直接受取', NULL, NULL, NULL, NULL, NULL, NULL, NULL, now(), now(), NULL, 'shipping', 'テスト購入専用会員');
+	(2, 2, NULL, 11, 5, NULL, 'テスト購入', '専用会員', 'テスト', 'テスト', '貴社用のテスト会社', '0123456789', '3510011', '朝霞市本町', '1-1-1', '直接受取', NULL, NULL, NULL, NULL, NULL, NULL, NULL, now(), now(), NULL, 'shipping', 'テスト購入専用会員');
 ALTER TABLE dtb_shipping AUTO_INCREMENT = 3;
 
 TRUNCATE plg_delivery_fee_extension_dtb_delivery_area;
@@ -1428,6 +1428,12 @@ VALUES
 	(2, 2, NULL, NULL, NULL, 11, 'テスト購入', '専用会員', 'テスト', 'テスト', '貴社用のテスト会社', '3510011', '朝霞市本町', '1-1-1', '', '0123456789', NULL, '', NULL, 'BDlTV7LcY6jD6da2kd4os053w5emMWEJ', NULL, NULL, 0, 0.00, NULL, NULL, NULL, 0, NOW(), NOW(), 'customer', NULL, 'テスト購入専用会員', NULL, NULL, '【→の鉛筆ボタンでメモ拡大】請求書を発行したい時は受注一覧で受注に☑を入れて、「請求月を決定」を押してください。\n\n会員一覧にいないお客様の請求書は発行ができませんのでご注意ください。\n\n入金消込みをしたい場合は対象になる請求書に☑を入れてください。\n\nこのお客様は問屋ですので問屋のグループ価格が反映されます。（会員のグループ変更は会員管理 > 会員一覧 > 詳細 > グループ設定）\n\nメモ欄は削除されるまで残ります。（例：索条しない限り、翌日以降も残ります。)\n'),
 	(3, 2, NULL, NULL, NULL, 11, '岡山', '源輝', 'オカヤマ', 'ゲンキ', 'BestBeerJapan', '3510011', '朝霞市本町', '1-1-1', 'okayama@bestbeerjapan.com', '08022108912', NULL, '', NULL, 'AdFcf80ZrfJHsgDD02ptLZExXPbjmx14', NULL, NULL, 0, 0.00, NULL, NULL, NULL, 0, NOW(), NOW(), 'customer', NULL, NULL, NULL, NULL, NULL);
 ALTER TABLE dtb_customer AUTO_INCREMENT = 4;
+
+-- customize_dtb_platform_customer
+TRUNCATE customize_dtb_platform_customer;
+INSERT INTO `customize_dtb_platform_customer` (`customer_id`, `discriminator_type`)
+VALUES
+    (1, 'platformcustomer');
 
 TRUNCATE TABLE plg_customer_group_product_class;
 INSERT INTO `plg_customer_group_product_class` (`id`, `group_id`, `product_class_id`, `price`, `show_product`, `discriminator_type`)
