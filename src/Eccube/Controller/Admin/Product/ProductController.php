@@ -959,6 +959,9 @@ class ProductController extends AbstractController
                 $ProductClasses = $Product->getProductClasses();
 
                 foreach ($ProductClasses as $ProductClass) {
+                    if (false === $ProductClass->isVisible()) {
+                        continue;
+                    }
                     $ExportCsvRow = new ExportCsvRow();
 
                     // CSV出力項目と合致するデータを取得.
