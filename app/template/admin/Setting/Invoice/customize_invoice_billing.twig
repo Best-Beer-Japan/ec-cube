@@ -84,13 +84,13 @@ file that was distributed with this source code.
                             {% for Order in Orders %}
                                 <tr id="ex-">
                                     <td class="align-middle text-center pl-3 pr-3 pt-3 pb-3">
-                                        {{ Order.Customer.id }}
+                                        {% if Order.Customer %}{{ Order.Customer.id }}{% else %}非会員{% endif %}
                                     </td>
                                     <td class="align-middle text-center">
-                                        {{ Order.Customer.company_name }}{% if Order.Customer.company_name %}<br>{% endif %}{{ Order.Customer.customize_store_name }}
+                                        {% if Order.Customer %}{{ Order.Customer.company_name }}{% if Order.Customer.company_name %}<br>{% endif %}{{ Order.Customer.customize_store_name }}{% else %}{{ Order.company_name }}{% if Order.company_name %}<br>{% endif %}{{ Order.customize_store_name }}{% endif %}
                                     </td>
                                     <td class="align-middle text-center">
-                                        {{ Order.Customer.name01 }}{{ Order.Customer.name02 }}
+                                        {% if Order.Customer %}{{ Order.Customer.name01 }}{{ Order.Customer.name02 }}{% else %}{{ Order.name01 }}{{ Order.name02 }}{% endif %}
                                     </td>
                                     <td class="align-middle text-center">
                                         <span class="badge badge-ec-blue" style="background-color: #fff; color: {{ Order.OrderStatusColor }}; border-color: {{ Order.OrderStatusColor }}">{{ Order.OrderStatus }}</span>
