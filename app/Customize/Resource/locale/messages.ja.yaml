@@ -83,10 +83,16 @@ customize.admin.setting.invice.image: 画像設定
 customize.admin.setting.invice.invoice_billing: 請求一覧
 
 customize.admin.setting.invice.invoice.registration_number: 登録番号
+customize.admin.setting.invice.invoice.business_registration: 適格請求書発行事業者登録可否
+customize.admin.setting.invice.invoice.business_registration.001: 未登録
+customize.admin.setting.invice.invoice.business_registration.002: 登録済
+customize.admin.setting.invice.invoice.business_registration_date: 適格請求書発行事業者登録予定日
 customize.admin.setting.invice.invoice.brewery_name: 醸造所名
 customize.admin.setting.invice.invoice.person_in_charge_name: 担当者名
 customize.admin.setting.invice.invoice.financial_institution_name: 金融機関名
+customize.admin.setting.invice.invoice.financial_institution_code: 金融機関コード
 customize.admin.setting.invice.invoice.branch_name: 支店名
+customize.admin.setting.invice.invoice.branch_code: 支店コード
 customize.admin.setting.invice.invoice.account_type: 口座種類
 customize.admin.setting.invice.invoice.account_type.001: 普通
 customize.admin.setting.invice.invoice.account_type.002: 当座

@@ -107,9 +107,23 @@ if (!class_exists('\Customize\Entity\Invoice')) {
         /**
          * @var string|null
          *
+         * @ORM\Column(name="financial_institution_code", type="string", length=255, nullable=true)
+         */
+        private $financial_institution_code;
+
+        /**
+         * @var string|null
+         *
          * @ORM\Column(name="branch_name", type="string", length=255, nullable=true)
          */
         private $branch_name;
+
+        /**
+         * @var string|null
+         *
+         * @ORM\Column(name="branch_code", type="string", length=255, nullable=true)
+         */
+        private $branch_code;
 
         /**
          * @var string
@@ -138,6 +152,20 @@ if (!class_exists('\Customize\Entity\Invoice')) {
          * @ORM\Column(name="registration_number", type="string", length=255, nullable=true)
          */
         private $registration_number;
+
+        /**
+         * @var boolean
+         *
+         * @ORM\Column(name="business_registration", type="boolean", options={"default":false})
+         */
+        private $business_registration;
+
+        /**
+         * @var string|null
+         *
+         * @ORM\Column(name="business_registration_date", type="string", length=255, nullable=true)
+         */
+        private $business_registration_date;
 
         /**
          * @var int|null
@@ -439,6 +467,30 @@ if (!class_exists('\Customize\Entity\Invoice')) {
         }
 
         /**
+         * Set financialInstitutionCode.
+         *
+         * @param string|null $financialInstitutionCode
+         *
+         * @return Invoice
+         */
+        public function setFinancialInstitutionCode(?string $financialInstitutionCode): Invoice
+        {
+            $this->financial_institution_code = $financialInstitutionCode;
+
+            return $this;
+        }
+
+        /**
+         * Get financialInstitutionCode.
+         *
+         * @return string|null
+         */
+        public function getFinancialInstitutionCode(): ?string
+        {
+            return $this->financial_institution_code;
+        }
+
+        /**
          * Set branchName.
          *
          * @param string|null $branchName
@@ -453,13 +505,37 @@ if (!class_exists('\Customize\Entity\Invoice')) {
         }
 
         /**
-         * Get financialInstitutionName.
+         * Get branchName.
          *
          * @return string|null
          */
         public function getBranchName(): ?string
         {
             return $this->branch_name;
+        }
+
+        /**
+         * Set branchCode.
+         *
+         * @param string|null $branchCode
+         *
+         * @return Invoice
+         */
+        public function setBranchCode(?string $branchCode): Invoice
+        {
+            $this->branch_code = $branchCode;
+
+            return $this;
+        }
+
+        /**
+         * Get branchCode.
+         *
+         * @return string|null
+         */
+        public function getBranchCode(): ?string
+        {
+            return $this->branch_code;
         }
 
         /**
@@ -556,6 +632,54 @@ if (!class_exists('\Customize\Entity\Invoice')) {
         public function getRegistrationNumber(): ?string
         {
             return $this->registration_number;
+        }
+
+        /**
+         * Set businessRegistration.
+         *
+         * @param integer $business_registration
+         *
+         * @return Invoice
+         */
+        public function setBusinessRegistration($business_registration)
+        {
+            $this->business_registration = $business_registration;
+
+            return $this;
+        }
+
+        /**
+         * Get businessRegistration.
+         *
+         * @return boolean
+         */
+        public function isBusinessRegistration()
+        {
+            return $this->business_registration;
+        }
+
+        /**
+         * Set businessRegistrationDate.
+         *
+         * @param string|null $businessRegistrationDate
+         *
+         * @return Invoice
+         */
+        public function setBusinessRegistrationDate(?string $businessRegistrationDate): Invoice
+        {
+            $this->business_registration_date = $businessRegistrationDate;
+
+            return $this;
+        }
+
+        /**
+         * Get businessRegistrationDate.
+         *
+         * @return string|null
+         */
+        public function getBusinessRegistrationDate(): ?string
+        {
+            return $this->business_registration_date;
         }
 
         /**

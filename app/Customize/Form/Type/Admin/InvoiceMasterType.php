@@ -132,10 +132,26 @@ class InvoiceMasterType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('financial_institution_code', TextType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
+                    ]),
+                ],
+            ])
             ->add('branch_name', TextType::class, [
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
+                    ]),
+                ],
+            ])
+            ->add('branch_code', TextType::class, [
+                'required' => false,
+                'constraints' => [
                     new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
                     ]),
@@ -175,6 +191,24 @@ class InvoiceMasterType extends AbstractType
                 ],
             ])
             ->add('registration_number', TextType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
+                    ]),
+                ],
+            ])
+            ->add('business_registration', ChoiceType::class, [
+                'label' => false,
+                'choices' => [
+                    'customize.admin.setting.invice.invoice.business_registration.001' => false,
+                    'customize.admin.setting.invice.invoice.business_registration.002' => true,
+                ],
+                'expanded' => true,
+                'multiple' => false,
+                'empty_data' => false,
+            ])
+            ->add('business_registration_date', TextType::class, [
                 'required' => false,
                 'constraints' => [
                     new Assert\Length([
