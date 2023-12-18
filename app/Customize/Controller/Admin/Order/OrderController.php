@@ -55,6 +55,10 @@ class OrderController extends AbstractController
             return $this->json(['status' => 'NG'], 400);
         }
 
+        if (null === $Order->getCustomer()) {
+            return $this->json(['status' => 'NG', 'message' => '[受注番号：'.$Order->getId().'] 非会員の注文は請求月を指定できません。']);
+        }
+
         $year = $request->get('billing_year');
         $month = $request->get('billing_month');
 
