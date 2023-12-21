@@ -68,7 +68,7 @@ $container->loadFromExtension('framework', [
                     'to' => (string) Status::RETURNED,
                 ],
                 'cancel_return' => [
-                    'from' => (string) Status::RETURNED,
+                    'from' => [(string) Status::RETURNED, 10],
                     'to' => (string) Status::DELIVERED,
                 ],
                 'claim' => [
