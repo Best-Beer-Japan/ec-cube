@@ -13,6 +13,7 @@
 
 namespace Customize\Service;
 
+use Carbon\Carbon;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\OrderItem;
@@ -224,6 +225,10 @@ class OrderCustomPdfService extends TcpdfFpdi
                 continue;
             }
 
+            if (count($ids) < 2) {
+                $this->setPdfFileName($Shipping);
+            }
+
             // テンプレートファイルを読み込む
             $Order = $Shipping->getOrder();
             $this->lastOrderId = $Order->getId();
@@ -311,6 +316,48 @@ class OrderCustomPdfService extends TcpdfFpdi
         }
 
         return $this->downloadFileName;
+    }
+
+    /**
+     * PDFファイル名を設定する
+     *
+     * @return string ファイル名
+     */
+    public function setPdfFileName(Shipping $Shipping)
+    {
+        $Order = $Shipping->getOrder();
+        $Customer = $Order->getCustomer();
+        $downloadFileNameItem = [];
+
+        // 店舗名_会社名_日付_order-[注文ID]_shipping-[出荷ID]_customer-[会員ID]_[金額]_[醸造所名]_納品書
+
+        if ($Order->getCustomizeStoreName()) {
+            $downloadFileNameItem[] = $Order->getCustomizeStoreName();
+        }
+
+        if ($Order->getCompanyName()) {
+            $downloadFileNameItem[] = $Order->getCompanyName();
+        }
+
+        $dt = Carbon::now();
+        $downloadFileNameItem[] = $dt->format('Ymd');
+
+        $downloadFileNameItem[] = 'order-'.$Order->getId();
+
+        $downloadFileNameItem[] = 'shipping-'.$Shipping->getId();
+
+        if (null !== $Customer) {
+            $downloadFileNameItem[] = 'customer-'.$Customer->getId();
+        }
+
+        $downloadFileNameItem[] = (int) $Order->getPaymentTotal();
+
+        $downloadFileNameItem[] = $this->baseInfoRepository->getCompanyName();
+
+        $downloadFileNameItem[] = '納品書';
+
+
+        $this->downloadFileName = implode('_', $downloadFileNameItem).'.pdf';
     }
 
     /**
