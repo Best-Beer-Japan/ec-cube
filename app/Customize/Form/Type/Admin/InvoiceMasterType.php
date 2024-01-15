@@ -138,6 +138,10 @@ class InvoiceMasterType extends AbstractType
                     new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
                     ]),
+                    new Assert\Regex([
+                        'pattern' => "/^\d{4}$/u",
+                        'message' => 'customize.form_error.invoice.financial_institution_code.invalid',
+                    ]),
                 ],
             ])
             ->add('branch_name', TextType::class, [
@@ -154,6 +158,10 @@ class InvoiceMasterType extends AbstractType
                 'constraints' => [
                     new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
+                    ]),
+                    new Assert\Regex([
+                        'pattern' => "/^\d{3}$/u",
+                        'message' => 'customize.form_error.invoice.branch_code.invalid',
                     ]),
                 ],
             ])

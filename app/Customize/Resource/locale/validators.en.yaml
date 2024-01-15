@@ -9,5 +9,7 @@
 #------------------------------------------------------------------------------------
 customize.form_error.float_scale2: You can enter only numbers and decimal points, and you can enter up to two decimal places.
 
+customize.form_error.invoice.financial_institution_code.invalid: You can only enter 4 digit numbers.
+customize.form_error.invoice.branch_code.invalid: You can only enter 3 digit numbers.
 
 
