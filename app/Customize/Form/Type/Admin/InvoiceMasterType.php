@@ -133,8 +133,9 @@ class InvoiceMasterType extends AbstractType
                 ],
             ])
             ->add('financial_institution_code', TextType::class, [
-                'required' => false,
+                'required' => true,
                 'constraints' => [
+                    new Assert\NotBlank(),
                     new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
                     ]),
@@ -154,8 +155,9 @@ class InvoiceMasterType extends AbstractType
                 ],
             ])
             ->add('branch_code', TextType::class, [
-                'required' => false,
+                'required' => true,
                 'constraints' => [
+                    new Assert\NotBlank(),
                     new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],
                     ]),
