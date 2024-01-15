@@ -9,5 +9,7 @@
 #------------------------------------------------------------------------------------
 customize.form_error.float_scale2: 入力できるのは数字と小数点のみで、小数点以下2桁まで入力できます。
 
+customize.form_error.invoice.financial_institution_code.invalid: 4桁の数字で入力してください。
+customize.form_error.invoice.branch_code.invalid: 3桁の数字で入力してください。
 
 
