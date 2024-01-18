@@ -482,6 +482,7 @@ file that was distributed with this source code.
                                         <div class="col mb-2">
                                             <div>
                                                 {{ form_widget(form.class.price02) }}
+                                                {{ Product.getPrice02IncTaxMin|price }}({{ 'common.tax_include'|trans }})
                                                 {{ form_errors(form.class.price02) }}
                                             </div>
                                         </div>
@@ -717,7 +718,7 @@ file that was distributed with this source code.
                                             <th class="pt-2 pb-2">{{ 'admin.product.class_category2__short'|trans }}</th>
                                             <th class="pt-2 pb-2">{{ 'admin.product.product_code__short'|trans }}</th>
                                             <th class="pt-2 pb-2">{{ 'admin.product.stock'|trans }}</th>
-                                            <th class="pr-3 pt-2 pb-2">{{ 'admin.product.price'|trans }}</th>
+                                            <th class="pr-3 pt-2 pb-2">{{ 'admin.product.price'|trans }}<span class="badge badge-primary ml-1">{{ 'common.tax_include'|trans }}</span></th>
                                             </thead>
                                             <tbody>
                                             {% for Class in Product.ProductClasses %}

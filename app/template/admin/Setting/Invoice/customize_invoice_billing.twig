@@ -96,7 +96,7 @@ file that was distributed with this source code.
                                         <span class="badge badge-ec-blue" style="background-color: #fff; color: {{ Order.OrderStatusColor }}; border-color: {{ Order.OrderStatusColor }}">{{ Order.OrderStatus }}</span>
                                     </td>
                                     <td class="align-middle text-center">
-                                        {{ Order.payment_total|price }}
+                                        {{ Order.payment_total|price }}({{ 'common.tax_include'|trans }})
                                     </td>
                                     <td class="align-middle text-center">
                                         {{ Order.order_date|date_min }}
