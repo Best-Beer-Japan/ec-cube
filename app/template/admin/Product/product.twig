@@ -718,7 +718,7 @@ file that was distributed with this source code.
                                             <th class="pt-2 pb-2">{{ 'admin.product.class_category2__short'|trans }}</th>
                                             <th class="pt-2 pb-2">{{ 'admin.product.product_code__short'|trans }}</th>
                                             <th class="pt-2 pb-2">{{ 'admin.product.stock'|trans }}</th>
-                                            <th class="pr-3 pt-2 pb-2">{{ 'admin.product.price'|trans }}<span class="badge badge-primary ml-1">{{ 'common.tax_include'|trans }}</span></th>
+                                            <th class="pr-3 pt-2 pb-2">{{ 'admin.product.price'|trans }}</th>
                                             </thead>
                                             <tbody>
                                             {% for Class in Product.ProductClasses %}
@@ -728,7 +728,7 @@ file that was distributed with this source code.
                                                         <td>{% if Class.hasClassCategory2 %}{{ Class.ClassCategory2.name }}{% endif %}</td>
                                                         <td>{{ Class.code }}</td>
                                                         <td>{% if Class.stock_unlimited %}{{ 'admin.product.stock_unlimited__short'|trans }}{% else %}{{ Class.stock }}{% endif %}</td>
-                                                        <td class="pr-3">{{ Class.price02|price }}</td>
+                                                        <td class="pr-3">{{ Class.price02_inc_tax|price }}({{ 'common.tax_include'|trans }})</td>
                                                     </tr>
                                                 {% endif %}
                                             {% endfor %}
