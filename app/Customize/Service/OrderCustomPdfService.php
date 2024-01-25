@@ -350,7 +350,7 @@ class OrderCustomPdfService extends TcpdfFpdi
             $downloadFileNameItem[] = 'customer-'.$Customer->getId();
         }
 
-        $downloadFileNameItem[] = (int) $Order->getPaymentTotal();
+        $downloadFileNameItem[] = (int) $Order->getPaymentTotal().'円';
 
         $downloadFileNameItem[] = $this->baseInfoRepository->getCompanyName();
 
