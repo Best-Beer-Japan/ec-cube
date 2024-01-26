@@ -69,6 +69,20 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                             <div class="row mb-2">
+                                <div class="col-3"><span>{{ 'customize.admin.setting.invice.invoice.business_registration'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.business_registration) }}
+                                    {{ form_errors(form.business_registration) }}
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-3"><span>{{ 'customize.admin.setting.invice.invoice.business_registration_date'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.business_registration_date) }}
+                                    {{ form_errors(form.business_registration_date) }}
+                                </div>
+                            </div>
+                            <div class="row mb-2">
                                 <div class="col-3"><span>{{ 'admin.common.company_name'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.company_name) }}
@@ -146,10 +160,24 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                             <div class="row mb-2">
+                                <div class="col-3"><span>{{ 'customize.admin.setting.invice.invoice.financial_institution_code'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.financial_institution_code) }}
+                                    {{ form_errors(form.financial_institution_code) }}
+                                </div>
+                            </div>
+                            <div class="row mb-2">
                                 <div class="col-3"><span>{{ 'customize.admin.setting.invice.invoice.branch_name'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.branch_name) }}
                                     {{ form_errors(form.branch_name) }}
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-3"><span>{{ 'customize.admin.setting.invice.invoice.branch_code'|trans }}</span><span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span></div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.branch_code) }}
+                                    {{ form_errors(form.branch_code) }}
                                 </div>
                             </div>
                             <div class="row mb-2">
