@@ -9,7 +9,7 @@ use Customize\Repository\InvoiceRepository;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Repository\OrderRepository;
-use Eccube\Util\StringUtil;
+use Plugin\InvoiceDocurain\Service\ExternalMailSendService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,17 +30,25 @@ class InviceController extends AbstractController
     protected $orderRepository;
 
     /**
+     * @var ExternalMailSendService
+     */
+    protected $externalMailSendService;
+
+    /**
      * ShopController constructor.
      *
      * @param InvoiceRepository $invoiceRepository
      * @param OrderRepository $orderRepository
+     * @param ExternalMailSendService $externalMailSendService
      */
     public function __construct(
         InvoiceRepository $invoiceRepository,
-        OrderRepository $orderRepository
+        OrderRepository $orderRepository,
+        ExternalMailSendService $externalMailSendService
     ) {
         $this->invoiceRepository = $invoiceRepository;
         $this->orderRepository = $orderRepository;
+        $this->externalMailSendService = $externalMailSendService;
     }
 
     /**
@@ -166,9 +174,14 @@ class InviceController extends AbstractController
         $qb->orderBy('o.Customer', 'ASC')
             ->addOrderBy('o.order_date', 'ASC');
 
+        // メール送信状況取得API
+        $this->externalMailSendService->getEmailSendingStatusApiCall();
+
         return [
             'form' => $form->createView(),
             'Orders' => $qb->getQuery()->getResult(),
+            'year' => $year,
+            'month' => $month,
         ];
     }
 }
