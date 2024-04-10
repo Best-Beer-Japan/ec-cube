@@ -17,6 +17,38 @@ file that was distributed with this source code.
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
+{% block javascript %}
+<script>
+$(function() {
+    // メール送信履歴
+    $("[id^='externalMailSendStatus_']").on('click', function() {
+        var list = $('#externalMailSendStatusList');
+        var modal_title = $('#externalMailSendStatusTitle');
+        var modal_title_text = $(this).data('modal-title');
+
+        list.children().remove();
+        modal_title.empty();
+
+        $.ajax({
+            url: '{{ url('admin_invoice_docurain_invoice_external_mail_send_history') }}',
+            type: 'POST',
+            dataType: 'html',
+            data: {
+                'customer_id': $(this).data('customer-id'),
+                'year': {{ year }},
+                'month': {{ month }}
+            }
+        }).done(function(data) {
+            $('#externalMailSendStatusList').html(data);
+            $('#externalMailSendStatusTitle').html(modal_title_text);
+        }).fail(function(data) {
+            alert('external mail send history failed.');
+        });
+    });
+});
+</script>
+{% endblock javascript %}
+
 {% block main %}
     <div class="c-contentsArea__cols">
         <div class="c-contentsArea__primaryCol">
@@ -61,6 +93,32 @@ file that was distributed with this source code.
                                     <div class="dropdown-menu">
                                     </div>
                                 </div>
+                                {% if Orders|length > 0 %}
+                                <a class="btn btn-ec-regular" data-toggle="modal" data-target="#invoiceExternalMailSend">
+                                    <i class="mr-1 fa fa-envelope fa-lg text-secondary"></i>
+                                    <span>{{ 'customize.admin.setting.invice.billing.invoice_external_mail_send'|trans }}</span>
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- メモ編集モーダル -->
+                <div class="modal fade" id="invoiceExternalMailSend" tabindex="-1" role="dialog" aria-labelledby="invoiceExternalMailSend" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title font-weight-bold">{{ 'customize.admin.setting.invice.billing.invoice_external_mail_send.pdf'|trans }}</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            </div>
+                            <div class="modal-body">
+                                {{ 'customize.admin.setting.invice.billing.invoice_external_mail_send.modal_text'|trans({"%count%":Orders|length})|raw }}
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                                <a class="btn btn-ec-conversion" data-action="cancel" href="{{ url('admin_invoice_docurain_invoice_external_mail_send') }}">
+                                    {{ 'customize.admin.setting.invice.billing.invoice_external_mail_send.modal_send_button'|trans({"%count%":Orders|length}) }}
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -75,6 +133,7 @@ file that was distributed with this source code.
                                 <th class="border-top-0 pt-2 pb-2 text-center">{{ 'common.company_name'|trans }} / {{ 'common.customize_store_name'|trans }}</th>
                                 <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.common.name'|trans }}</th>
                                 <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.order_status'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2 text-center">{{ 'customize.admin.setting.invice.billing.invoice_external_mail_send.table_title'|trans }}</th>
                                 <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.purchase_price'|trans }}</th>
                                 <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.buy_date'|trans }}</th>
                                 <th class="border-top-0 pt-2 pb-2 text-center"></th>
@@ -82,7 +141,10 @@ file that was distributed with this source code.
                             </thead>
                             <tbody>
                             {% for Order in Orders %}
-                                <tr id="ex-">
+                                {% if Order.Customer %}
+                                    {% set CustomerJobLatest = external_send_mail_latest_status(Order.Customer.id, year, month) %}
+                                {% endif %}
+                                <tr id="ex-{% if Order.Customer %}{{ Order.Customer.id }}{% else %}nonmenber-{{ loop.index }}{% endif %}"{% if Order.Customer and CustomerJobLatest.error %} class="table-danger"{% endif %}>
                                     <td class="align-middle text-center pl-3 pr-3 pt-3 pb-3">
                                         {% if Order.Customer %}{{ Order.Customer.id }}{% else %}非会員{% endif %}
                                     </td>
@@ -94,6 +156,15 @@ file that was distributed with this source code.
                                     </td>
                                     <td class="align-middle text-center">
                                         <span class="badge badge-ec-blue" style="background-color: #fff; color: {{ Order.OrderStatusColor }}; border-color: {{ Order.OrderStatusColor }}">{{ Order.OrderStatus }}</span>
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        {% if Order.Customer %}
+                                            {{ CustomerJobLatest.tag|raw }}
+                                            <a id="externalMailSendStatus_{{ Order.Customer.id }}" data-toggle="modal" data-target="#externalMailSendStatus" data-customer-id="{{ Order.Customer.id }}" data-modal-title="{{ 'customize.admin.setting.invice.billing.invoice_external_mail_send_status_title'|trans({'%customer_id%': Order.Customer.id, '%year%':year, '%month%':month}) }}"
+                                               aria-hidden="true" data-tooltip="true" data-placement="top" data-original-title="メール送信履歴">
+                                                <i class="fa fa-list fa-lg text-secondary"></i>
+                                            </a>
+                                        {% endif %}
                                     </td>
                                     <td class="align-middle text-center">
                                         {{ Order.payment_total|price }}({{ 'common.tax_include'|trans }})
@@ -108,6 +179,20 @@ file that was distributed with this source code.
                             {% endfor %}
                             </tbody>
                         </table>
+                    </div>
+                </div>
+                <!-- メール送信履歴モーダル -->
+                <div class="modal fade" id="externalMailSendStatus" tabindex="-1" role="dialog" aria-labelledby="externalMailSendStatus" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title font-weight-bold" id="externalMailSendStatusTitle"></h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group" id="externalMailSendStatusList"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
