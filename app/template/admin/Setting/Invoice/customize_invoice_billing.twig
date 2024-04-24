@@ -103,26 +103,6 @@ $(function() {
                         </div>
                     </div>
                 </div>
-                <!-- メモ編集モーダル -->
-                <div class="modal fade" id="invoiceExternalMailSend" tabindex="-1" role="dialog" aria-labelledby="invoiceExternalMailSend" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title font-weight-bold">{{ 'customize.admin.setting.invice.billing.invoice_external_mail_send.pdf'|trans }}</h5>
-                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                            </div>
-                            <div class="modal-body">
-                                {{ 'customize.admin.setting.invice.billing.invoice_external_mail_send.modal_text'|trans({"%count%":Orders|length})|raw }}
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
-                                <a class="btn btn-ec-conversion" data-action="cancel" href="{{ url('admin_invoice_docurain_invoice_external_mail_send') }}">
-                                    {{ 'customize.admin.setting.invice.billing.invoice_external_mail_send.modal_send_button'|trans({"%count%":Orders|length}) }}
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="card rounded border-0 mb-4 d-block">
                     <div class="card-body p-0">
@@ -140,8 +120,12 @@ $(function() {
                             </tr>
                             </thead>
                             <tbody>
+                            {% set customerIds = []%}
                             {% for Order in Orders %}
                                 {% if Order.Customer %}
+                                    {% if Order.Customer.id not in customerIds %}
+                                        {% set customerIds = customerIds|merge([Order.Customer.id]) %}
+                                    {% endif %}
                                     {% set CustomerJobLatest = external_send_mail_latest_status(Order.Customer.id, year, month) %}
                                 {% endif %}
                                 <tr id="ex-{% if Order.Customer %}{{ Order.Customer.id }}{% else %}nonmenber-{{ loop.index }}{% endif %}"{% if Order.Customer and CustomerJobLatest.error %} class="table-danger"{% endif %}>
@@ -191,6 +175,26 @@ $(function() {
                             </div>
                             <div class="modal-body">
                                 <div class="form-group" id="externalMailSendStatusList"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 請求書メール送信モーダル -->
+                <div class="modal fade" id="invoiceExternalMailSend" tabindex="-1" role="dialog" aria-labelledby="invoiceExternalMailSend" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title font-weight-bold">{{ 'customize.admin.setting.invice.billing.invoice_external_mail_send.pdf'|trans }}</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            </div>
+                            <div class="modal-body">
+                                {{ 'customize.admin.setting.invice.billing.invoice_external_mail_send.modal_text'|trans({"%count%":customerIds|length})|raw }}
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                                <a class="btn btn-ec-conversion" data-action="cancel" href="{{ url('admin_invoice_docurain_invoice_external_mail_send') }}">
+                                    {{ 'customize.admin.setting.invice.billing.invoice_external_mail_send.modal_send_button'|trans({"%count%":customerIds|length}) }}
+                                </a>
                             </div>
                         </div>
                     </div>
