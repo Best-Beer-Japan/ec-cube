@@ -7,6 +7,8 @@ common.customize_store_name: 店舗名
 common.customize_account_name: 振込名義
 
 admin.common.invoice_download: 請求書ダウンロード
+customize.admin.common.invoice_external_mail_send_error: 請求対象のデータがありません。
+customize.admin.common.invoice_external_mail_send_request_error: 請求書の送信に失敗しました。
 
 admin.common.billing_decision: 請求月を決定
 admin.common.billing_lift: 請求月を解除
@@ -75,6 +77,17 @@ customize.tooltip.invoice.registration_number: 適格請求書発行事業者の
 customize.tooltip.setting.invice.billing.multi_search_label: 情報を入力して一覧の絞り込み検索ができます。
 
 customize.admin.setting.invice.billing.multi_search_label: 会員ID
+
+customize.admin.setting.invice.billing.invoice_external_mail_send: 請求書メール送信
+customize.admin.setting.invice.billing.invoice_external_mail_send.pdf: 請求書メール送信（PDF）
+customize.admin.setting.invice.billing.invoice_external_mail_send.table_title: メール送信
+customize.admin.setting.invice.billing.invoice_external_mail_send.sent_date_time: 送信日時
+customize.admin.setting.invice.billing.invoice_external_mail_send.designated member_id: 指定会員ID
+customize.admin.setting.invice.billing.invoice_external_mail_send.status: ステータス
+customize.admin.setting.invice.billing.invoice_external_mail_send.modal_text: '一覧表示中<span class="text-danger">%count%社</span>の会員に請求書をメールで送信します。<br><br>よろしいですか？'
+customize.admin.setting.invice.billing.invoice_external_mail_send.modal_send_button: '%count%社に送信'
+customize.admin.setting.invice.billing.invoice_external_mail_send_request_success: メール送信を開始しました。ステータスは一覧でご確認ください。
+customize.admin.setting.invice.billing.invoice_external_mail_send_status_title: '会員%customer_id% - メール送信履歴（%year%年%month%月分）'
 
 customize.admin.setting.invice: 請求書設定
 customize.admin.setting.invice.invoice_setting: 基本設定
