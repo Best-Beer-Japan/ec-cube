@@ -41,6 +41,13 @@ if (!class_exists('\Customize\Entity\BeerContainerCapacity')) {
          */
         protected $name;
 
+        /**
+         * @var string|null
+         *
+         * @ORM\Column(name="capacity_ml", type="decimal", precision=10, scale=0, nullable=true)
+         */
+        private $capacity_ml;
+
 
         /**
          * @var int
@@ -91,6 +98,30 @@ if (!class_exists('\Customize\Entity\BeerContainerCapacity')) {
         public function getName(): string
         {
             return $this->name;
+        }
+
+        /**
+         * Set capacity_ml.
+         *
+         * @param string|null $capacity_ml
+         *
+         * @return self
+         */
+        public function setCapacityMl(?string $capacity_ml): self
+        {
+            $this->capacity_ml = $capacity_ml;
+
+            return $this;
+        }
+
+        /**
+         * Get capacity_ml.
+         *
+         * @return string|null
+         */
+        public function getCapacityMl(): ?string
+        {
+            return $this->capacity_ml;
         }
 
         /**

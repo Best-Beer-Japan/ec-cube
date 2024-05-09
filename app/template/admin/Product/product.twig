@@ -72,6 +72,19 @@ file that was distributed with this source code.
                     $("#{{ form.class.stock.vars.id }}").removeAttr("disabled");
                 }
             });
+            var capacity_other_ids = [ 16, 17, 18 ];
+            if (-1 === $.inArray(Number($("#{{ form.class.BeerContainerCapacity.vars.id }}").val()), capacity_other_ids)) {
+                $("#{{ form.class.beer_container_capacity_other_ml.vars.id }}").attr("disabled", "disabled").val('');
+            } else {
+                $("#{{ form.class.beer_container_capacity_other_ml.vars.id }}").removeAttr("disabled");
+            }
+            $("#{{ form.class.BeerContainerCapacity.vars.id }}").change(function() {
+                if (-1 === $.inArray(Number($(this).val()), capacity_other_ids)) {
+                    $("#{{ form.class.beer_container_capacity_other_ml.vars.id }}").attr("disabled", "disabled").val('');
+                } else {
+                    $("#{{ form.class.beer_container_capacity_other_ml.vars.id }}").removeAttr("disabled");
+                }
+            });
             {% endif %}
             var proto_img = '<div class="c-form__fileUploadThumbnail" style="background-image:url(\'__path__\');">' +
                 '<a class="delete-image"><i class="fa fa-times" aria-hidden="true"></i></a>' +
@@ -416,6 +429,22 @@ file that was distributed with this source code.
                                         <div class="col mb-2">
                                             {{ form_widget(form.class.BeerContainerCapacity) }}
                                             {{ form_errors(form.class.BeerContainerCapacity) }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <div class="d-inline-block">
+                                                <span>{{ 'admin.product.beer_container_capacity_other_ml'|trans }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="col mb-2">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">ml</span>
+                                                </div>
+                                                {{ form_widget(form.class.beer_container_capacity_other_ml) }}
+                                                {{ form_errors(form.class.beer_container_capacity_other_ml) }}
+                                            </div>
                                         </div>
                                     </div>
                                 {% endif %}
