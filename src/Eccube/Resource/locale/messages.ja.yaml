@@ -546,6 +546,7 @@ admin.home.recommend_plugins_title: おすすめのプラグイン
 admin.home.recommend_plugins.owner_store: オーナーズストア
 admin.home.news_title: お知らせ
 admin.home.admin_site_document: サイトマニュアル
+admin.home.admin_site_beerkan: リリースメール管理
 
 admin.header.user_name: '%name% 様'
 admin.header.logout: ログアウト
