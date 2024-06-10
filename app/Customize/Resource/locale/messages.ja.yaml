@@ -52,6 +52,7 @@ admin.product.product_csv.beer_container_col: 容器
 admin.product.product_csv.beer_container_description: ''
 
 admin.product.beer_container_capacity: 容器容量
+admin.product.beer_container_capacity_other_ml: その他容量
 
 admin.product.beer_type: ビール種別
 admin.product.product_csv.beer_type_col: ビール種別

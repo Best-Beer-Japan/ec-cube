@@ -18,6 +18,13 @@ trait ProductClassTrait
     private $bbj_price;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="beer_container_capacity_other_ml", type="decimal", precision=10, scale=0, nullable=true)
+     */
+    private $beer_container_capacity_other_ml;
+
+    /**
      * @var BeerContainerCapacity
      *
      * @ORM\ManyToOne(targetEntity="Customize\Entity\BeerContainerCapacity")
@@ -49,6 +56,30 @@ trait ProductClassTrait
     public function getBbjPrice(): ?string
     {
         return $this->bbj_price;
+    }
+
+    /**
+     * Set beer_container_capacity_other_ml.
+     *
+     * @param string|null $beer_container_capacity_other_ml
+     *
+     * @return self
+     */
+    public function setBeerContainerCapacityOtherMl(?string $beer_container_capacity_other_ml): self
+    {
+        $this->beer_container_capacity_other_ml = $beer_container_capacity_other_ml;
+
+        return $this;
+    }
+
+    /**
+     * Get beer_container_capacity_other_ml.
+     *
+     * @return string|null
+     */
+    public function getBeerContainerCapacityOtherMl(): ?string
+    {
+        return $this->beer_container_capacity_other_ml;
     }
 
     /**
