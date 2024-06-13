@@ -9,6 +9,7 @@ use Customize\Repository\InvoiceRepository;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Repository\OrderRepository;
+use Plugin\InvoiceDocurain\Repository\JobRepository;
 use Plugin\InvoiceDocurain\Service\ExternalMailSendService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,6 +31,11 @@ class InviceController extends AbstractController
     protected $orderRepository;
 
     /**
+     * @var JobRepository
+     */
+    protected $jobRepository;
+
+    /**
      * @var ExternalMailSendService
      */
     protected $externalMailSendService;
@@ -39,15 +45,18 @@ class InviceController extends AbstractController
      *
      * @param InvoiceRepository $invoiceRepository
      * @param OrderRepository $orderRepository
+     * @param JobRepository $jobRepository
      * @param ExternalMailSendService $externalMailSendService
      */
     public function __construct(
         InvoiceRepository $invoiceRepository,
         OrderRepository $orderRepository,
+        JobRepository $jobRepository,
         ExternalMailSendService $externalMailSendService
     ) {
         $this->invoiceRepository = $invoiceRepository;
         $this->orderRepository = $orderRepository;
+        $this->jobRepository = $jobRepository;
         $this->externalMailSendService = $externalMailSendService;
     }
 
@@ -174,6 +183,60 @@ class InviceController extends AbstractController
         $qb->orderBy('o.Customer', 'ASC')
             ->addOrderBy('o.order_date', 'ASC');
 
+        // ダウンロード作成JOBリスト取得
+        try {
+            $jqb = $this->jobRepository->createQueryBuilder('j');
+
+            $jqb
+                ->andWhere('j.billing_year = :billing_year')
+                ->andWhere('j.billing_month = :billing_month')
+                ->andWhere('j.aggregated = :aggregated')
+                ->andWhere('j.type = :type')
+                ->setParameter('billing_year', $year)
+                ->setParameter('billing_month', $month)
+                ->setParameter('aggregated', false)
+                ->setParameter('type', 'download');
+
+            $jqb->orderBy('j.request_date', 'DESC');
+
+            $Histories = $jqb->getQuery()->getResult();
+
+        } catch (\Exception $e) {
+        }
+
+        // ダウンロード回数0のJOBを取得
+        try {
+            $jqb = $this->jobRepository->createQueryBuilder('j');
+
+            $jqb
+                ->select('j.billing_year, j.billing_month')
+                ->andWhere('j.aggregated = :aggregated')
+                ->andWhere('j.type = :type')
+                ->andWhere('j.download_count = :download_count')
+                ->setParameter('aggregated', false)
+                ->setParameter('type', 'download')
+                ->setParameter('download_count', 0);
+
+            $jqb->groupBy('j.billing_year', 'j.billing_month', 'j.aggregated', 'j.type', 'j.download_count');
+
+            $NonDownloads = $jqb->getQuery()->getResult();
+
+            foreach ($NonDownloads as $NonDownload) {
+                $this->addSuccess(
+                    trans(
+                        'invoice_docurain.admin.order.summary.invoice_billing.invoice_external_download_complete_non_download',
+                        [
+                            '%year%' => $NonDownload['billing_year'],
+                            '%month%' => $NonDownload['billing_month'],
+                        ]
+                    ),
+                    'admin'
+                );
+            }
+
+        } catch (\Exception $e) {
+        }
+
         // メール送信状況取得API
         $this->externalMailSendService->getEmailSendingStatusApiCall();
 
@@ -182,6 +245,7 @@ class InviceController extends AbstractController
             'Orders' => $qb->getQuery()->getResult(),
             'year' => $year,
             'month' => $month,
+            'Histories' => $Histories,
         ];
     }
 }
