@@ -59,6 +59,10 @@ class OrderController extends AbstractController
             return $this->json(['status' => 'NG', 'message' => '[受注番号：'.$Order->getId().'] 非会員の注文は請求月を指定できません。']);
         }
 
+        if (null !== $Order->getCustomizeBillingMonthDate()) {
+            return $this->json(['status' => 'NG', 'message' => '[受注番号：'.$Order->getId().'] 請求月が設定済みのため、変更できません。一度「請求月を解除」してから再度お試しください。']);
+        }
+
         $year = $request->get('billing_year');
         $month = $request->get('billing_month');
 
