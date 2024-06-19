@@ -10,6 +10,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Repository\OrderRepository;
 use Plugin\InvoiceDocurain\Repository\JobRepository;
+use Plugin\InvoiceDocurain\Service\ExternalDownLoadService;
 use Plugin\InvoiceDocurain\Service\ExternalMailSendService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,23 +42,31 @@ class InviceController extends AbstractController
     protected $externalMailSendService;
 
     /**
+     * @var ExternalDownLoadService
+     */
+    protected $externalDownLoadService;
+
+    /**
      * ShopController constructor.
      *
      * @param InvoiceRepository $invoiceRepository
      * @param OrderRepository $orderRepository
      * @param JobRepository $jobRepository
      * @param ExternalMailSendService $externalMailSendService
+     * @param ExternalDownLoadService $externalDownLoadService
      */
     public function __construct(
         InvoiceRepository $invoiceRepository,
         OrderRepository $orderRepository,
         JobRepository $jobRepository,
-        ExternalMailSendService $externalMailSendService
+        ExternalMailSendService $externalMailSendService,
+        ExternalDownLoadService $externalDownLoadService
     ) {
         $this->invoiceRepository = $invoiceRepository;
         $this->orderRepository = $orderRepository;
         $this->jobRepository = $jobRepository;
         $this->externalMailSendService = $externalMailSendService;
+        $this->externalDownLoadService = $externalDownLoadService;
     }
 
     /**
@@ -205,40 +214,26 @@ class InviceController extends AbstractController
         }
 
         // ダウンロード回数0のJOBを取得
-        try {
-            $jqb = $this->jobRepository->createQueryBuilder('j');
+        $NonDownloads = $this->externalDownLoadService->getCompleteDownLoadNone(false);
 
-            $jqb
-                ->select('j.billing_year, j.billing_month')
-                ->andWhere('j.aggregated = :aggregated')
-                ->andWhere('j.type = :type')
-                ->andWhere('j.download_count = :download_count')
-                ->setParameter('aggregated', false)
-                ->setParameter('type', 'download')
-                ->setParameter('download_count', 0);
-
-            $jqb->groupBy('j.billing_year', 'j.billing_month', 'j.aggregated', 'j.type', 'j.download_count');
-
-            $NonDownloads = $jqb->getQuery()->getResult();
-
-            foreach ($NonDownloads as $NonDownload) {
-                $this->addSuccess(
-                    trans(
-                        'invoice_docurain.admin.order.summary.invoice_billing.invoice_external_download_complete_non_download',
-                        [
-                            '%year%' => $NonDownload['billing_year'],
-                            '%month%' => $NonDownload['billing_month'],
-                        ]
-                    ),
-                    'admin'
-                );
-            }
-
-        } catch (\Exception $e) {
+        foreach ($NonDownloads as $NonDownload) {
+            $this->addSuccess(
+                trans(
+                    'invoice_docurain.admin.order.summary.invoice_billing.invoice_external_download_complete_non_download',
+                    [
+                        '%year%' => $NonDownload['billing_year'],
+                        '%month%' => $NonDownload['billing_month'],
+                    ]
+                ),
+                'admin'
+            );
         }
 
         // メール送信状況取得API
         $this->externalMailSendService->getEmailSendingStatusApiCall();
+
+        // ダウンロードファイルURL取得API
+        $this->externalDownLoadService->getDownLoadStatusApiCall();
 
         return [
             'form' => $form->createView(),
