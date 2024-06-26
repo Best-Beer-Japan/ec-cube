@@ -320,6 +320,8 @@ $(function() {
                                                     <a class="btn btn-ec-regular download_history" href="{{ url('admin_invoice_docurain_invoice_external_download_download', { 'id': History.id }) }}">
                                                         <i class="fa fa-cloud-download text-secondary"></i>
                                                     </a>
+                                                {% else %}
+                                                    <i class="fa fa-refresh fa-fw fa-lg text-secondary mr-2" aria-hidden="true" data-tooltip="true" data-placement="top" data-original-title="作成中"></i>
                                                 {% endif %}
                                             </td>
                                         </tr>
