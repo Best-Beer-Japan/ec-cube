@@ -289,8 +289,8 @@ $(function() {
                                     <tr>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'invoice_docurain.admin.order.summary.invoice_billing.invoice_external_download_create.create_date_time'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'invoice_docurain.admin.order.summary.invoice_billing.invoice_external_download_create.designated member_id'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'invoice_docurain.admin.order.summary.invoice_billing.invoice_external_download_create.status'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'invoice_docurain.admin.order.summary.invoice_billing.invoice_external_download_create.format'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'invoice_docurain.admin.order.summary.invoice_billing.invoice_external_download_create.status'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-2 text-center">{{ 'invoice_docurain.admin.order.summary.invoice_billing.invoice_external_download_create.download'|trans }}</th>
                                     </tr>
                                     </thead>
@@ -304,22 +304,24 @@ $(function() {
                                                 {% if History.customer_id is not null %}{{ History.customer_id }}{% else %}すべて{% endif %}
                                             </td>
                                             <td class="align-middle text-center">
+                                                {{ History.out_type }}
+                                            </td>
+                                            <td class="align-middle text-center">
                                                 {% if History.status == 'processing' %}
                                                     作成中
                                                 {% elseif History.status == 'complete' %}
-                                                    作成完了
+                                                    {% if History.download_count == 0 %}作成完了（未DL）{% else %}DL済{% endif %}
                                                 {% elseif History.status == 'api_error' %}
                                                     問い合わせ失敗・BBJにお問い合わせください。
                                                 {% endif %}
-                                            </td>
-                                            <td class="align-middle text-center">
-                                                {{ History.out_type }}
                                             </td>
                                             <td class="align-middle text-center">
                                                 {% if History.status == 'complete' %}
                                                     <a class="btn btn-ec-regular download_history" href="{{ url('admin_invoice_docurain_invoice_external_download_download', { 'id': History.id }) }}">
                                                         <i class="fa fa-cloud-download text-secondary"></i>
                                                     </a>
+                                                {% else %}
+                                                    <i class="fa fa-refresh fa-fw fa-lg text-secondary mr-2" aria-hidden="true" data-tooltip="true" data-placement="top" data-original-title="作成中"></i>
                                                 {% endif %}
                                             </td>
                                         </tr>
