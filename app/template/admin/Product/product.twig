@@ -72,18 +72,10 @@ file that was distributed with this source code.
                     $("#{{ form.class.stock.vars.id }}").removeAttr("disabled");
                 }
             });
-            var capacity_other_ids = [ 16, 17, 18 ];
-            if (-1 === $.inArray(Number($("#{{ form.class.BeerContainerCapacity.vars.id }}").val()), capacity_other_ids)) {
-                $("#{{ form.class.beer_container_capacity_other_ml.vars.id }}").attr("disabled", "disabled").val('');
-            } else {
-                $("#{{ form.class.beer_container_capacity_other_ml.vars.id }}").removeAttr("disabled");
-            }
+            beer_container_capacities = {{ beer_container_capacity_as_json()|raw }};
             $("#{{ form.class.BeerContainerCapacity.vars.id }}").change(function() {
-                if (-1 === $.inArray(Number($(this).val()), capacity_other_ids)) {
-                    $("#{{ form.class.beer_container_capacity_other_ml.vars.id }}").attr("disabled", "disabled").val('');
-                } else {
-                    $("#{{ form.class.beer_container_capacity_other_ml.vars.id }}").removeAttr("disabled");
-                }
+                let capacityMl = beer_container_capacities[Number($(this).val())];
+                $("#{{ form.class.capacity_ml.vars.id }}").val(capacityMl);
             });
             {% endif %}
             var proto_img = '<div class="c-form__fileUploadThumbnail" style="background-image:url(\'__path__\');">' +
@@ -404,18 +396,6 @@ file that was distributed with this source code.
                                         {{ form_errors(form.beer_style) }}
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-3">
-                                        <div class="d-inline-block">
-                                            <span>{{ 'admin.product.beer_container'|trans }}</span>
-                                            {# <span class="badge badge-primary ml-1">{{ 'admin.common.required'|trans }}</span> #}
-                                        </div>
-                                    </div>
-                                    <div class="col mb-2">
-                                        {{ form_widget(form.BeerContainer, {'label_attr': {'class': 'checkbox-inline'}}) }}
-                                        {{ form_errors(form.BeerContainer) }}
-                                    </div>
-                                </div>
                                 {% if has_class == false %}
                                     <div class="row">
                                         <div class="col-3">
@@ -434,7 +414,10 @@ file that was distributed with this source code.
                                     <div class="row">
                                         <div class="col-3">
                                             <div class="d-inline-block">
-                                                <span>{{ 'admin.product.beer_container_capacity_other_ml'|trans }}</span>
+                                                <span>{{ 'admin.product.capacity_ml'|trans }}</span>
+                                                <span class="badge badge-primary ml-1">
+                                                    {{ 'admin.common.required'|trans }}
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="col mb-2">
@@ -442,9 +425,10 @@ file that was distributed with this source code.
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text">ml</span>
                                                 </div>
-                                                {{ form_widget(form.class.beer_container_capacity_other_ml) }}
-                                                {{ form_errors(form.class.beer_container_capacity_other_ml) }}
+                                                {{ form_widget(form.class.capacity_ml) }}
+                                                {{ form_errors(form.class.capacity_ml) }}
                                             </div>
+                                            {{ 'admin.product.capacity_ml_description'|trans }}
                                         </div>
                                     </div>
                                 {% endif %}

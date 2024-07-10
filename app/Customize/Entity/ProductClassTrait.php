@@ -20,9 +20,9 @@ trait ProductClassTrait
     /**
      * @var string|null
      *
-     * @ORM\Column(name="beer_container_capacity_other_ml", type="decimal", precision=10, scale=0, nullable=true)
+     * @ORM\Column(name="capacity_ml", type="decimal", precision=10, scale=0, nullable=true)
      */
-    private $beer_container_capacity_other_ml;
+    private $capacity_ml;
 
     /**
      * @var BeerContainerCapacity
@@ -59,27 +59,27 @@ trait ProductClassTrait
     }
 
     /**
-     * Set beer_container_capacity_other_ml.
+     * Set capacity_ml.
      *
-     * @param string|null $beer_container_capacity_other_ml
+     * @param string|null $capacity_ml
      *
      * @return self
      */
-    public function setBeerContainerCapacityOtherMl(?string $beer_container_capacity_other_ml): self
+    public function setCapacityMl(?string $capacity_ml): self
     {
-        $this->beer_container_capacity_other_ml = $beer_container_capacity_other_ml;
+        $this->capacity_ml = $capacity_ml;
 
         return $this;
     }
 
     /**
-     * Get beer_container_capacity_other_ml.
+     * Get capacity_ml.
      *
      * @return string|null
      */
-    public function getBeerContainerCapacityOtherMl(): ?string
+    public function getCapacityMl(): ?string
     {
-        return $this->beer_container_capacity_other_ml;
+        return $this->capacity_ml;
     }
 
     /**
