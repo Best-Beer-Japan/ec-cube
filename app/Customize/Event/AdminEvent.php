@@ -146,36 +146,6 @@ class AdminEvent implements EventSubscriberInterface
         $form = $event->getArgument('form');
         $Product = $event->getArgument('Product');
 
-        $BeerContainers = $form->get('BeerContainer')->getData();
-
-        /*
-                if (0 == count($BeerContainers)) {
-                    $form['BeerContainer']->addError(new FormError(trans('admin.common.file_select_empty')));
-
-                    return;
-                }
-        */
-
-        // 容器の情報を一度リセット
-        foreach ($Product->getProductBeerContainers() as $ProductBeerContainer) {
-            $Product->removeProductBeerContainer($ProductBeerContainer);
-            $this->entityManager->remove($ProductBeerContainer);
-        }
-        $this->entityManager->flush();
-
-        // 容器の情報を登録
-        foreach ($BeerContainers as $BeerContainer) {
-            $ProductBeerContainer = new ProductBeerContainer();
-            $ProductBeerContainer->setProductId($Product->getId())
-                ->setBeerContainerId($BeerContainer->getId())
-                ->setProduct($Product)
-                ->setBeerContainer($BeerContainer);
-
-            $this->entityManager->persist($ProductBeerContainer);
-            $Product->addProductBeerContainer($ProductBeerContainer);
-        }
-        $this->entityManager->flush();
-
         $url = $event->getRequest()->getUriForPath('/api/post_products/'.$Product->getId());
 
         $this->breweryRequestApiService->requestApi($url, true);
