@@ -46,9 +46,12 @@ class AdminProductClassEditTypeExtension extends AbstractTypeExtension
                     ->orderBy('dt.sort_no', 'ASC');
             },
         ])
-            ->add('beer_container_capacity_other_ml', NumberType::class, [
-                'required' => false,
+            ->add('capacity_ml', NumberType::class, [
+                'required' => true,
                 'grouping' => true,
+                'constraints' => [
+                    new Assert\NotBlank(),
+                ],
             ]);
         /*
             ->add('bbj_price', PriceType::class, [
@@ -71,17 +74,6 @@ class AdminProductClassEditTypeExtension extends AbstractTypeExtension
             ]);
             if ($errors->count() != 0) {
                 $form['BeerContainerCapacity']->addError(new FormError(trans('admin.common.file_select_empty')));
-            }
-
-            // その他容量の樽・その他容量の瓶・その他容量の缶 / ID[16・17・18]
-            if (null !== $data['BeerContainerCapacity'] && false !== array_search($data['BeerContainerCapacity']->getId(), [16,17,18])) {
-                $errors = $this->validator->validate($data['beer_container_capacity_other_ml'], [
-                    new Assert\NotBlank(),
-                ]);
-
-                if ($errors->count() != 0) {
-                    $form['beer_container_capacity_other_ml']->addError(new FormError($errors[0]->getMessage()));
-                }
             }
         });
     }
