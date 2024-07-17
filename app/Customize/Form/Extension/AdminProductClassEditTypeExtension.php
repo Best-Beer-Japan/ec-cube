@@ -47,11 +47,8 @@ class AdminProductClassEditTypeExtension extends AbstractTypeExtension
             },
         ])
             ->add('capacity_ml', NumberType::class, [
-                'required' => true,
+                'required' => false,
                 'grouping' => true,
-                'constraints' => [
-                    new Assert\NotBlank(),
-                ],
             ]);
         /*
             ->add('bbj_price', PriceType::class, [
@@ -74,6 +71,14 @@ class AdminProductClassEditTypeExtension extends AbstractTypeExtension
             ]);
             if ($errors->count() != 0) {
                 $form['BeerContainerCapacity']->addError(new FormError(trans('admin.common.file_select_empty')));
+            }
+
+            // 容器容量(ml)
+            $errors = $this->validator->validate($data['capacity_ml'], [
+                new Assert\NotBlank(),
+            ]);
+            if ($errors->count() != 0) {
+                $form['capacity_ml']->addError(new FormError(trans('This value should not be blank.', [], 'validators')));
             }
         });
     }
