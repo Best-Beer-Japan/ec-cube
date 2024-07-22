@@ -51,7 +51,9 @@ admin.product.beer_container: 容器
 admin.product.product_csv.beer_container_col: 容器
 admin.product.product_csv.beer_container_description: ''
 
-admin.product.beer_container_capacity: 容器容量
+admin.product.beer_container_capacity: 容器タイプ
+admin.product.capacity_ml: 容器容量(ml)
+admin.product.capacity_ml_description: ※「容器タイプ」と異なる場合は正確な容量をご入力ください。
 
 admin.product.beer_type: ビール種別
 admin.product.product_csv.beer_type_col: ビール種別

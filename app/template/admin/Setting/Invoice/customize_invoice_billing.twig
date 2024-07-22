@@ -45,6 +45,57 @@ $(function() {
             alert('external mail send history failed.');
         });
     });
+
+    // モーダルメール送信ボタン
+    $("[id^='invoiceExternalMailSendButton']").on('click', function() {
+        $('#invoiceExternalMailSend').modal('hide');
+    });
+
+    // ダウンロード履歴
+    $("[id^='externalDownloadStatus_']").on('click', function() {
+        var list = $('#externalDownloadStatusList');
+        var modal_title = $('#externalDownloadStatusTitle');
+        var modal_title_text = $(this).data('modal-title');
+
+        list.children().remove();
+        modal_title.empty();
+
+        $.ajax({
+            url: '{{ url('admin_invoice_docurain_invoice_external_download_history') }}',
+            type: 'POST',
+            dataType: 'html',
+            data: {
+                'customer_id': $(this).data('customer-id'),
+                'year': {{ year }},
+                'month': {{ month }},
+                'aggregated': 0
+            }
+        }).done(function(data) {
+            $('#externalDownloadStatusList').html(data);
+            $('#externalDownloadStatusTitle').html(modal_title_text);
+        }).fail(function(data) {
+            alert('external mail send history failed.');
+        });
+    });
+
+    // モーダルXlsx作成ボタン
+    $("[id^='invoiceExternalDownloadCreateXlsxButton']").on('click', function() {
+        $('#invoiceExternalDownloadCreateXlsx').modal('hide');
+    });
+
+    // モーダルPDF作成ボタン
+    $("[id^='invoiceExternalDownloadCreatePdfButton']").on('click', function() {
+        $('#invoiceExternalDownloadCreatePdf').modal('hide');
+    });
+
+    // モーダルダウンロードボタン
+    $(".download_history").on('click', function() {
+        $('#invoiceExternalDownload').modal('hide');
+    });
+
+    $('[id^=invoiceExternalDownloadCreate]').on('shown.bs.modal', function(event) {
+        $('#invoiceExternalDownload').modal('hide');
+    });
 });
 </script>
 {% endblock javascript %}
@@ -82,23 +133,28 @@ $(function() {
                     <div class="col-6 text-right">
                         <ul id="download-info" class="list-inline">
                         </ul>
+                        <p class="mb-2">
+                            <a href="https://www.notion.so/bestbeerjapan/3904fd841aaa44d6be545f6cf7ac3255?pvs=4">
+                                <i class="fa fa-question-circle fa-lg ml-1"></i>発行枚数の計算方法について
+                            </a>
+                        </p>
                         <p class="badge bg-danger text-white mb-2">チェックボックスに関わらず一覧すべての請求書をダウンロードします</p>
                         <div class="d-inline-block">
                             <div class="btn-group" role="group">
-                                <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-ec-regular dropdown-toggle" data-toggle="dropdown" id="invoiceDownloadDropDown">
-                                        <i class="fa fa-cloud-download mr-1 text-secondary"></i>
-                                        <span>{{ 'admin.common.invoice_download'|trans }}</span>
-                                    </button>
-                                    <div class="dropdown-menu">
-                                    </div>
+                                <button type="button" class="btn btn-ec-regular dropdown-toggle" data-toggle="dropdown" id="invoiceDownloadDropDown" style="border-top-right-radius: 0;border-bottom-right-radius: 0;">
+                                    <i class="fa fa-cloud-download mr-1 text-secondary"></i>
+                                    <span>{{ 'invoice_docurain.admin.common.invoice_download'|trans }}</span>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-old">
                                 </div>
-                                {% if Orders|length > 0 %}
+                                <a class="btn btn-ec-regular" data-toggle="modal" data-target="#invoiceExternalDownload">
+                                    <i class="fa fa-cloud-download mr-1 text-secondary"></i>
+                                    <span>{{ 'admin.common.invoice_download'|trans }}</span>
+                                </a>
                                 <a class="btn btn-ec-regular" data-toggle="modal" data-target="#invoiceExternalMailSend">
                                     <i class="mr-1 fa fa-envelope fa-lg text-secondary"></i>
                                     <span>{{ 'customize.admin.setting.invice.billing.invoice_external_mail_send'|trans }}</span>
                                 </a>
-                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -114,6 +170,7 @@ $(function() {
                                 <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.common.name'|trans }}</th>
                                 <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.order_status'|trans }}</th>
                                 <th class="border-top-0 pt-2 pb-2 text-center">{{ 'customize.admin.setting.invice.billing.invoice_external_mail_send.table_title'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2 text-center">{{ 'invoice_docurain.admin.order.summary.invoice_billing.invoice_external_download.table_title'|trans }}</th>
                                 <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.purchase_price'|trans }}</th>
                                 <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.buy_date'|trans }}</th>
                                 <th class="border-top-0 pt-2 pb-2 text-center"></th>
@@ -151,6 +208,14 @@ $(function() {
                                         {% endif %}
                                     </td>
                                     <td class="align-middle text-center">
+                                        {% if Order.Customer %}
+                                        <a id="externalDownloadStatus_{{ Order.Customer.id }}" data-toggle="modal" data-target="#externalDownloadStatus" data-customer-id="{{ Order.Customer.id }}" data-modal-title="{{ 'invoice_docurain.admin.order.summary.invoice_billing.invoice_external_download_status_title'|trans({'%customer_id%': Order.Customer.id, '%year%':year, '%month%':month}) }}"
+                                           aria-hidden="true" data-tooltip="true" data-placement="top" data-original-title="ダウンロード履歴">
+                                            <i class="fa fa-list fa-lg text-secondary"></i>
+                                        </a>
+                                        {% endif %}
+                                    </td>
+                                    <td class="align-middle text-center">
                                         {{ Order.payment_total|price }}({{ 'common.tax_include'|trans }})
                                     </td>
                                     <td class="align-middle text-center">
@@ -179,8 +244,146 @@ $(function() {
                         </div>
                     </div>
                 </div>
+                <!-- ダウンロード履歴モーダル -->
+                <div class="modal fade" id="externalDownloadStatus" tabindex="-1" role="dialog" aria-labelledby="externalDownloadStatus" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title font-weight-bold" id="externalDownloadStatusTitle"></h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group" id="externalDownloadStatusList"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ダウンロードモーダル -->
+                <div class="modal fade" id="invoiceExternalDownload" tabindex="-1" role="dialog" aria-labelledby="invoiceExternalDownload" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title font-weight-bold">{{ 'invoice_docurain.admin.order.summary.invoice_billing.invoice_external_download_create_history'|trans }}（{{ form.year.vars.value }}年{{ form.month.vars.value }}月分）</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            </div>
+                            <div class="modal-body">
+                                {% if Histories is not empty %}
+                                    <p>最終作成日時（{{ Histories.0.request_date|date_sec }}）以降に請求内容に変更があった場合は、新しく「請求書作成」を行ってください。</p>
+                                {% endif %}
+                                <div class="text-right">
+                                    <div class="btn-group" role="group">
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn btn-ec-regular dropdown-toggle" data-toggle="dropdown" id="invoiceDownloadDropDown">
+                                                <i class="fa fa-cloud-download mr-1 text-secondary"></i>
+                                                <span>{{ 'invoice_docurain.admin.order.summary.invoice_billing.invoice_external_download_create'|trans }}</span>
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" data-toggle="modal" data-target="#invoiceExternalDownloadCreateXlsx">{{ 'invoice_docurain.admin.common.invoice_summary_download_xls'|trans }}</a>
+                                                <a class="dropdown-item" data-toggle="modal" data-target="#invoiceExternalDownloadCreatePdf">{{ 'invoice_docurain.admin.common.invoice_summary_download_pdf'|trans }}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <table class="table table-striped mt-3">
+                                    <thead class="table-active">
+                                    <tr>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'invoice_docurain.admin.order.summary.invoice_billing.invoice_external_download_create.create_date_time'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'invoice_docurain.admin.order.summary.invoice_billing.invoice_external_download_create.designated member_id'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'invoice_docurain.admin.order.summary.invoice_billing.invoice_external_download_create.format'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'invoice_docurain.admin.order.summary.invoice_billing.invoice_external_download_create.status'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'invoice_docurain.admin.order.summary.invoice_billing.invoice_external_download_create.download'|trans }}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for History in Histories %}
+                                        <tr>
+                                            <td class="align-middle text-center">
+                                                {{ History.request_date|date_sec }}
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                {% if History.customer_id is not null %}{{ History.customer_id }}{% else %}すべて{% endif %}
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                {{ History.out_type }}
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                {% if History.status == 'processing' %}
+                                                    作成中
+                                                {% elseif History.status == 'complete' %}
+                                                    {% if History.download_count == 0 %}作成完了（未DL）{% else %}DL済{% endif %}
+                                                {% elseif History.status == 'api_error' %}
+                                                    問い合わせ失敗・BBJにお問い合わせください。
+                                                {% endif %}
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                {% if History.status == 'complete' %}
+                                                    <a class="btn btn-ec-regular download_history" href="{{ url('admin_invoice_docurain_invoice_external_download_download', { 'id': History.id }) }}">
+                                                        <i class="fa fa-cloud-download text-secondary"></i>
+                                                    </a>
+                                                {% else %}
+                                                    <i class="fa fa-refresh fa-fw fa-lg text-secondary mr-2" aria-hidden="true" data-tooltip="true" data-placement="top" data-original-title="作成中"></i>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td class="align-middle text-center" colspan="5">
+                                                <p class="mt-5">ダウンロード可能な請求書がありません。<p>
+                                                <p class="mb-5">上のボタンで請求書を作成してください。<p>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.close'|trans }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ダウンロード作成XLSXモーダル -->
+                <div class="modal fade" id="invoiceExternalDownloadCreateXlsx" tabindex="-1" role="dialog" aria-labelledby="invoiceExternalDownloadCreateXlsx" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title font-weight-bold">{{ 'invoice_docurain.admin.order.summary.invoice_billing.invoice_external_download_create.xlsx'|trans }}</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            </div>
+                            <div class="modal-body">
+                                {{ 'invoice_docurain.admin.order.summary.invoice_billing.invoice_external_download_create.modal_text'|trans({"%count%":Orders|length})|raw }}
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                                <a id="invoiceExternalDownloadCreateXlsxButton" class="btn btn-ec-conversion" href="{{ url('admin_invoice_docurain_invoice_external_download_create', { 'type': 'xlsx' }) }}">
+                                    {{ 'invoice_docurain.admin.order.summary.invoice_billing.invoice_external_download_create.modal_create_button'|trans({"%count%":Orders|length}) }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ダウンロード作成PDFモーダル -->
+                <div class="modal fade" id="invoiceExternalDownloadCreatePdf" tabindex="-1" role="dialog" aria-labelledby="invoiceExternalDownloadCreatePdf" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title font-weight-bold">{{ 'invoice_docurain.admin.order.summary.invoice_billing.invoice_external_download_create.pdf'|trans }}</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            </div>
+                            <div class="modal-body">
+                                {{ 'invoice_docurain.admin.order.summary.invoice_billing.invoice_external_download_create.modal_text'|trans({"%count%":Orders|length})|raw }}
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-ec-sub" type="button" data-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                                <a id="invoiceExternalDownloadCreatePdfButton" class="btn btn-ec-conversion" href="{{ url('admin_invoice_docurain_invoice_external_download_create', { 'type': 'pdf' }) }}">
+                                    {{ 'invoice_docurain.admin.order.summary.invoice_billing.invoice_external_download_create.modal_create_button'|trans({"%count%":Orders|length}) }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- 請求書メール送信モーダル -->
-                <div class="modal fade" id="invoiceExternalMailSend" tabindex="-1" role="dialog" aria-labelledby="invoiceExternalMailSend" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                <div class="modal fade" id="invoiceExternalMailSend" tabindex="-1" role="dialog" aria-labelledby="invoiceExternalMailSend" aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-header">

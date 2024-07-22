@@ -70,16 +70,6 @@ class ProductTypePublishDateExtension extends AbstractTypeExtension
                     new Assert\NotBlank(),
                 ],
             ])
-            ->add('BeerContainer', ChoiceType::class, [
-                'choice_label' => 'Name',
-                'multiple' => true,
-                'mapped' => false,
-                'expanded' => true,
-                'choices' => $this->beerContainerRepository->findAll(),
-                'choice_value' => function (?BeerContainer $BeerContainer) {
-                    return $BeerContainer ? $BeerContainer->getId() : null;
-                },
-            ])
             ->add('beer_style', BeerStyleType::class, [
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -104,18 +94,6 @@ class ProductTypePublishDateExtension extends AbstractTypeExtension
                     ]),
                 ],
             ]);
-
-        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
-            $form = $event->getForm();
-            $Product = $event->getData();
-
-            $BeerContainers = [];
-            $ProductBeerContainers = $Product->getProductBeerContainers();
-            foreach ($ProductBeerContainers as $ProductBeerContainer) {
-                $BeerContainers[] = $ProductBeerContainer->getBeerContainer();
-            }
-            $form['BeerContainer']->setData($BeerContainers);
-        });
 
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             $form = $event->getForm();

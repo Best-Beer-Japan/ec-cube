@@ -9,6 +9,8 @@ use Customize\Repository\InvoiceRepository;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Repository\OrderRepository;
+use Plugin\InvoiceDocurain\Repository\JobRepository;
+use Plugin\InvoiceDocurain\Service\ExternalDownLoadService;
 use Plugin\InvoiceDocurain\Service\ExternalMailSendService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,25 +32,41 @@ class InviceController extends AbstractController
     protected $orderRepository;
 
     /**
+     * @var JobRepository
+     */
+    protected $jobRepository;
+
+    /**
      * @var ExternalMailSendService
      */
     protected $externalMailSendService;
+
+    /**
+     * @var ExternalDownLoadService
+     */
+    protected $externalDownLoadService;
 
     /**
      * ShopController constructor.
      *
      * @param InvoiceRepository $invoiceRepository
      * @param OrderRepository $orderRepository
+     * @param JobRepository $jobRepository
      * @param ExternalMailSendService $externalMailSendService
+     * @param ExternalDownLoadService $externalDownLoadService
      */
     public function __construct(
         InvoiceRepository $invoiceRepository,
         OrderRepository $orderRepository,
-        ExternalMailSendService $externalMailSendService
+        JobRepository $jobRepository,
+        ExternalMailSendService $externalMailSendService,
+        ExternalDownLoadService $externalDownLoadService
     ) {
         $this->invoiceRepository = $invoiceRepository;
         $this->orderRepository = $orderRepository;
+        $this->jobRepository = $jobRepository;
         $this->externalMailSendService = $externalMailSendService;
+        $this->externalDownLoadService = $externalDownLoadService;
     }
 
     /**
@@ -174,14 +192,55 @@ class InviceController extends AbstractController
         $qb->orderBy('o.Customer', 'ASC')
             ->addOrderBy('o.order_date', 'ASC');
 
+        // ダウンロード作成JOBリスト取得
+        try {
+            $jqb = $this->jobRepository->createQueryBuilder('j');
+
+            $jqb
+                ->andWhere('j.billing_year = :billing_year')
+                ->andWhere('j.billing_month = :billing_month')
+                ->andWhere('j.aggregated = :aggregated')
+                ->andWhere('j.type = :type')
+                ->setParameter('billing_year', $year)
+                ->setParameter('billing_month', $month)
+                ->setParameter('aggregated', false)
+                ->setParameter('type', 'download');
+
+            $jqb->orderBy('j.request_date', 'DESC');
+
+            $Histories = $jqb->getQuery()->getResult();
+
+        } catch (\Exception $e) {
+        }
+
+        // ダウンロード回数0のJOBを取得
+        $NonDownloads = $this->externalDownLoadService->getCompleteDownLoadNone(false);
+
+        foreach ($NonDownloads as $NonDownload) {
+            $this->addSuccess(
+                trans(
+                    'invoice_docurain.admin.order.summary.invoice_billing.invoice_external_download_complete_non_download',
+                    [
+                        '%year%' => $NonDownload['billing_year'],
+                        '%month%' => $NonDownload['billing_month'],
+                    ]
+                ),
+                'admin'
+            );
+        }
+
         // メール送信状況取得API
         $this->externalMailSendService->getEmailSendingStatusApiCall();
+
+        // ダウンロードファイルURL取得API
+        $this->externalDownLoadService->getDownLoadStatusApiCall();
 
         return [
             'form' => $form->createView(),
             'Orders' => $qb->getQuery()->getResult(),
             'year' => $year,
             'month' => $month,
+            'Histories' => $Histories,
         ];
     }
 }

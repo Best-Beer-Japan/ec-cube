@@ -34,7 +34,6 @@ file that was distributed with this source code.
                 }
             });
 
-
             // 無制限チェックボックス
             $('input[id$=_stock_unlimited]').on('click', function() {
                 var check = $(this).prop('checked');
@@ -45,6 +44,14 @@ file that was distributed with this source code.
                 } else {
                     $('#product_class_matrix_product_classes_' + index + '_stock').prop('disabled', false);
                 }
+            });
+
+            // 容器容量
+            beer_container_capacities = {{ beer_container_capacity_as_json()|raw }};
+            $('select[id$=_BeerContainerCapacity]').on('change', function() {
+                let index = $(this).attr('id').match(/\d+/);
+                let capacityMl = beer_container_capacities[Number($(this).val())];
+                $('#product_class_matrix_product_classes_' + index + '_capacity_ml').val(capacityMl);
             });
 
             // 登録チェックボックス
@@ -107,6 +114,12 @@ file that was distributed with this source code.
 
                 var sale_type = $('#product_class_matrix_product_classes_0_sale_type').val();
                 $('select[id$=_sale_type]').val(sale_type);
+
+                var BeerContainerCapacity = $('#product_class_matrix_product_classes_0_BeerContainerCapacity').val();
+                $('select[id$=_BeerContainerCapacity]').val(BeerContainerCapacity);
+
+                var capacity_ml = $('#product_class_matrix_product_classes_0_capacity_ml').val();
+                $('input[id$=_capacity_ml]').val(capacity_ml);
             });
         });
     </script>
@@ -269,7 +282,8 @@ file that was distributed with this source code.
                                     {% endif %}
                                     <th class="pt-2 pb-2">{{ 'admin.product.delivery_duration'|trans }}</th>
                                     <th class="pt-2 pb-2">{{ 'admin.product.sale_type'|trans }}</th>
-                                    <th class="pt-2 pb-2 pr-3">{{ 'admin.product.beer_container_capacity'|trans }}</th>
+                                    <th class="pt-2 pb-2">{{ 'admin.product.beer_container_capacity'|trans }}</th>
+                                    <th class="pt-2 pb-2 pr-3">{{ 'admin.product.capacity_ml'|trans }}</th>
 
                                     {# エンティティ拡張の自動出力 #}
                                     {% for product_class_form in form.product_classes %}
@@ -344,13 +358,22 @@ file that was distributed with this source code.
                                                 {{ form_widget(product_class_form.delivery_duration) }}
                                                 {{ form_errors(product_class_form.delivery_duration) }}
                                             </td>
-                                            <td class="align-middle pr-3">
+                                            <td class="align-middle">
                                                 {{ form_widget(product_class_form.sale_type) }}
                                                 {{ form_errors(product_class_form.sale_type) }}
                                             </td>
-                                            <td class="align-middle pr-3">
+                                            <td class="align-middle">
                                                 {{ form_widget(product_class_form.BeerContainerCapacity) }}
                                                 {{ form_errors(product_class_form.BeerContainerCapacity) }}
+                                            </td>
+                                            <td class="align-middle pr-3">
+                                                <div class="input-group">
+                                                    {{ form_widget(product_class_form.capacity_ml) }}
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">ml</span>
+                                                    </div>
+                                                    {{ form_errors(product_class_form.capacity_ml) }}
+                                                </div>
                                             </td>
                                             {# エンティティ拡張の自動出力 #}
                                             {% for f in product_class_form if f.vars.eccube_form_options.auto_render %}

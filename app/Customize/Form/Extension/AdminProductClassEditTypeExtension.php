@@ -7,6 +7,7 @@ use Eccube\Form\Type\Admin\ProductClassEditType;
 use Eccube\Form\Type\PriceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
@@ -44,7 +45,11 @@ class AdminProductClassEditTypeExtension extends AbstractTypeExtension
                     ->createQueryBuilder('dt')
                     ->orderBy('dt.sort_no', 'ASC');
             },
-        ]);
+        ])
+            ->add('capacity_ml', NumberType::class, [
+                'required' => false,
+                'grouping' => true,
+            ]);
         /*
             ->add('bbj_price', PriceType::class, [
                 'required' => false,
@@ -66,6 +71,14 @@ class AdminProductClassEditTypeExtension extends AbstractTypeExtension
             ]);
             if ($errors->count() != 0) {
                 $form['BeerContainerCapacity']->addError(new FormError(trans('admin.common.file_select_empty')));
+            }
+
+            // 容器容量(ml)
+            $errors = $this->validator->validate($data['capacity_ml'], [
+                new Assert\NotBlank(),
+            ]);
+            if ($errors->count() != 0) {
+                $form['capacity_ml']->addError(new FormError(trans('This value should not be blank.', [], 'validators')));
             }
         });
     }
