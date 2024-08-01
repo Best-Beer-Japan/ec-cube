@@ -208,17 +208,6 @@ class AdminEvent implements EventSubscriberInterface
                 }
             }
 
-            //容器容量
-            if ($Csv->getReferenceFieldName() === 'beer_container_capacity_other_ml' && $OrderItem->getOrderItemType()->getId() === OrderItemType::PRODUCT) {
-                $BeerContainerCapacityOtherMl = $OrderItem->getProductClass()->getBeerContainerCapacityOtherMl();
-
-                if (null === $BeerContainerCapacityOtherMl) {
-                    $ExportCsvRow->setData($OrderItem->getProductClass()->getBeerContainerCapacity()->getCapacityMl());
-
-                    return;
-                }
-            }
-
             //会員グループ
             if ($Csv->getFieldName() === 'plg_mixpack_customer_group_name' && $OrderItem->getOrderItemType()->getId() === OrderItemType::PRODUCT) {
                 if (empty($this->customerGroups)) {
