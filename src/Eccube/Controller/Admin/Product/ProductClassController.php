@@ -352,6 +352,7 @@ class ProductClassController extends AbstractController
                         'create_date',
                         'update_date',
                         'Creator',
+                        'ProductStock',
                     ]);
                     $pc = $ExistsProductClass;
                 }
