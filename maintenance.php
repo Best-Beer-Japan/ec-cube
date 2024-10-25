@@ -29,8 +29,6 @@ file that was distributed with this source code.
                 </div>
                 <p class="ec-404Role__title ec-reportHeading">ただいまメンテナンス中です。</p>
                 <p class="ec-404Role__description ec-reportDescription">大変お手数ですが、しばらくしてから再度アクセスをお願いします。</p>
-                <p class="ec-404Role__description ec-reportDescription">お急ぎの場合は<br>BestBeerJapanのプラットフォームからご購入ください。</p>
-                <a href="https://craftbeerbeta.bestbeerjapan.com/products/list?tenants=<?php echo env('DATABASE'); ?>">プラットフォームでビールを購入する</a>
             </div>
         </div>
     </div>
