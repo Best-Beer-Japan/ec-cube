@@ -23,7 +23,7 @@ final class Version20220425064434 extends AbstractMigration
 
         $this->addSql("INSERT INTO customize_mtb_beer_style (
             id, name, sort_no, discriminator_type )
-            VALUES ('10', 'hazy IPA', '5', 'beerstyle')");
+            VALUES ('10', 'Hazy IPA', '5', 'beerstyle')");
     }
 
     public function down(Schema $schema) : void
