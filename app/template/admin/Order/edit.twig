@@ -427,9 +427,9 @@ file that was distributed with this source code.
                                         <div class="row">
                                             <label class="col-3 col-form-label" data-tooltip="true" data-placement="top" title="{{ 'tooltip.order.customer_id'|trans }}">{{ 'admin.customer.customer_id'|trans }}<i class="fa fa-question-circle fa-lg ml-1"></i></label>
                                             <div class="col">
-                                                <p id="order_CustomerId">{% if form.Customer.vars.value is empty %}{{ 'admin.order.non_member'|trans }}{% else %}<a href="{{ url('admin_customer_edit', {'id': form.Customer.vars.value}) }}">{{ form.Customer.vars.value }}</a>{% endif %}</p>
                                                 {{ form_widget(form.Customer) }}
                                                 {{ form_errors(form.Customer) }}
+                                                <p id="order_CustomerId">{% if form.Customer.vars.value is empty %}{{ 'admin.order.non_member'|trans }}{% else %}<a href="{{ url('admin_customer_edit', {'id': form.Customer.vars.value}) }}">{{ form.Customer.vars.value }}</a>{% endif %}</p>
                                             </div>
                                         </div>
                                         <div class="row form-group">

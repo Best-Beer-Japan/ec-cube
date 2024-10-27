@@ -29,6 +29,7 @@ customize.common.none_invoice_parent_key: 請求書コードが存在しませ�
 customize.tooltip.customer.invoice_parent_key: 請求書コードが設定されていない会員は、編集をすると請求書コードが発行されます。
 customize.tooltip.customer.relation_invoice_parent_key: 請求書をまとめる会員の、請求書コードを入力してください。
 
+customize.admin.order.deny_customer_is_invalid: 会員を選択してください。
 admin.order.multi_search_label: 注文番号・お名前・会社名・店舗名・メールアドレス・電話番号
 admin.order.change_billing_date: 請求月の設定
 admin.order.change_billing_date_title: 請求月
